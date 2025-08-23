@@ -1,0 +1,3288 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns:m="http://schemas.microsoft.com/office/2004/12/omml"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 15">
+<meta name=Originator content="Microsoft Word 15">
+<link rel=File-List href="SpreadSBML%20specification.fld/filelist.xml">
+<link rel=Preview href="SpreadSBML%20specification.fld/preview.wmf">
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:LastAuthor>Luna Li</o:LastAuthor>
+  <o:Revision>2</o:Revision>
+  <o:TotalTime>2</o:TotalTime>
+  <o:Created>2025-08-22T20:49:00Z</o:Created>
+  <o:LastSaved>2025-08-22T20:49:00Z</o:LastSaved>
+  <o:Pages>8</o:Pages>
+  <o:Words>2101</o:Words>
+  <o:Characters>11981</o:Characters>
+  <o:Lines>99</o:Lines>
+  <o:Paragraphs>28</o:Paragraphs>
+  <o:CharactersWithSpaces>14054</o:CharactersWithSpaces>
+  <o:Version>16.00</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]-->
+<link rel=themeData href="SpreadSBML%20specification.fld/themedata.thmx">
+<link rel=colorSchemeMapping
+href="SpreadSBML%20specification.fld/colorschememapping.xml">
+<!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:SpellingState>Clean</w:SpellingState>
+  <w:GrammarState>Clean</w:GrammarState>
+  <w:TrackMoves>false</w:TrackMoves>
+  <w:TrackFormatting/>
+  <w:PunctuationKerning/>
+  <w:ValidateAgainstSchemas/>
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+  <w:DoNotPromoteQF/>
+  <w:LidThemeOther>EN-US</w:LidThemeOther>
+  <w:LidThemeAsian>ZH-CN</w:LidThemeAsian>
+  <w:LidThemeComplexScript>X-NONE</w:LidThemeComplexScript>
+  <w:Compatibility>
+   <w:BreakWrappedTables/>
+   <w:SnapToGridInCell/>
+   <w:WrapTextWithPunct/>
+   <w:UseAsianBreakRules/>
+   <w:DontGrowAutofit/>
+   <w:SplitPgBreakAndParaMark/>
+   <w:EnableOpenTypeKerning/>
+   <w:DontFlipMirrorIndents/>
+   <w:OverrideTableStyleHps/>
+   <w:UseFELayout/>
+  </w:Compatibility>
+  <w:DoNotOptimizeForBrowser/>
+  <m:mathPr>
+   <m:mathFont m:val="Cambria Math"/>
+   <m:brkBin m:val="before"/>
+   <m:brkBinSub m:val="&#45;-"/>
+   <m:smallFrac m:val="off"/>
+   <m:dispDef/>
+   <m:lMargin m:val="0"/>
+   <m:rMargin m:val="0"/>
+   <m:defJc m:val="centerGroup"/>
+   <m:wrapIndent m:val="1440"/>
+   <m:intLim m:val="subSup"/>
+   <m:naryLim m:val="undOvr"/>
+  </m:mathPr></w:WordDocument>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:LatentStyles DefLockedState="false" DefUnhideWhenUsed="false"
+  DefSemiHidden="false" DefQFormat="false" DefPriority="99"
+  LatentStyleCount="376">
+  <w:LsdException Locked="false" Priority="0" QFormat="true" Name="Normal"/>
+  <w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 1"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 2"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 3"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 4"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 5"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 6"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 7"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 8"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 9"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 6"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 7"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 8"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 9"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 1"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 2"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 3"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 4"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 5"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 6"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 7"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 8"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 9"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Normal Indent"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="footnote text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="annotation text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="header"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="footer"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index heading"/>
+  <w:LsdException Locked="false" Priority="35" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="caption"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="table of figures"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="envelope address"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="envelope return"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="footnote reference"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="annotation reference"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="line number"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="page number"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="endnote reference"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="endnote text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="table of authorities"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="macro"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="toa heading"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number 5"/>
+  <w:LsdException Locked="false" Priority="10" QFormat="true" Name="Title"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Closing"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Signature"/>
+  <w:LsdException Locked="false" Priority="1" SemiHidden="true"
+   UnhideWhenUsed="true" Name="Default Paragraph Font"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text Indent"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Message Header"/>
+  <w:LsdException Locked="false" Priority="11" QFormat="true" Name="Subtitle"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Salutation"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Date"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text First Indent"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text First Indent 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Note Heading"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text Indent 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text Indent 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Block Text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Hyperlink"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="FollowedHyperlink"/>
+  <w:LsdException Locked="false" Priority="22" QFormat="true" Name="Strong"/>
+  <w:LsdException Locked="false" Priority="20" QFormat="true" Name="Emphasis"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Document Map"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Plain Text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="E-mail Signature"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Top of Form"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Bottom of Form"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Normal (Web)"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Acronym"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Address"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Cite"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Code"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Definition"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Keyboard"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Preformatted"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Sample"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Typewriter"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Variable"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Normal Table"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="annotation subject"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="No List"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Outline List 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Outline List 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Outline List 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Simple 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Simple 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Simple 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Classic 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Classic 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Classic 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Classic 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Colorful 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Colorful 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Colorful 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 6"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 7"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 8"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 6"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 7"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 8"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table 3D effects 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table 3D effects 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table 3D effects 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Contemporary"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Elegant"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Professional"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Subtle 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Subtle 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Web 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Web 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Web 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Balloon Text"/>
+  <w:LsdException Locked="false" Priority="39" Name="Table Grid"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Theme"/>
+  <w:LsdException Locked="false" SemiHidden="true" Name="Placeholder Text"/>
+  <w:LsdException Locked="false" Priority="1" QFormat="true" Name="No Spacing"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 1"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 1"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 1"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 1"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" Name="Revision"/>
+  <w:LsdException Locked="false" Priority="34" QFormat="true"
+   Name="List Paragraph"/>
+  <w:LsdException Locked="false" Priority="29" QFormat="true" Name="Quote"/>
+  <w:LsdException Locked="false" Priority="30" QFormat="true"
+   Name="Intense Quote"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 1"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 1"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 1"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 1"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 1"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 1"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 2"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 2"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 2"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 2"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 2"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 2"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 2"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 2"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 2"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 2"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 2"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 3"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 3"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 3"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 3"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 3"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 3"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 3"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 3"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 3"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 3"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 3"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 4"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 4"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 4"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 4"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 4"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 4"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 4"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 4"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 4"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 4"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 4"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 5"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 5"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 5"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 5"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 5"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 5"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 5"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 5"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 5"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 5"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 5"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 6"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 6"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 6"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 6"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 6"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 6"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 6"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 6"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 6"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 6"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 6"/>
+  <w:LsdException Locked="false" Priority="19" QFormat="true"
+   Name="Subtle Emphasis"/>
+  <w:LsdException Locked="false" Priority="21" QFormat="true"
+   Name="Intense Emphasis"/>
+  <w:LsdException Locked="false" Priority="31" QFormat="true"
+   Name="Subtle Reference"/>
+  <w:LsdException Locked="false" Priority="32" QFormat="true"
+   Name="Intense Reference"/>
+  <w:LsdException Locked="false" Priority="33" QFormat="true" Name="Book Title"/>
+  <w:LsdException Locked="false" Priority="37" SemiHidden="true"
+   UnhideWhenUsed="true" Name="Bibliography"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="TOC Heading"/>
+  <w:LsdException Locked="false" Priority="41" Name="Plain Table 1"/>
+  <w:LsdException Locked="false" Priority="42" Name="Plain Table 2"/>
+  <w:LsdException Locked="false" Priority="43" Name="Plain Table 3"/>
+  <w:LsdException Locked="false" Priority="44" Name="Plain Table 4"/>
+  <w:LsdException Locked="false" Priority="45" Name="Plain Table 5"/>
+  <w:LsdException Locked="false" Priority="40" Name="Grid Table Light"/>
+  <w:LsdException Locked="false" Priority="46" Name="Grid Table 1 Light"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark"/>
+  <w:LsdException Locked="false" Priority="51" Name="Grid Table 6 Colorful"/>
+  <w:LsdException Locked="false" Priority="52" Name="Grid Table 7 Colorful"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 1"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 1"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 1"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 1"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 1"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 1"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 2"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 2"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 2"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 2"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 2"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 2"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 3"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 3"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 3"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 3"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 3"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 3"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 4"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 4"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 4"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 4"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 4"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 4"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 5"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 5"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 5"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 5"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 5"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 5"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 6"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 6"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 6"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 6"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 6"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 6"/>
+  <w:LsdException Locked="false" Priority="46" Name="List Table 1 Light"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark"/>
+  <w:LsdException Locked="false" Priority="51" Name="List Table 6 Colorful"/>
+  <w:LsdException Locked="false" Priority="52" Name="List Table 7 Colorful"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 1"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 1"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 1"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 1"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 1"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 1"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 2"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 2"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 2"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 2"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 2"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 2"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 3"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 3"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 3"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 3"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 3"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 3"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 4"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 4"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 4"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 4"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 4"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 4"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 5"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 5"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 5"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 5"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 5"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 5"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 6"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 6"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 6"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 6"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 6"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 6"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Mention"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Smart Hyperlink"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Hashtag"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Unresolved Mention"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Smart Link"/>
+ </w:LatentStyles>
+</xml><![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:SimSun;
+	panose-1:2 1 6 0 3 1 1 1 1 1;
+	mso-font-alt:宋体;
+	mso-font-charset:134;
+	mso-generic-font-family:auto;
+	mso-font-pitch:variable;
+	mso-font-signature:515 680460288 22 0 262145 0;}
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;
+	mso-font-charset:0;
+	mso-generic-font-family:roman;
+	mso-font-pitch:variable;
+	mso-font-signature:-536870145 1107305727 0 0 415 0;}
+@font-face
+	{font-family:"PT Sans Caption";
+	panose-1:2 11 6 3 2 2 3 2 2 4;
+	mso-font-charset:77;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:-1610611985 1342185547 0 0 151 0;}
+@font-face
+	{font-family:"Roboto Mono";
+	panose-1:0 0 0 9 0 0 0 0 0 0;
+	mso-font-charset:0;
+	mso-generic-font-family:modern;
+	mso-font-pitch:fixed;
+	mso-font-signature:-536870145 268443739 32 0 415 0;}
+@font-face
+	{font-family:"\@SimSun";
+	panose-1:2 1 6 0 3 1 1 1 1 1;
+	mso-font-charset:134;
+	mso-generic-font-family:auto;
+	mso-font-pitch:variable;
+	mso-font-signature:515 680460288 22 0 262145 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-unhide:no;
+	mso-style-qformat:yes;
+	mso-style-parent:"";
+	margin:0cm;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Arial",sans-serif;
+	mso-fareast-font-family:SimSun;
+	mso-fareast-theme-font:minor-fareast;
+	mso-ansi-language:EN;}
+h1
+	{mso-style-priority:9;
+	mso-style-unhide:no;
+	mso-style-qformat:yes;
+	mso-style-next:Normal;
+	margin-top:20.0pt;
+	margin-right:0cm;
+	margin-bottom:6.0pt;
+	margin-left:0cm;
+	line-height:115%;
+	mso-pagination:widow-orphan lines-together;
+	page-break-after:avoid;
+	mso-outline-level:1;
+	font-size:20.0pt;
+	font-family:"Arial",sans-serif;
+	mso-font-kerning:0pt;
+	mso-ansi-language:EN;
+	font-weight:normal;}
+h2
+	{mso-style-priority:9;
+	mso-style-qformat:yes;
+	mso-style-next:Normal;
+	margin-top:18.0pt;
+	margin-right:0cm;
+	margin-bottom:6.0pt;
+	margin-left:0cm;
+	line-height:115%;
+	mso-pagination:widow-orphan lines-together;
+	page-break-after:avoid;
+	mso-outline-level:2;
+	font-size:16.0pt;
+	font-family:"Arial",sans-serif;
+	mso-ansi-language:EN;
+	font-weight:normal;}
+h3
+	{mso-style-priority:9;
+	mso-style-qformat:yes;
+	mso-style-next:Normal;
+	margin-top:16.0pt;
+	margin-right:0cm;
+	margin-bottom:4.0pt;
+	margin-left:0cm;
+	line-height:115%;
+	mso-pagination:widow-orphan lines-together;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	font-size:14.0pt;
+	font-family:"Arial",sans-serif;
+	color:#434343;
+	mso-ansi-language:EN;
+	font-weight:normal;}
+h4
+	{mso-style-noshow:yes;
+	mso-style-priority:9;
+	mso-style-qformat:yes;
+	mso-style-next:Normal;
+	margin-top:14.0pt;
+	margin-right:0cm;
+	margin-bottom:4.0pt;
+	margin-left:0cm;
+	line-height:115%;
+	mso-pagination:widow-orphan lines-together;
+	page-break-after:avoid;
+	mso-outline-level:4;
+	font-size:12.0pt;
+	font-family:"Arial",sans-serif;
+	color:#666666;
+	mso-ansi-language:EN;
+	font-weight:normal;}
+h5
+	{mso-style-noshow:yes;
+	mso-style-priority:9;
+	mso-style-qformat:yes;
+	mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0cm;
+	margin-bottom:4.0pt;
+	margin-left:0cm;
+	line-height:115%;
+	mso-pagination:widow-orphan lines-together;
+	page-break-after:avoid;
+	mso-outline-level:5;
+	font-size:11.0pt;
+	font-family:"Arial",sans-serif;
+	color:#666666;
+	mso-ansi-language:EN;
+	font-weight:normal;}
+h6
+	{mso-style-noshow:yes;
+	mso-style-priority:9;
+	mso-style-qformat:yes;
+	mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0cm;
+	margin-bottom:4.0pt;
+	margin-left:0cm;
+	line-height:115%;
+	mso-pagination:widow-orphan lines-together;
+	page-break-after:avoid;
+	mso-outline-level:6;
+	font-size:11.0pt;
+	font-family:"Arial",sans-serif;
+	color:#666666;
+	mso-ansi-language:EN;
+	font-weight:normal;
+	font-style:italic;
+	mso-bidi-font-style:normal;}
+p.MsoCommentText, li.MsoCommentText, div.MsoCommentText
+	{mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-link:"Comment Text Char";
+	margin:0cm;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Arial",sans-serif;
+	mso-fareast-font-family:SimSun;
+	mso-fareast-theme-font:minor-fareast;
+	mso-ansi-language:EN;}
+span.MsoCommentReference
+	{mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-ansi-font-size:10.5pt;
+	mso-bidi-font-size:10.5pt;}
+p.MsoTitle, li.MsoTitle, div.MsoTitle
+	{mso-style-priority:10;
+	mso-style-unhide:no;
+	mso-style-qformat:yes;
+	mso-style-next:Normal;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:3.0pt;
+	margin-left:0cm;
+	line-height:115%;
+	mso-pagination:widow-orphan lines-together;
+	page-break-after:avoid;
+	font-size:26.0pt;
+	font-family:"Arial",sans-serif;
+	mso-fareast-font-family:SimSun;
+	mso-fareast-theme-font:minor-fareast;
+	mso-ansi-language:EN;}
+p.MsoSubtitle, li.MsoSubtitle, div.MsoSubtitle
+	{mso-style-priority:11;
+	mso-style-unhide:no;
+	mso-style-qformat:yes;
+	mso-style-next:Normal;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:16.0pt;
+	margin-left:0cm;
+	line-height:115%;
+	mso-pagination:widow-orphan lines-together;
+	page-break-after:avoid;
+	font-size:15.0pt;
+	font-family:"Arial",sans-serif;
+	mso-fareast-font-family:Arial;
+	color:#666666;
+	mso-ansi-language:EN;}
+p.MsoRMPane, li.MsoRMPane, div.MsoRMPane
+	{mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-unhide:no;
+	mso-style-parent:"";
+	margin:0cm;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Arial",sans-serif;
+	mso-fareast-font-family:SimSun;
+	mso-fareast-theme-font:minor-fareast;
+	mso-ansi-language:EN;}
+span.CommentTextChar
+	{mso-style-name:"Comment Text Char";
+	mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-unhide:no;
+	mso-style-locked:yes;
+	mso-style-link:"Comment Text";}
+span.SpellE
+	{mso-style-name:"";
+	mso-spl-e:yes;}
+span.GramE
+	{mso-style-name:"";
+	mso-gram-e:yes;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	mso-default-props:yes;
+	mso-bidi-font-size:11.0pt;
+	mso-ascii-font-family:Arial;
+	mso-hansi-font-family:Arial;
+	mso-bidi-font-family:Arial;
+	mso-font-kerning:0pt;
+	mso-ligatures:none;
+	mso-ansi-language:EN;}
+.MsoPapDefault
+	{mso-style-type:export-only;
+	line-height:115%;}
+ /* Page Definitions */
+ @page
+	{mso-page-border-surround-header:no;
+	mso-page-border-surround-footer:no;}
+@page WordSection1
+	{size:612.0pt 792.0pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;
+	mso-header-margin:36.0pt;
+	mso-footer-margin:36.0pt;
+	mso-page-numbers:1;
+	mso-paper-source:0;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ @list l0
+	{mso-list-id:313603996;
+	mso-list-template-ids:1007191372;}
+@list l0:level1
+	{mso-level-number-format:alpha-upper;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l0:level2
+	{mso-level-number-format:alpha-lower;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l0:level3
+	{mso-level-number-format:roman-lower;
+	mso-level-tab-stop:none;
+	mso-level-number-position:right;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l0:level4
+	{mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l0:level5
+	{mso-level-number-format:alpha-lower;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l0:level6
+	{mso-level-number-format:roman-lower;
+	mso-level-tab-stop:none;
+	mso-level-number-position:right;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l0:level7
+	{mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l0:level8
+	{mso-level-number-format:alpha-lower;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l0:level9
+	{mso-level-number-format:roman-lower;
+	mso-level-tab-stop:none;
+	mso-level-number-position:right;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l1
+	{mso-list-id:335960266;
+	mso-list-template-ids:-235619700;}
+@list l1:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:●;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l1:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:○;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l1:level3
+	{mso-level-number-format:bullet;
+	mso-level-text:■;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l1:level4
+	{mso-level-number-format:bullet;
+	mso-level-text:●;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l1:level5
+	{mso-level-number-format:bullet;
+	mso-level-text:○;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l1:level6
+	{mso-level-number-format:bullet;
+	mso-level-text:■;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l1:level7
+	{mso-level-number-format:bullet;
+	mso-level-text:●;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l1:level8
+	{mso-level-number-format:bullet;
+	mso-level-text:○;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l1:level9
+	{mso-level-number-format:bullet;
+	mso-level-text:■;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l2
+	{mso-list-id:576213373;
+	mso-list-template-ids:-960178828;}
+@list l2:level1
+	{mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l2:level2
+	{mso-level-number-format:alpha-lower;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l2:level3
+	{mso-level-number-format:roman-lower;
+	mso-level-tab-stop:none;
+	mso-level-number-position:right;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l2:level4
+	{mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l2:level5
+	{mso-level-number-format:alpha-lower;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l2:level6
+	{mso-level-number-format:roman-lower;
+	mso-level-tab-stop:none;
+	mso-level-number-position:right;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l2:level7
+	{mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l2:level8
+	{mso-level-number-format:alpha-lower;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l2:level9
+	{mso-level-number-format:roman-lower;
+	mso-level-tab-stop:none;
+	mso-level-number-position:right;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l3
+	{mso-list-id:732773198;
+	mso-list-template-ids:-749320336;}
+@list l3:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:●;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l3:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:○;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l3:level3
+	{mso-level-number-format:bullet;
+	mso-level-text:■;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l3:level4
+	{mso-level-number-format:bullet;
+	mso-level-text:●;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l3:level5
+	{mso-level-number-format:bullet;
+	mso-level-text:○;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l3:level6
+	{mso-level-number-format:bullet;
+	mso-level-text:■;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l3:level7
+	{mso-level-number-format:bullet;
+	mso-level-text:●;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l3:level8
+	{mso-level-number-format:bullet;
+	mso-level-text:○;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l3:level9
+	{mso-level-number-format:bullet;
+	mso-level-text:■;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l4
+	{mso-list-id:916869042;
+	mso-list-template-ids:1547498652;}
+@list l4:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:●;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l4:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:○;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l4:level3
+	{mso-level-number-format:bullet;
+	mso-level-text:■;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l4:level4
+	{mso-level-number-format:bullet;
+	mso-level-text:●;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l4:level5
+	{mso-level-number-format:bullet;
+	mso-level-text:○;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l4:level6
+	{mso-level-number-format:bullet;
+	mso-level-text:■;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l4:level7
+	{mso-level-number-format:bullet;
+	mso-level-text:●;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l4:level8
+	{mso-level-number-format:bullet;
+	mso-level-text:○;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l4:level9
+	{mso-level-number-format:bullet;
+	mso-level-text:■;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l5
+	{mso-list-id:1297954768;
+	mso-list-template-ids:-260811968;}
+@list l5:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:●;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l5:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:○;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l5:level3
+	{mso-level-number-format:bullet;
+	mso-level-text:■;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l5:level4
+	{mso-level-number-format:bullet;
+	mso-level-text:●;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l5:level5
+	{mso-level-number-format:bullet;
+	mso-level-text:○;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l5:level6
+	{mso-level-number-format:bullet;
+	mso-level-text:■;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l5:level7
+	{mso-level-number-format:bullet;
+	mso-level-text:●;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l5:level8
+	{mso-level-number-format:bullet;
+	mso-level-text:○;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+@list l5:level9
+	{mso-level-number-format:bullet;
+	mso-level-text:■;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	text-decoration:none;
+	text-underline:none;}
+ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+<!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:"Table Normal";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-parent:"";
+	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+	mso-para-margin:0cm;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Arial",sans-serif;
+	mso-ansi-language:EN;}
+table.TableNormal
+	{mso-style-name:TableNormal;
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-unhide:no;
+	mso-style-parent:"";
+	mso-padding-alt:0cm 0cm 0cm 0cm;
+	mso-para-margin:0cm;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Arial",sans-serif;
+	mso-ansi-language:EN;}
+table.a
+	{mso-style-name:"";
+	mso-tstyle-rowband-size:1;
+	mso-tstyle-colband-size:1;
+	mso-style-unhide:no;
+	mso-style-parent:TableNormal;
+	mso-padding-alt:5.0pt 5.0pt 5.0pt 5.0pt;
+	mso-para-margin:0cm;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Arial",sans-serif;
+	mso-ansi-language:EN;}
+table.a0
+	{mso-style-name:"";
+	mso-tstyle-rowband-size:1;
+	mso-tstyle-colband-size:1;
+	mso-style-unhide:no;
+	mso-style-parent:TableNormal;
+	mso-padding-alt:5.0pt 5.0pt 5.0pt 5.0pt;
+	mso-para-margin:0cm;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Arial",sans-serif;
+	mso-ansi-language:EN;}
+table.a1
+	{mso-style-name:"";
+	mso-tstyle-rowband-size:1;
+	mso-tstyle-colband-size:1;
+	mso-style-unhide:no;
+	mso-style-parent:TableNormal;
+	mso-padding-alt:5.0pt 5.0pt 5.0pt 5.0pt;
+	mso-para-margin:0cm;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Arial",sans-serif;
+	mso-ansi-language:EN;}
+table.a2
+	{mso-style-name:"";
+	mso-tstyle-rowband-size:1;
+	mso-tstyle-colband-size:1;
+	mso-style-unhide:no;
+	mso-style-parent:TableNormal;
+	mso-padding-alt:5.0pt 5.0pt 5.0pt 5.0pt;
+	mso-para-margin:0cm;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Arial",sans-serif;
+	mso-ansi-language:EN;}
+table.a3
+	{mso-style-name:"";
+	mso-tstyle-rowband-size:1;
+	mso-tstyle-colband-size:1;
+	mso-style-unhide:no;
+	mso-style-parent:TableNormal;
+	mso-padding-alt:5.0pt 5.0pt 5.0pt 5.0pt;
+	mso-para-margin:0cm;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Arial",sans-serif;
+	mso-ansi-language:EN;}
+</style>
+<![endif]-->
+</head>
+
+<body lang=EN-US style='tab-interval:36.0pt;word-wrap:break-word'>
+
+<div class=WordSection1>
+
+<h1 style='margin-left:36.0pt;text-align:justify;text-justify:inter-ideograph;
+text-indent:-18.0pt;mso-list:l2 level1 lfo3'><a name="_9ge7q9jq62tp"></a><![if !supportLists]><span
+lang=EN style='mso-fareast-font-family:Arial'><span style='mso-list:Ignore'>1.<span
+style='font:7.0pt "Times New Roman"'> </span></span></span><![endif]><span
+lang=EN>Introduction</span></h1>
+
+<h1 style='margin-left:36.0pt;text-align:justify;text-justify:inter-ideograph;
+text-indent:-18.0pt;mso-list:l2 level1 lfo3'><a name="_sm6y2kqr1k3q"></a><![if !supportLists]><span
+lang=EN style='mso-fareast-font-family:Arial'><span style='mso-list:Ignore'>2.<span
+style='font:7.0pt "Times New Roman"'> </span></span></span><![endif]><span
+lang=EN>Technical specification</span></h1>
+
+<p class=MsoNormal style='margin-top:12.0pt;margin-right:0cm;margin-bottom:
+12.0pt;margin-left:0cm'><span lang=EN>This section formally defines the
+spreadsheet-based annotation format for logical models. It describes the</span><b
+style='mso-bidi-font-weight:normal'><span lang=EN style='font-family:"PT Sans Caption",sans-serif;
+mso-fareast-font-family:"PT Sans Caption";mso-bidi-font-family:"PT Sans Caption"'>
+</span></b><span lang=EN>tabular structure, element attributes for qualitative
+species and transitions, recommended format for annotations, and intended
+mappings between spreadsheet entries and the SBML-qual elements.</span></p>
+
+<h2 style='margin-bottom:4.0pt;mso-pagination:widow-orphan;page-break-after:
+auto'><a name="_anw56jx2rkzl"></a><span lang=EN style='font-size:17.0pt;
+line-height:115%'>2.1 Data Organization<o:p></o:p></span></h2>
+
+<p class=MsoNormal style='margin-top:12.0pt;margin-right:0cm;margin-bottom:
+12.0pt;margin-left:0cm'><span lang=EN>The spreadsheet consists of several
+tables (sheets), where each <b style='mso-bidi-font-weight:normal'>row</b>
+represents a distinct model entity (</span><b style='mso-bidi-font-weight:normal'><span
+lang=EN style='font-family:"PT Sans Caption",sans-serif;mso-fareast-font-family:
+"PT Sans Caption";mso-bidi-font-family:"PT Sans Caption"'>species</span></b><span
+lang=EN>, </span><b style='mso-bidi-font-weight:normal'><span lang=EN
+style='font-family:"PT Sans Caption",sans-serif;mso-fareast-font-family:"PT Sans Caption";
+mso-bidi-font-family:"PT Sans Caption"'>transition</span></b><span lang=EN>, or
+</span><b style='mso-bidi-font-weight:normal'><span lang=EN style='font-family:
+"PT Sans Caption",sans-serif;mso-fareast-font-family:"PT Sans Caption";
+mso-bidi-font-family:"PT Sans Caption"'>interaction</span></b><span lang=EN>).
+And each <b style='mso-bidi-font-weight:normal'>column</b> corresponds to a
+defined attribute or annotation of that entity. In addition, a </span><b
+style='mso-bidi-font-weight:normal'><span lang=EN style='font-family:"PT Sans Caption",sans-serif;
+mso-fareast-font-family:"PT Sans Caption";mso-bidi-font-family:"PT Sans Caption"'>model</span></b><span
+lang=EN> sheet is used to provide other information about the model as a whole.</span></p>
+
+<p class=MsoNormal style='margin-top:12.0pt;margin-right:0cm;margin-bottom:
+12.0pt;margin-left:0cm'><span lang=EN>At minimum, three core tables are
+required to define a logical model, with the last one being optional:</span></p>
+
+<p class=MsoNormal style='margin-top:12.0pt;margin-right:0cm;margin-bottom:
+0cm;margin-left:36.0pt;margin-bottom:.0001pt;text-indent:-18.0pt;mso-list:l1 level1 lfo6'><![if !supportLists]><span
+lang=EN style='mso-fareast-font-family:Arial'><span style='mso-list:Ignore'>●<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><b
+style='mso-bidi-font-weight:normal'><span lang=EN style='font-family:"PT Sans Caption",sans-serif;
+mso-fareast-font-family:"PT Sans Caption";mso-bidi-font-family:"PT Sans Caption"'>Model</span><span
+lang=EN> </span></b><span lang=EN>sheet: Defines the model and its metadata.</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt;text-indent:-18.0pt;mso-list:l1 level1 lfo6'><![if !supportLists]><span
+lang=EN style='mso-fareast-font-family:Arial'><span style='mso-list:Ignore'>●<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><b
+style='mso-bidi-font-weight:normal'><span lang=EN style='font-family:"PT Sans Caption",sans-serif;
+mso-fareast-font-family:"PT Sans Caption";mso-bidi-font-family:"PT Sans Caption"'>Species</span><span
+lang=EN> </span></b><span lang=EN>sheet: Defines <span class=SpellE>QualitativeSpecies</span>
+(nodes), their attributes and annotations.</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt;text-indent:-18.0pt;mso-list:l1 level1 lfo6'><![if !supportLists]><span
+lang=EN style='mso-fareast-font-family:Arial'><span style='mso-list:Ignore'>●<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><b
+style='mso-bidi-font-weight:normal'><span lang=EN style='font-family:"PT Sans Caption",sans-serif;
+mso-fareast-font-family:"PT Sans Caption";mso-bidi-font-family:"PT Sans Caption"'>Transitions</span><span
+lang=EN> </span></b><span lang=EN>sheet: Defines transitions (logical rules),
+their attributes and annotations.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:12.0pt;
+margin-left:36.0pt;text-indent:-18.0pt;mso-list:l1 level1 lfo6'><![if !supportLists]><span
+lang=EN style='mso-fareast-font-family:Arial'><span style='mso-list:Ignore'>●<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><span
+lang=EN>(Optional)</span><b style='mso-bidi-font-weight:normal'><span lang=EN
+style='font-family:"PT Sans Caption",sans-serif;mso-fareast-font-family:"PT Sans Caption";
+mso-bidi-font-family:"PT Sans Caption"'> Interactions</span></b><span lang=EN>
+sheet: Provides annotations of the interactions (each edge) between two
+species.</span></p>
+
+<p class=MsoNormal style='margin-top:12.0pt;margin-right:0cm;margin-bottom:
+12.0pt;margin-left:0cm;border:none;mso-padding-alt:31.0pt 31.0pt 31.0pt 31.0pt;
+mso-border-shadow:yes'><span lang=EN>Each sheet contains one or two data fields
+(columns) that are required to define a model. In addition,<b style='mso-bidi-font-weight:
+normal'> </b>optional columns for annotation can be used to store external
+references and provenance data. For example, species can be linked with their
+biological entity ID from <span class=SpellE>UniProt</span> or NCBI gene;
+transitions and interactions can be supported by evidence from literature, etc.</span></p>
+
+<p class=MsoNormal style='margin-top:12.0pt;margin-right:0cm;margin-bottom:
+12.0pt;margin-left:0cm;border:none;mso-padding-alt:31.0pt 31.0pt 31.0pt 31.0pt;
+mso-border-shadow:yes'><span lang=EN>Additional sheets and columns may be
+included if needed, but they will not be considered as part of the standard nor
+be kept in the converted SBML-qual model. In the template, two additional
+sheets are provided:</span></p>
+
+<p class=MsoNormal style='margin-top:12.0pt;margin-right:0cm;margin-bottom:
+0cm;margin-left:36.0pt;margin-bottom:.0001pt;text-indent:-18.0pt;mso-list:l1 level1 lfo6'><![if !supportLists]><span
+lang=EN style='mso-fareast-font-family:Arial'><span style='mso-list:Ignore'>●<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><b
+style='mso-bidi-font-weight:normal'><span lang=EN style='font-family:"PT Sans Caption",sans-serif;
+mso-fareast-font-family:"PT Sans Caption";mso-bidi-font-family:"PT Sans Caption"'>README</span><span
+lang=EN> </span></b><span lang=EN>sheet: Provides basic instructions for using
+the template.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:12.0pt;
+margin-left:36.0pt;text-indent:-18.0pt;mso-list:l1 level1 lfo6'><![if !supportLists]><span
+lang=EN style='mso-fareast-font-family:Arial'><span style='mso-list:Ignore'>●<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><b
+style='mso-bidi-font-weight:normal'><span lang=EN style='font-family:"PT Sans Caption",sans-serif;
+mso-fareast-font-family:"PT Sans Caption";mso-bidi-font-family:"PT Sans Caption"'>Appendix</span><span
+lang=EN> </span></b><span lang=EN>sheet: Describe the options for certain
+columns (see 2.2).</span></p>
+
+<h2 style='margin-bottom:4.0pt;mso-pagination:widow-orphan;page-break-after:
+auto'><a name="_wcb3rwev6cme"></a><span lang=EN style='font-size:17.0pt;
+line-height:115%'>2.2 Definitions of the tables<o:p></o:p></span></h2>
+
+<p class=MsoNormal style='margin-top:12.0pt;margin-right:0cm;margin-bottom:
+12.0pt;margin-left:0cm;border:none;mso-padding-alt:31.0pt 31.0pt 31.0pt 31.0pt;
+mso-border-shadow:yes'><span lang=EN>This section provides definitions of the
+fields in each table. Order of the tables can be changed, as long as the tab
+names and headers remain the same.</span></p>
+
+<p class=MsoNormal style='margin-top:12.0pt;margin-right:0cm;margin-bottom:
+12.0pt;margin-left:0cm;border:none;mso-padding-alt:31.0pt 31.0pt 31.0pt 31.0pt;
+mso-border-shadow:yes'><span class=GramE><span lang=EN>Typically</span></span><span
+lang=EN> there is only one entry per cell, if multiple entries are provided,
+they should be comma-separated. <a name="_2lqu6g5jidzo"></a>For identifiers
+used in the spreadsheet, we recommend using compact identifiers that follow the
+[prefix<span class=GramE>]:[</span>accession] pattern registered at
+identifiers.org when possible. Additional URLs are supported for other
+resources.</span></p>
+
+<h3><span lang=EN>2.2.1 Model sheet</span></h3>
+
+<p class=MsoNormal style='margin-top:12.0pt;margin-right:0cm;margin-bottom:
+12.0pt;margin-left:0cm;border:none;mso-padding-alt:31.0pt 31.0pt 31.0pt 31.0pt;
+mso-border-shadow:yes'><span lang=EN>The model sheet contains general
+information about the model, only <span class=SpellE><b style='mso-bidi-font-weight:
+normal'>Model_ID</b></span> is required, other fields are optional annotation
+of model provenance and metadata. </span></p>
+
+<p class=MsoNormal style='border:none;mso-padding-alt:31.0pt 31.0pt 31.0pt 31.0pt;
+mso-border-shadow:yes'><span lang=EN>Table 1 provides the definition and an
+example entry of each field in the model sheet. In the Mapping column, </span><span
+lang=EN style='font-size:9.0pt;line-height:115%;font-family:"Roboto Mono";
+mso-fareast-font-family:"Roboto Mono";mso-bidi-font-family:"Roboto Mono";
+color:#0B5394'>blue </span><span lang=EN>represents the corresponding SBML
+attributes of model elements; </span><span lang=EN style='font-size:9.0pt;
+line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";
+mso-bidi-font-family:"Roboto Mono";color:#188038'>green</span><span lang=EN>
+represents the <a href="#_x3pmcgi6qdzs"><span style='color:#1155CC'>qualifier</span></a>
+used for annotations of the model object.</span></p>
+
+<p class=MsoNormal style='border:none;mso-padding-alt:31.0pt 31.0pt 31.0pt 31.0pt;
+mso-border-shadow:yes'><span lang=EN><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal><span lang=EN>Table 1: Definition of the fields in the</span><b
+style='mso-bidi-font-weight:normal'><span lang=EN style='font-family:"PT Sans Caption",sans-serif;
+mso-fareast-font-family:"PT Sans Caption";mso-bidi-font-family:"PT Sans Caption"'>
+Model</span></b><span lang=EN> sheet.</span></p>
+
+<table class=a border=1 cellspacing=0 cellpadding=0 width=836 style='margin-left:
+ 5.25pt;border-collapse:collapse;mso-table-layout-alt:fixed;border:none;
+ mso-yfti-tbllook:1536;mso-padding-alt:5.0pt 5.0pt 5.0pt 5.0pt;mso-border-insideh:
+ cell-none;mso-border-insidev:cell-none'>
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes;height:25.75pt'>
+  <td width=139 valign=top style='width:104.25pt;border:none;background:#F3F3F3;
+  padding:5.0pt 5.0pt 5.0pt 5.0pt;height:25.75pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:10.0pt;
+  line-height:115%;color:black;mso-color-alt:windowtext'>Field</span></b><span
+  lang=EN style='font-size:10.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=152 valign=top style='width:114.0pt;border:none;background:#F3F3F3;
+  padding:5.0pt 5.0pt 5.0pt 5.0pt;height:25.75pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:10.0pt;
+  line-height:115%;color:black;mso-color-alt:windowtext'>Mapping</span></b><span
+  lang=EN style='font-size:10.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=382 valign=top style='width:286.5pt;border:none;background:#F3F3F3;
+  padding:5.0pt 5.0pt 5.0pt 5.0pt;height:25.75pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:10.0pt;
+  line-height:115%;color:black;mso-color-alt:windowtext'>Definition</span></b><span
+  lang=EN style='font-size:10.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=163 valign=top style='width:122.45pt;border:none;background:#F3F3F3;
+  padding:5.0pt 5.0pt 5.0pt 5.0pt;height:25.75pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:10.0pt;
+  line-height:115%;color:black;mso-color-alt:windowtext'>Example</span></b><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:10.0pt;
+  line-height:115%'><o:p></o:p></span></b></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:1;height:36.0pt'>
+  <td width=139 valign=top style='width:104.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><b style='mso-bidi-font-weight:normal'><span
+  lang=EN style='font-size:9.0pt;line-height:115%'>Model_source</span></b></span><span
+  lang=EN style='font-size:9.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=152 valign=top style='width:114.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><span lang=EN style='font-size:8.0pt;
+  line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";
+  mso-bidi-font-family:"Roboto Mono";color:#188038'>bqmodel:is</span></span><span
+  lang=EN style='font-size:8.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=382 valign=top style='width:286.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>URL
+  or accession of the model or the spreadsheet itself.<o:p></o:p></span></p>
+  </td>
+  <td width=163 valign=top style='width:122.45pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:9.0pt;line-height:115%'>https://www.ebi.ac.uk/biomodels/MODEL2307180001<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:2;height:36.0pt'>
+  <td width=139 valign=top style='width:104.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><b style='mso-bidi-font-weight:normal'><span
+  lang=EN style='font-size:9.0pt;line-height:115%;color:black;mso-color-alt:
+  windowtext;background:#FFF2CC'>Model_ID</span></b></span><span lang=EN
+  style='font-size:9.0pt;line-height:115%;background:#FFF2CC'><o:p></o:p></span></p>
+  </td>
+  <td width=152 valign=top style='width:114.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:8.0pt;line-height:115%;
+  font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";mso-bidi-font-family:
+  "Roboto Mono";color:#0B5394'>model.id</span><span lang=EN style='font-size:
+  8.0pt;line-height:115%;color:#0B5394'><o:p></o:p></span></p>
+  </td>
+  <td width=382 valign=top style='width:286.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Identifier
+  for the model; must be a valid SBML <span class=SpellE><i style='mso-bidi-font-style:
+  normal'>SId</i></span> (ASCII, no spaces).<o:p></o:p></span></p>
+  </td>
+  <td width=163 valign=top style='width:122.45pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><span lang=EN style='font-size:9.0pt;
+  line-height:115%'>ToyExample_boolean</span></span><span lang=EN
+  style='font-size:9.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:3;height:36.0pt'>
+  <td width=139 valign=top style='width:104.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span lang=EN
+  style='font-size:9.0pt;line-height:115%'>Name</span></b><span lang=EN
+  style='font-size:9.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=152 valign=top style='width:114.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:8.0pt;line-height:115%;
+  font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";mso-bidi-font-family:
+  "Roboto Mono";color:#0B5394'>model.name</span><span lang=EN style='font-size:
+  8.0pt;line-height:115%;color:#0B5394'><o:p></o:p></span></p>
+  </td>
+  <td width=382 valign=top style='width:286.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Descriptive
+  label of the model, can be any text.<o:p></o:p></span></p>
+  </td>
+  <td width=163 valign=top style='width:122.45pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:9.0pt;line-height:115%'>Example
+  Boolean model of NF-<span class=SpellE>κB</span> signaling pathway<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:4;height:36.0pt'>
+  <td width=139 valign=top style='width:104.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span lang=EN
+  style='font-size:9.0pt;line-height:115%'>Publication</span></b><span lang=EN
+  style='font-size:9.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=152 valign=top style='width:114.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><span class=GramE><span lang=EN
+  style='font-size:8.0pt;line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:
+  "Roboto Mono";mso-bidi-font-family:"Roboto Mono";color:#188038'>bqmodel:isDescribedBy</span></span></span><span
+  lang=EN style='font-size:8.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=382 valign=top style='width:286.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Primary
+  publication(s) supporting the encoded model; compact IDs stored with
+  qualifier.<o:p></o:p></span></p>
+  </td>
+  <td width=163 valign=top style='width:122.45pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:9.0pt;line-height:115%'>DOI:10.1093/bib/bbac212<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:5;height:36.0pt'>
+  <td width=139 valign=top style='width:104.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><b style='mso-bidi-font-weight:normal'><span
+  lang=EN style='font-size:9.0pt;line-height:115%'>Origin_publication</span></b></span><span
+  lang=EN style='font-size:9.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=152 valign=top style='width:114.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><span class=GramE><span lang=EN
+  style='font-size:8.0pt;line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:
+  "Roboto Mono";mso-bidi-font-family:"Roboto Mono";color:#188038'>bqmodel:isDerivedFrom</span></span></span><span
+  lang=EN style='font-size:8.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=382 valign=top style='width:286.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Paper(s)
+  describing the biological system from which the present model was derived.<o:p></o:p></span></p>
+  </td>
+  <td width=163 valign=top style='width:122.45pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:9.0pt;line-height:115%'>pubmed:38272919<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:6;height:36.0pt'>
+  <td width=139 valign=top style='width:104.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><b style='mso-bidi-font-weight:normal'><span
+  lang=EN style='font-size:9.0pt;line-height:115%'>Origin_model</span></b></span><span
+  lang=EN style='font-size:9.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=152 valign=top style='width:114.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><span class=GramE><span lang=EN
+  style='font-size:8.0pt;line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:
+  "Roboto Mono";mso-bidi-font-family:"Roboto Mono";color:#188038'>bqmodel:isDerivedFrom</span></span></span><span
+  lang=EN style='font-size:8.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=382 valign=top style='width:286.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Accession(s)
+  of parent model in </span><span lang=EN><a href="#_qo707ctcmg6x"><span
+  style='font-size:10.0pt;line-height:115%;color:#1155CC'>compact identifier</span></a></span><span
+  lang=EN style='font-size:10.0pt;line-height:115%'>.<o:p></o:p></span></p>
+  </td>
+  <td width=163 valign=top style='width:122.45pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:9.0pt;line-height:115%'>biomodels.<span
+  class=GramE>db:MODEL</span>2307180001<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:7;height:36.0pt'>
+  <td width=139 valign=top style='width:104.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span lang=EN
+  style='font-size:9.0pt;line-height:115%'>Taxon</span></b><span lang=EN
+  style='font-size:9.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=152 valign=top style='width:114.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><span class=GramE><span lang=EN
+  style='font-size:8.0pt;line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:
+  "Roboto Mono";mso-bidi-font-family:"Roboto Mono";color:#188038'>bqbiol:hasTaxon</span></span></span><span
+  lang=EN style='font-size:8.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=382 valign=top style='width:286.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>NCBI
+  taxonomy compact ID of the species (animal) described by the model.<o:p></o:p></span></p>
+  </td>
+  <td width=163 valign=top style='width:122.45pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:9.0pt;line-height:115%'>taxonomy:9606<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:8;height:36.0pt'>
+  <td width=139 valign=top style='width:104.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><b style='mso-bidi-font-weight:normal'><span
+  lang=EN style='font-size:9.0pt;line-height:115%'>Biological_process</span></b></span><span
+  lang=EN style='font-size:9.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=152 valign=top style='width:114.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><span class=GramE><span lang=EN
+  style='font-size:8.0pt;line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:
+  "Roboto Mono";mso-bidi-font-family:"Roboto Mono";color:#188038'>bqbiol:isVersionOf</span></span></span><span
+  lang=EN style='font-size:8.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=382 valign=top style='width:286.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Biological
+  process(es) described in the model.<o:p></o:p></span></p>
+  </td>
+  <td width=163 valign=top style='width:122.45pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:9.0pt;line-height:115%'>GO:0007249<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:9;height:36.0pt'>
+  <td width=139 valign=top style='width:104.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span lang=EN
+  style='font-size:9.0pt;line-height:115%'>Created</span></b><span lang=EN
+  style='font-size:9.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=152 valign=top style='width:114.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><span class=GramE><span lang=EN
+  style='font-size:8.0pt;line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:
+  "Roboto Mono";mso-bidi-font-family:"Roboto Mono";color:#188038'>dcterms:created</span></span></span><span
+  lang=EN style='font-size:8.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=382 valign=top style='width:286.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>ISO-8601
+  timestamp when this model is created.<o:p></o:p></span></p>
+  </td>
+  <td width=163 valign=top style='width:122.45pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:9.0pt;line-height:115%'>2025-04-04T17:08:28Z<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:10;height:36.0pt'>
+  <td width=139 valign=top style='width:104.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span lang=EN
+  style='font-size:9.0pt;line-height:115%'>Modified</span></b><span lang=EN
+  style='font-size:9.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=152 valign=top style='width:114.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><span class=GramE><span lang=EN
+  style='font-size:8.0pt;line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:
+  "Roboto Mono";mso-bidi-font-family:"Roboto Mono";color:#188038'>dcterms:modified</span></span></span><span
+  lang=EN style='font-size:8.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=382 valign=top style='width:286.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Last
+  edit timestamp when the model is modified.<o:p></o:p></span></p>
+  </td>
+  <td width=163 valign=top style='width:122.45pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:9.0pt;line-height:115%'>2025-07-29T16:56:00Z<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:11;height:36.0pt'>
+  <td width=139 valign=top style='width:104.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=GramE><b style='mso-bidi-font-weight:normal'><span
+  lang=EN style='font-size:9.0pt;line-height:115%'>Creator[</span></b></span><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:9.0pt;
+  line-height:115%'>1, 2, …]</span></b><span lang=EN style='font-size:9.0pt;
+  line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=152 valign=top style='width:114.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><span class=GramE><span lang=EN
+  style='font-size:8.0pt;line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:
+  "Roboto Mono";mso-bidi-font-family:"Roboto Mono";color:#188038'>dcterms:creator</span></span></span><span
+  lang=EN style='font-size:8.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=382 valign=top style='width:286.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Information
+  about the creator of the model: [family name, given name,
+  &quot;organization&quot;, email]; if more than one creator, add new rows with
+  header “<b style='mso-bidi-font-weight:normal'>Creator2</b>”, “<b
+  style='mso-bidi-font-weight:normal'>Creator3</b>”, …<o:p></o:p></span></p>
+  </td>
+  <td width=163 rowspan=2 valign=top style='width:122.45pt;border:none;
+  padding:5.0pt 5.0pt 5.0pt 5.0pt;height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:9.0pt;line-height:115%'>Li,
+  Luna, &quot;Center for Reproducible Biomedical Modeling&quot;, lixy@uw.edu<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:12;height:36.0pt'>
+  <td width=139 valign=top style='width:104.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=GramE><b style='mso-bidi-font-weight:normal'><span
+  lang=EN style='font-size:9.0pt;line-height:115%'>Contributor[</span></b></span><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:9.0pt;
+  line-height:115%'>1, 2, …]</span></b><span lang=EN style='font-size:9.0pt;
+  line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=152 valign=top style='width:114.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><span class=GramE><span lang=EN
+  style='font-size:8.0pt;line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:
+  "Roboto Mono";mso-bidi-font-family:"Roboto Mono";color:#188038'>dcterms:contributor</span></span></span><span
+  lang=EN style='font-size:8.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=382 valign=top style='width:286.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Additional
+  person or organization that have contributed to the model; encoded like <b
+  style='mso-bidi-font-weight:normal'>Creator</b>.<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:13;height:36.0pt'>
+  <td width=139 valign=top style='width:104.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span lang=EN
+  style='font-size:9.0pt;line-height:115%'>Version</span></b><span lang=EN
+  style='font-size:9.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=152 valign=top style='width:114.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><span class=GramE><span lang=EN
+  style='font-size:8.0pt;line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:
+  "Roboto Mono";mso-bidi-font-family:"Roboto Mono";color:#0B5394'>model.notes</span></span></span><span
+  lang=EN style='font-size:8.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=382 valign=top style='width:286.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Other
+  versions of the model can be listed here using the file name.<o:p></o:p></span></p>
+  </td>
+  <td width=163 valign=top style='width:122.45pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:9.0pt;line-height:115%'>ToyExample_multivalue.xlsx<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:14;height:36.0pt'>
+  <td width=139 valign=top style='width:104.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=GramE><b style='mso-bidi-font-weight:normal'><span
+  lang=EN style='font-size:9.0pt;line-height:115%'>Notes[</span></b></span><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:9.0pt;
+  line-height:115%'>1, 2, …]</span></b><span lang=EN style='font-size:9.0pt;
+  line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=152 valign=top style='width:114.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><span class=GramE><span lang=EN
+  style='font-size:8.0pt;line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:
+  "Roboto Mono";mso-bidi-font-family:"Roboto Mono";color:#0B5394'>model.notes</span></span></span><span
+  lang=EN style='font-size:8.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=382 valign=top style='width:286.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=GramE><span lang=EN style='font-size:10.0pt;
+  line-height:115%'>Free-text</span></span><span lang=EN style='font-size:10.0pt;
+  line-height:115%'> as <i style='mso-bidi-font-style:normal'>notes</i> in the
+  SBML model.<o:p></o:p></span></p>
+  </td>
+  <td width=163 valign=top style='width:122.45pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:9.0pt;line-height:115%'>“This
+  is an example note.”<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:15;mso-yfti-lastrow:yes;height:36.0pt'>
+  <td width=139 valign=top style='width:104.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span lang=EN
+  style='font-size:9.0pt;line-height:115%'>Comments</span></b><span lang=EN
+  style='font-size:9.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=152 valign=top style='width:114.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:8.0pt;line-height:115%'><o:p>&nbsp;</o:p></span></p>
+  </td>
+  <td width=382 valign=top style='width:286.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Informal
+  comments NOT exported to SBML.<o:p></o:p></span></p>
+  </td>
+  <td width=163 valign=top style='width:122.45pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:9.0pt;line-height:115%'><o:p>&nbsp;</o:p></span></p>
+  </td>
+ </tr>
+</table>
+
+<h3><a name="_j1kchtmtb2hp"></a><span lang=EN>2.2.2 Species sheet</span></h3>
+
+<p class=MsoNormal style='margin-bottom:10.0pt'><span lang=EN>The species sheet
+lists every <span class=SpellE><i style='mso-bidi-font-style:normal'>QualitativeSpecies</i></span>
+(node) that appears in the logical model, usually this refers to genes or gene
+products in biological processes.</span></p>
+
+<p class=MsoNormal><span lang=EN>Only <span class=SpellE><b style='mso-bidi-font-weight:
+normal'>Species_ID</b></span> is required for a valid SBML-qual model; all
+other columns provide optional attributes or annotations.</span></p>
+
+<p class=MsoNormal><span lang=EN><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal><span lang=EN>Table 2 provides the definition and an example
+entry of each field in the species sheet. SBML-qual attributes (</span><span
+lang=EN style='font-size:9.0pt;line-height:115%;font-family:"Roboto Mono";
+mso-fareast-font-family:"Roboto Mono";mso-bidi-font-family:"Roboto Mono";
+color:#0B5394'>blue</span><span lang=EN> in the Mapping column) are written
+exactly as they appear in the specification with capitalization; annotation <a
+href="#_x3pmcgi6qdzs"><span style='color:#1155CC'>qualifiers</span></a> (</span><span
+lang=EN style='font-size:9.0pt;line-height:115%;font-family:"Roboto Mono";
+mso-fareast-font-family:"Roboto Mono";mso-bidi-font-family:"Roboto Mono";
+color:#188038'>green</span><span lang=EN>) should follow the <span
+class=SpellE>BioModels</span> Qualifiers vocabulary. </span></p>
+
+<p class=MsoNormal><span lang=EN><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal><span lang=EN>Table 2: Definition of the fields in the</span><b
+style='mso-bidi-font-weight:normal'><span lang=EN style='font-family:"PT Sans Caption",sans-serif;
+mso-fareast-font-family:"PT Sans Caption";mso-bidi-font-family:"PT Sans Caption"'>
+Species</span></b><span lang=EN> sheet.</span></p>
+
+<table class=a0 border=1 cellspacing=0 cellpadding=0 width=808
+ style='margin-left:12.75pt;border-collapse:collapse;mso-table-layout-alt:fixed;
+ border:none;mso-yfti-tbllook:1536;mso-padding-alt:5.0pt 5.0pt 5.0pt 5.0pt;
+ mso-border-insideh:cell-none;mso-border-insidev:cell-none'>
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes;height:25.75pt'>
+  <td width=129 valign=top style='width:96.75pt;border:none;background:#F3F3F3;
+  padding:5.0pt 5.0pt 5.0pt 5.0pt;height:25.75pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:10.0pt;
+  line-height:115%;color:black;mso-color-alt:windowtext'>Field</span></b><span
+  lang=EN style='font-size:10.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=140 valign=top style='width:105.25pt;border:none;background:#F3F3F3;
+  padding:5.0pt 5.0pt 5.0pt 5.0pt;height:25.75pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:10.0pt;
+  line-height:115%;color:black;mso-color-alt:windowtext'>Mapping</span></b><span
+  lang=EN style='font-size:10.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;background:#F3F3F3;
+  padding:5.0pt 5.0pt 5.0pt 5.0pt;height:25.75pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:10.0pt;
+  line-height:115%;color:black;mso-color-alt:windowtext'>Definition</span></b><span
+  lang=EN style='font-size:10.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=135 valign=top style='width:101.25pt;border:none;background:#F3F3F3;
+  padding:5.0pt 5.0pt 5.0pt 5.0pt;height:25.75pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:10.0pt;
+  line-height:115%;color:black;mso-color-alt:windowtext'>Example</span></b><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:10.0pt;
+  line-height:115%'><o:p></o:p></span></b></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:1;height:36.0pt'>
+  <td width=129 valign=top style='width:96.75pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><b style='mso-bidi-font-weight:normal'><span
+  lang=EN style='font-size:9.0pt;line-height:115%;color:black;mso-color-alt:
+  windowtext;background:#FFF2CC'>Species_ID</span></b></span><span lang=EN
+  style='font-size:9.0pt;line-height:115%;background:#FFF2CC'><o:p></o:p></span></p>
+  </td>
+  <td width=140 valign=top style='width:105.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:8.0pt;line-height:115%;
+  font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";mso-bidi-font-family:
+  "Roboto Mono";color:#0B5394'>QualitativeSpecies.id</span><span lang=EN
+  style='font-size:8.0pt;line-height:115%;color:#0B5394'><o:p></o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Identifier
+  for the species; must be a valid SBML <span class=SpellE><i style='mso-bidi-font-style:
+  normal'>SId</i></span> (ASCII, no spaces).<o:p></o:p></span></p>
+  </td>
+  <td width=135 valign=top style='width:101.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>NFKB1<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:2;height:36.0pt'>
+  <td width=129 valign=top style='width:96.75pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span lang=EN
+  style='font-size:9.0pt;line-height:115%'>Name</span></b><span lang=EN
+  style='font-size:9.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=140 valign=top style='width:105.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:8.0pt;line-height:115%;
+  font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";mso-bidi-font-family:
+  "Roboto Mono";color:#0B5394'>QualitativeSpecies.name</span><span lang=EN
+  style='font-size:8.0pt;line-height:115%;color:#0B5394'><o:p></o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Descriptive
+  label of the species.<o:p></o:p></span></p>
+  </td>
+  <td width=135 valign=top style='width:101.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><span lang=EN style='font-size:10.0pt;
+  line-height:115%'>NFκB</span></span><span lang=EN style='font-size:10.0pt;
+  line-height:115%'> protein p50 subunit<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:3;height:36.0pt'>
+  <td width=129 valign=top style='width:96.75pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=GramE><b style='mso-bidi-font-weight:normal'><span
+  lang=EN style='font-size:9.0pt;line-height:115%'>Relation[</span></b></span><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:9.0pt;
+  line-height:115%'>1, 2, …]</span></b><span lang=EN style='font-size:9.0pt;
+  line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=140 valign=top style='width:105.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><span lang=EN style='font-size:8.0pt;
+  line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";
+  mso-bidi-font-family:"Roboto Mono";color:#188038'>bqbiol</span></span><span
+  lang=EN style='font-size:8.0pt;line-height:115%;font-family:"Roboto Mono";
+  mso-fareast-font-family:"Roboto Mono";mso-bidi-font-family:"Roboto Mono";
+  color:#188038'> qualifiers</span><span lang=EN style='font-size:8.0pt;
+  line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN><a href="#_x3pmcgi6qdzs"><span
+  style='font-size:10.0pt;line-height:115%;color:#1155CC'>Qualifier</span></a></span><span
+  lang=EN style='font-size:10.0pt;line-height:115%'> for <span class=GramE>identifier[</span>1,
+  2, …], respectively; defaults to 'is'<o:p></o:p></span></p>
+  </td>
+  <td width=135 valign=top style='width:101.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>is<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:4;height:36.0pt'>
+  <td width=129 valign=top style='width:96.75pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=GramE><b style='mso-bidi-font-weight:normal'><span
+  lang=EN style='font-size:9.0pt;line-height:115%'>Identifier[</span></b></span><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:9.0pt;
+  line-height:115%'>1, 2, …]</span></b><span lang=EN style='font-size:9.0pt;
+  line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=140 valign=top style='width:105.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'><o:p>&nbsp;</o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN><a href="#_qo707ctcmg6x"><span
+  style='font-size:10.0pt;line-height:115%;color:#1155CC'>Compact identifiers</span></a></span><span
+  lang=EN style='font-size:10.0pt;line-height:115%'> for <span class=GramE>Relation[</span>1,
+  2, …], respectively.<o:p></o:p></span></p>
+  </td>
+  <td width=135 valign=top style='width:101.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=GramE><span lang=EN style='font-size:10.0pt;
+  line-height:115%'>uniprot:P</span></span><span lang=EN style='font-size:10.0pt;
+  line-height:115%'>19838<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:5;height:36.0pt'>
+  <td width=129 valign=top style='width:96.75pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span lang=EN
+  style='font-size:9.0pt;line-height:115%'>Compartment</span></b><span lang=EN
+  style='font-size:9.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=140 valign=top style='width:105.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><span lang=EN style='font-size:8.0pt;
+  line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";
+  mso-bidi-font-family:"Roboto Mono";color:#0B5394'>QualitativeSpecies.compartment</span></span><span
+  lang=EN style='font-size:8.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>The
+  compartment in which the species is located.<o:p></o:p></span></p>
+  </td>
+  <td width=135 valign=top style='width:101.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>cytosol<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:6;height:32.4pt'>
+  <td width=129 valign=top style='width:96.75pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:32.4pt'>
+  <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span lang=EN
+  style='font-size:9.0pt;line-height:115%'>Type</span></b><span lang=EN
+  style='font-size:9.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=140 valign=top style='width:105.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:32.4pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:8.0pt;line-height:115%'><o:p>&nbsp;</o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:32.4pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Describe
+  the role of the species in a network; Choose from: Input, Internal, output. <o:p></o:p></span></p>
+  </td>
+  <td width=135 valign=top style='width:101.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:32.4pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Internal<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:7;height:36.0pt'>
+  <td width=129 valign=top style='width:96.75pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span lang=EN
+  style='font-size:9.0pt;line-height:115%'>Constant</span></b><span lang=EN
+  style='font-size:9.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=140 valign=top style='width:105.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><span lang=EN style='font-size:8.0pt;
+  line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";
+  mso-bidi-font-family:"Roboto Mono";color:#0B5394'>QualitativeSpecies.constant</span></span><span
+  lang=EN style='font-size:8.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal style='border:none;mso-padding-alt:31.0pt 31.0pt 31.0pt 31.0pt;
+  mso-border-shadow:yes'><span lang=EN style='font-size:7.0pt;line-height:115%;
+  color:#2D2D2D'><span style='mso-spacerun:yes'> </span></span><span lang=EN
+  style='font-size:10.0pt;line-height:115%'>Whether the level of the species is
+  fixed or can be varied; Choose from: True, False.<o:p></o:p></span></p>
+  </td>
+  <td width=135 valign=top style='width:101.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>False<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:8;height:36.0pt'>
+  <td width=129 valign=top style='width:96.75pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><b style='mso-bidi-font-weight:normal'><span
+  lang=EN style='font-size:9.0pt;line-height:115%'>InitialLevel</span></b></span><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:9.0pt;
+  line-height:115%'><o:p></o:p></span></b></p>
+  </td>
+  <td width=140 valign=top style='width:105.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><span lang=EN style='font-size:8.0pt;
+  line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";
+  mso-bidi-font-family:"Roboto Mono";color:#0B5394'>QualitativeSpecies.initialLevel</span></span><span
+  lang=EN style='font-size:8.0pt;line-height:115%;font-family:"Roboto Mono";
+  mso-fareast-font-family:"Roboto Mono";mso-bidi-font-family:"Roboto Mono";
+  color:#0B5394'><o:p></o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Initial
+  value of the species; non-negative integer; cannot exceed <span class=SpellE>MaxLevel</span>
+  if both are set.</span><span lang=EN style='font-size:7.0pt;line-height:115%;
+  color:#2D2D2D'><o:p></o:p></span></p>
+  </td>
+  <td width=135 valign=top style='width:101.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>0<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:9;height:36.0pt'>
+  <td width=129 valign=top style='width:96.75pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><b style='mso-bidi-font-weight:normal'><span
+  lang=EN style='font-size:9.0pt;line-height:115%'>MaxLevel</span></b></span><span
+  lang=EN style='font-size:9.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=140 valign=top style='width:105.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><span lang=EN style='font-size:8.0pt;
+  line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";
+  mso-bidi-font-family:"Roboto Mono";color:#0B5394'>QualitativeSpecies.maxLevel</span></span><span
+  lang=EN style='font-size:8.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Maximum
+  value of the species; non-negative integer; default ‘1’ for Boolean models.<o:p></o:p></span></p>
+  </td>
+  <td width=135 valign=top style='width:101.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>1<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:10;height:36.0pt'>
+  <td width=129 valign=top style='width:96.75pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=GramE><b style='mso-bidi-font-weight:normal'><span
+  lang=EN style='font-size:9.0pt;line-height:115%'>Notes[</span></b></span><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:9.0pt;
+  line-height:115%'>1, 2, …]</span></b><span lang=EN style='font-size:9.0pt;
+  line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=140 valign=top style='width:105.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><span lang=EN style='font-size:8.0pt;
+  line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";
+  mso-bidi-font-family:"Roboto Mono";color:#0B5394'>QualitativeSpecies.notes</span></span><span
+  lang=EN style='font-size:8.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=GramE><span lang=EN style='font-size:10.0pt;
+  line-height:115%'>Free-text</span></span><span lang=EN style='font-size:10.0pt;
+  line-height:115%'> as <i style='mso-bidi-font-style:normal'>notes</i> for the
+  species.<o:p></o:p></span></p>
+  </td>
+  <td width=135 valign=top style='width:101.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>“p50
+  subunit of the NF-<span class=SpellE>κB</span> complex”<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:11;mso-yfti-lastrow:yes;height:36.0pt'>
+  <td width=129 valign=top style='width:96.75pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span lang=EN
+  style='font-size:9.0pt;line-height:115%'>Comments</span></b><span lang=EN
+  style='font-size:9.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=140 valign=top style='width:105.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:8.0pt;line-height:115%'><o:p>&nbsp;</o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Informal
+  comments NOT exported to SBML.<o:p></o:p></span></p>
+  </td>
+  <td width=135 valign=top style='width:101.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:9.0pt;line-height:115%'><o:p>&nbsp;</o:p></span></p>
+  </td>
+ </tr>
+</table>
+
+<h3><a name="_t430n5lqbnox"></a><span lang=EN>2.2.3 Interactions sheet</span></h3>
+
+<p class=MsoNormal><span lang=EN>The Interactions sheet records evidence and
+provenance for pairwise influences between species.</span></p>
+
+<p class=MsoNormal style='margin-bottom:10.0pt;border:none;mso-padding-alt:
+31.0pt 31.0pt 31.0pt 31.0pt;mso-border-shadow:yes'><span lang=EN>It is an <b
+style='mso-bidi-font-weight:normal'>optional</b> sheet and purely for
+annotating pair-wise relations between nodes, rather than the transitions as a
+whole. In addition, <span class=SpellE>softwares</span> may use it to decorate
+graphical views or to auto-generate default Transition inputs/outputs.</span></p>
+
+<p class=MsoNormal><span lang=EN>Table 3: Definition of the fields in the</span><b
+style='mso-bidi-font-weight:normal'><span lang=EN style='font-family:"PT Sans Caption",sans-serif;
+mso-fareast-font-family:"PT Sans Caption";mso-bidi-font-family:"PT Sans Caption"'>
+Interactions</span></b><span lang=EN> sheet.</span></p>
+
+<table class=a1 border=1 cellspacing=0 cellpadding=0 width=855
+ style='margin-left:24.25pt;border-collapse:collapse;mso-table-layout-alt:fixed;
+ border:none;mso-yfti-tbllook:1536;mso-padding-alt:5.0pt 5.0pt 5.0pt 5.0pt;
+ mso-border-insideh:cell-none;mso-border-insidev:cell-none'>
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes;height:25.75pt'>
+  <td width=115 valign=top style='width:86.0pt;border:none;background:#F3F3F3;
+  padding:5.0pt 5.0pt 5.0pt 5.0pt;height:25.75pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:10.0pt;
+  line-height:115%;color:black;mso-color-alt:windowtext'>Field</span></b><span
+  lang=EN style='font-size:10.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=170 valign=top style='width:127.5pt;border:none;background:#F3F3F3;
+  padding:5.0pt 5.0pt 5.0pt 5.0pt;height:25.75pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:10.0pt;
+  line-height:115%;color:black;mso-color-alt:windowtext'>Mapping</span></b><span
+  lang=EN style='font-size:10.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;background:#F3F3F3;
+  padding:5.0pt 5.0pt 5.0pt 5.0pt;height:25.75pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:10.0pt;
+  line-height:115%;color:black;mso-color-alt:windowtext'>Definition</span></b><span
+  lang=EN style='font-size:10.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=166 valign=top style='width:124.5pt;border:none;background:#F3F3F3;
+  padding:5.0pt 5.0pt 5.0pt 5.0pt;height:25.75pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:10.0pt;
+  line-height:115%;color:black;mso-color-alt:windowtext'>Example</span></b><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:10.0pt;
+  line-height:115%'><o:p></o:p></span></b></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:1;height:36.0pt'>
+  <td width=115 valign=top style='width:86.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span lang=EN
+  style='font-size:9.0pt;line-height:115%'>Target</span></b><span lang=EN
+  style='font-size:9.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=170 valign=top style='width:127.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:8.0pt;line-height:115%;
+  font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";mso-bidi-font-family:
+  "Roboto Mono";color:#0B5394'>Transition.Output.id (QualitativeSpecies.id)</span><span
+  lang=EN style='font-size:8.0pt;line-height:115%;color:#0B5394'><o:p></o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Identifier
+  for the regulated species; the output that participates in a transition. Must
+  be an existing <span class=SpellE>Species_ID</span>.<o:p></o:p></span></p>
+  </td>
+  <td width=166 valign=top style='width:124.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>A<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:2;height:36.0pt'>
+  <td width=115 valign=top style='width:86.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span lang=EN
+  style='font-size:9.0pt;line-height:115%'>Source</span></b><span lang=EN
+  style='font-size:9.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=170 valign=top style='width:127.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:8.0pt;line-height:115%;
+  font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";mso-bidi-font-family:
+  "Roboto Mono";color:#0B5394'>Transition.Input.id (QualitativeSpecies.id)</span><span
+  lang=EN style='font-size:8.0pt;line-height:115%;color:#0B5394'><o:p></o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Identifier
+  for the regulator species; the input that is affected by a transition. Must
+  be an existing <span class=SpellE>Species_ID</span>.<o:p></o:p></span></p>
+  </td>
+  <td width=166 valign=top style='width:124.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>D<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:3;height:41.15pt'>
+  <td width=115 valign=top style='width:86.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:41.15pt'>
+  <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span lang=EN
+  style='font-size:9.0pt;line-height:115%'>Sign</span></b><span lang=EN
+  style='font-size:9.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=170 valign=top style='width:127.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:41.15pt'>
+  <p class=MsoNormal><span class=SpellE><span class=GramE><span lang=EN
+  style='font-size:8.0pt;line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:
+  "Roboto Mono";mso-bidi-font-family:"Roboto Mono";color:#0B5394'>Transition.Input.sign</span></span></span><span
+  lang=EN style='font-size:8.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:41.15pt'>
+  <p class=MsoNormal style='border:none;mso-padding-alt:31.0pt 31.0pt 31.0pt 31.0pt;
+  mso-border-shadow:yes'><span lang=EN style='font-size:10.0pt;line-height:
+  115%'>Whether the contribution of this input is positive, negative, both
+  (dual) or unknown.<o:p></o:p></span></p>
+  </td>
+  <td width=166 valign=top style='width:124.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:41.15pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>positive<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:4;height:36.0pt'>
+  <td width=115 valign=top style='width:86.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=GramE><b style='mso-bidi-font-weight:normal'><span
+  lang=EN style='font-size:9.0pt;line-height:115%'>Relation[</span></b></span><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:9.0pt;
+  line-height:115%'>1, 2, …]</span></b><span lang=EN style='font-size:9.0pt;
+  line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=170 valign=top style='width:127.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><span lang=EN style='font-size:8.0pt;
+  line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";
+  mso-bidi-font-family:"Roboto Mono";color:#188038'>bqbiol</span></span><span
+  lang=EN style='font-size:8.0pt;line-height:115%;font-family:"Roboto Mono";
+  mso-fareast-font-family:"Roboto Mono";mso-bidi-font-family:"Roboto Mono";
+  color:#188038'> qualifiers</span><span lang=EN style='font-size:8.0pt;
+  line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN><a href="#_x3pmcgi6qdzs"><span
+  style='font-size:10.0pt;line-height:115%;color:#1155CC'>Qualifier</span></a></span><span
+  lang=EN style='font-size:10.0pt;line-height:115%'> for <span class=GramE>identifier[</span>1,
+  2, …], respectively; defaults to '<span class=SpellE>isDescribedBy</span>'<o:p></o:p></span></p>
+  </td>
+  <td width=166 valign=top style='width:124.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><span lang=EN style='font-size:10.0pt;
+  line-height:115%'>isDescribedBy</span></span><span lang=EN style='font-size:
+  10.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:5;height:36.0pt'>
+  <td width=115 valign=top style='width:86.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=GramE><b style='mso-bidi-font-weight:normal'><span
+  lang=EN style='font-size:9.0pt;line-height:115%'>Identifier[</span></b></span><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:9.0pt;
+  line-height:115%'>1, 2, …]</span></b><span lang=EN style='font-size:9.0pt;
+  line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=170 valign=top style='width:127.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'><o:p>&nbsp;</o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN><a href="#_qo707ctcmg6x"><span
+  style='font-size:10.0pt;line-height:115%;color:#1155CC'>Compact identifiers</span></a></span><span
+  lang=EN style='font-size:10.0pt;line-height:115%'> for <span class=GramE>Relation[</span>1,
+  2, …], respectively.<o:p></o:p></span></p>
+  </td>
+  <td width=166 valign=top style='width:124.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>pubmed:20300203,
+  ECO:0007392<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:6;height:36.0pt'>
+  <td width=115 valign=top style='width:86.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=GramE><b style='mso-bidi-font-weight:normal'><span
+  lang=EN style='font-size:9.0pt;line-height:115%'>Notes[</span></b></span><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:9.0pt;
+  line-height:115%'>1, 2, …]</span></b><span lang=EN style='font-size:9.0pt;
+  line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=170 valign=top style='width:127.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><span class=GramE><span lang=EN
+  style='font-size:8.0pt;line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:
+  "Roboto Mono";mso-bidi-font-family:"Roboto Mono";color:#0B5394'>Transition.Input.notes</span></span></span><span
+  lang=EN style='font-size:8.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=GramE><span lang=EN style='font-size:10.0pt;
+  line-height:115%'>Free-text</span></span><span lang=EN style='font-size:10.0pt;
+  line-height:115%'> as <i style='mso-bidi-font-style:normal'>notes</i> for the
+  interaction.<o:p></o:p></span></p>
+  </td>
+  <td width=166 rowspan=2 valign=top style='width:124.5pt;border:none;
+  padding:5.0pt 5.0pt 5.0pt 5.0pt;height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:9.0pt;line-height:115%'>“IKK
+  complex activates RELA by phosphorylating <span class=SpellE>IκB</span>α.The
+  activation of RELA by IKK has been supported by immunohistochemistry
+  evidence”<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:7;mso-yfti-lastrow:yes;height:36.0pt'>
+  <td width=115 valign=top style='width:86.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span lang=EN
+  style='font-size:9.0pt;line-height:115%'>Comments</span></b><span lang=EN
+  style='font-size:9.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=170 valign=top style='width:127.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:8.0pt;line-height:115%'><o:p>&nbsp;</o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Informal
+  comments NOT exported to SBML.<o:p></o:p></span></p>
+  </td>
+ </tr>
+</table>
+
+<h3><a name="_f2caazfagg8z"></a><span lang=EN>2.2.4 Transitions sheet</span></h3>
+
+<p class=MsoNormal style='margin-bottom:10.0pt'><span lang=EN>The transitions
+sheet provides core regulatory information of the model. Each row in the
+Transitions sheet defines the logical rule (<i style='mso-bidi-font-style:normal'>Transition</i>)
+that governs one output species.</span></p>
+
+<p class=MsoNormal style='margin-bottom:10.0pt'><span lang=EN>Only <b
+style='mso-bidi-font-weight:normal'>Target</b> and <b style='mso-bidi-font-weight:
+normal'>Rule</b> are required. <span class=SpellE>Transition_ID</span> and Name
+are optional and will be assigned a default value in the SBML model.</span></p>
+
+<p class=MsoNormal><span lang=EN>Table 4: Definition of the fields in the</span><b
+style='mso-bidi-font-weight:normal'><span lang=EN style='font-family:"PT Sans Caption",sans-serif;
+mso-fareast-font-family:"PT Sans Caption";mso-bidi-font-family:"PT Sans Caption"'>
+Transitions</span></b><span lang=EN> sheet.</span></p>
+
+<table class=a2 border=1 cellspacing=0 cellpadding=0 width=854
+ style='margin-left:24.75pt;border-collapse:collapse;mso-table-layout-alt:fixed;
+ border:none;mso-yfti-tbllook:1536;mso-padding-alt:5.0pt 5.0pt 5.0pt 5.0pt;
+ mso-border-insideh:cell-none;mso-border-insidev:cell-none'>
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes;height:25.75pt'>
+  <td width=114 valign=top style='width:85.5pt;border:none;background:#F3F3F3;
+  padding:5.0pt 5.0pt 5.0pt 5.0pt;height:25.75pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:10.0pt;
+  line-height:115%;color:black;mso-color-alt:windowtext'>Field</span></b><span
+  lang=EN style='font-size:10.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=170 valign=top style='width:127.5pt;border:none;background:#F3F3F3;
+  padding:5.0pt 5.0pt 5.0pt 5.0pt;height:25.75pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:10.0pt;
+  line-height:115%;color:black;mso-color-alt:windowtext'>Mapping</span></b><span
+  lang=EN style='font-size:10.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;background:#F3F3F3;
+  padding:5.0pt 5.0pt 5.0pt 5.0pt;height:25.75pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:10.0pt;
+  line-height:115%;color:black;mso-color-alt:windowtext'>Definition</span></b><span
+  lang=EN style='font-size:10.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=166 valign=top style='width:124.5pt;border:none;background:#F3F3F3;
+  padding:5.0pt 5.0pt 5.0pt 5.0pt;height:25.75pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:10.0pt;
+  line-height:115%;color:black;mso-color-alt:windowtext'>Example</span></b><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:10.0pt;
+  line-height:115%'><o:p></o:p></span></b></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:1;height:36.0pt'>
+  <td width=114 valign=top style='width:85.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><b style='mso-bidi-font-weight:normal'><span
+  lang=EN style='font-size:9.0pt;line-height:115%'>Transitions_ID</span></b></span><span
+  lang=EN style='font-size:9.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=170 valign=top style='width:127.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:8.0pt;line-height:115%;
+  font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";mso-bidi-font-family:
+  "Roboto Mono";color:#0B5394'>Transition.id</span><span lang=EN
+  style='font-size:8.0pt;line-height:115%;color:#0B5394'><o:p></o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Identifier
+  for the transition; Optional, if provided, must be a valid SBML <span
+  class=SpellE><i style='mso-bidi-font-style:normal'>SId</i></span> (ASCII, no
+  spaces).<o:p></o:p></span></p>
+  </td>
+  <td width=166 valign=top style='width:124.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><span lang=EN style='font-size:10.0pt;
+  line-height:115%'>tr_A</span></span><span lang=EN style='font-size:10.0pt;
+  line-height:115%'><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:2;height:36.0pt'>
+  <td width=114 valign=top style='width:85.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span lang=EN
+  style='font-size:9.0pt;line-height:115%'>Name</span></b><span lang=EN
+  style='font-size:9.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=170 valign=top style='width:127.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:8.0pt;line-height:115%;
+  font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";mso-bidi-font-family:
+  "Roboto Mono";color:#0B5394'>Transition.name</span><span lang=EN
+  style='font-size:8.0pt;line-height:115%;color:#0B5394'><o:p></o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Descriptive
+  label of the transition.<o:p></o:p></span></p>
+  </td>
+  <td width=166 valign=top style='width:124.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>RELA
+  activation<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:3;height:36.0pt'>
+  <td width=114 valign=top style='width:85.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal style='border:none;mso-padding-alt:31.0pt 31.0pt 31.0pt 31.0pt;
+  mso-border-shadow:yes'><b style='mso-bidi-font-weight:normal'><span lang=EN
+  style='font-size:9.0pt;line-height:115%;color:black;mso-color-alt:windowtext;
+  background:#FFF2CC'>Target</span></b><b style='mso-bidi-font-weight:normal'><span
+  lang=EN style='font-size:9.0pt;line-height:115%;background:#FFF2CC'><o:p></o:p></span></b></p>
+  </td>
+  <td width=170 valign=top style='width:127.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:8.0pt;line-height:115%;
+  font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";mso-bidi-font-family:
+  "Roboto Mono";color:#0B5394'>Transition.Output.id (QualitativeSpecies.id)</span><span
+  lang=EN style='font-size:8.0pt;line-height:115%;color:#0B5394'><o:p></o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Identifier
+  for the regulated species; the output that participates in a transition. Must
+  be an existing <span class=SpellE>Species_ID</span>.<o:p></o:p></span></p>
+  </td>
+  <td width=166 valign=top style='width:124.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>A<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:4;height:41.15pt'>
+  <td width=114 valign=top style='width:85.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:41.15pt'>
+  <p class=MsoNormal style='border:none;mso-padding-alt:31.0pt 31.0pt 31.0pt 31.0pt;
+  mso-border-shadow:yes'><b style='mso-bidi-font-weight:normal'><span lang=EN
+  style='font-size:9.0pt;line-height:115%'>Level<span style='background:#FFF2CC'><o:p></o:p></span></span></b></p>
+  </td>
+  <td width=170 valign=top style='width:127.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:41.15pt'>
+  <p class=MsoNormal><span class=SpellE><span class=GramE><span lang=EN
+  style='font-size:8.0pt;line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:
+  "Roboto Mono";mso-bidi-font-family:"Roboto Mono";color:#0B5394'>Transition.functionTerm.resultLevel</span></span></span><span
+  lang=EN style='font-size:8.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:41.15pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Effect
+  of the transition on the corresponding target species; non-negative integer; default
+  ‘1’ for Boolean models.<o:p></o:p></span></p>
+  </td>
+  <td width=166 valign=top style='width:124.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:41.15pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>1<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:5;height:36.0pt'>
+  <td width=114 valign=top style='width:85.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal style='border:none;mso-padding-alt:31.0pt 31.0pt 31.0pt 31.0pt;
+  mso-border-shadow:yes'><b style='mso-bidi-font-weight:normal'><span lang=EN
+  style='font-size:9.0pt;line-height:115%;color:black;mso-color-alt:windowtext;
+  background:#FFF2CC'>Rule</span></b><b style='mso-bidi-font-weight:normal'><span
+  lang=EN style='font-size:9.0pt;line-height:115%;background:#FFF2CC'><o:p></o:p></span></b></p>
+  </td>
+  <td width=170 valign=top style='width:127.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><span class=GramE><span lang=EN
+  style='font-size:8.0pt;line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:
+  "Roboto Mono";mso-bidi-font-family:"Roboto Mono";color:#0B5394'>Transition.functionTerm.math</span></span></span><span
+  lang=EN style='font-size:8.0pt;line-height:115%;font-family:"Roboto Mono";
+  mso-fareast-font-family:"Roboto Mono";mso-bidi-font-family:"Roboto Mono";
+  color:#188038'><o:p></o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Logical
+  rules of the transition; expressions using Boolean operators AND (&amp;), or
+  (|), and NOT (!). See Table 5.<o:p></o:p></span></p>
+  </td>
+  <td width=166 valign=top style='width:124.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>A
+  | (D <span class=GramE>&amp; !C</span>)<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:6;height:36.0pt'>
+  <td width=114 valign=top style='width:85.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=GramE><b style='mso-bidi-font-weight:normal'><span
+  lang=EN style='font-size:9.0pt;line-height:115%'>Relation[</span></b></span><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:9.0pt;
+  line-height:115%'>1, 2, …]</span></b><span lang=EN style='font-size:9.0pt;
+  line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=170 valign=top style='width:127.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><span lang=EN style='font-size:8.0pt;
+  line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";
+  mso-bidi-font-family:"Roboto Mono";color:#188038'>bqbiol</span></span><span
+  lang=EN style='font-size:8.0pt;line-height:115%;font-family:"Roboto Mono";
+  mso-fareast-font-family:"Roboto Mono";mso-bidi-font-family:"Roboto Mono";
+  color:#188038'> qualifiers</span><span lang=EN style='font-size:8.0pt;
+  line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN><a href="#_x3pmcgi6qdzs"><span
+  style='font-size:10.0pt;line-height:115%;color:#1155CC'>Qualifier</span></a></span><span
+  lang=EN style='font-size:10.0pt;line-height:115%'> for <span class=GramE>identifier[</span>1,
+  2, …], respectively; defaults to '<span class=SpellE>isDescribedBy</span>'<o:p></o:p></span></p>
+  </td>
+  <td width=166 valign=top style='width:124.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=SpellE><span lang=EN style='font-size:10.0pt;
+  line-height:115%'>isDescribedBy</span></span><span lang=EN style='font-size:
+  10.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:7;height:36.0pt'>
+  <td width=114 valign=top style='width:85.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=GramE><b style='mso-bidi-font-weight:normal'><span
+  lang=EN style='font-size:9.0pt;line-height:115%'>Identifier[</span></b></span><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:9.0pt;
+  line-height:115%'>1, 2, …]</span></b><span lang=EN style='font-size:9.0pt;
+  line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=170 valign=top style='width:127.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'><o:p>&nbsp;</o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN><a href="#_qo707ctcmg6x"><span
+  style='font-size:10.0pt;line-height:115%;color:#1155CC'>Compact identifiers</span></a></span><span
+  lang=EN style='font-size:10.0pt;line-height:115%'> for <span class=GramE>Relation[</span>1,
+  2, …], respectively.<o:p></o:p></span></p>
+  </td>
+  <td width=166 valign=top style='width:124.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>pubmed:20300203,
+  ECO:0007392<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:8;height:37.4pt'>
+  <td width=114 valign=top style='width:85.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:37.4pt'>
+  <p class=MsoNormal><span class=GramE><b style='mso-bidi-font-weight:normal'><span
+  lang=EN style='font-size:9.0pt;line-height:115%'>Notes[</span></b></span><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:9.0pt;
+  line-height:115%'>1, 2, …]</span></b><span lang=EN style='font-size:9.0pt;
+  line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=170 valign=top style='width:127.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:37.4pt'>
+  <p class=MsoNormal><span class=SpellE><span lang=EN style='font-size:8.0pt;
+  line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";
+  mso-bidi-font-family:"Roboto Mono";color:#0B5394'>Transition.notes</span></span><span
+  lang=EN style='font-size:8.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:37.4pt'>
+  <p class=MsoNormal><span class=GramE><span lang=EN style='font-size:10.0pt;
+  line-height:115%'>Free-text</span></span><span lang=EN style='font-size:10.0pt;
+  line-height:115%'> as <i style='mso-bidi-font-style:normal'>notes</i> for the
+  interaction.<o:p></o:p></span></p>
+  </td>
+  <td width=166 rowspan=2 valign=top style='width:124.5pt;border:none;
+  padding:5.0pt 5.0pt 5.0pt 5.0pt;height:37.4pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:9.0pt;line-height:115%'>“IKK
+  complex activates RELA by phosphorylating <span class=SpellE>IκB</span>α.The
+  activation of RELA by IKK has been supported by immunohistochemistry
+  evidence”<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:9;mso-yfti-lastrow:yes;height:36.0pt'>
+  <td width=114 valign=top style='width:85.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span lang=EN
+  style='font-size:9.0pt;line-height:115%'>Comments</span></b><span lang=EN
+  style='font-size:9.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=170 valign=top style='width:127.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:8.0pt;line-height:115%'><o:p>&nbsp;</o:p></span></p>
+  </td>
+  <td width=404 valign=top style='width:303.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Informal
+  comments NOT exported to SBML.<o:p></o:p></span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal style='margin-top:10.0pt'><span lang=EN>The representation
+of logical rules <span class=GramE>use</span> a conventional expression as in
+many popular logical modeling tools (e.g., <span class=SpellE>GINsim</span>, <span
+class=SpellE>BoolNet</span>), where the regulatory effect can be described as
+Boolean operations of regulators. Table 5 gives a list of allowed symbols to be
+used in this expression.</span></p>
+
+<p class=MsoNormal style='margin-top:10.0pt'><span lang=EN>Table 5: Symbols
+that can be used in </span><b style='mso-bidi-font-weight:normal'><span
+lang=EN style='font-family:"PT Sans Caption",sans-serif;mso-fareast-font-family:
+"PT Sans Caption";mso-bidi-font-family:"PT Sans Caption"'>Transitions</span></b><span
+lang=EN> - <b style='mso-bidi-font-weight:normal'>Rule</b> field.</span></p>
+
+<table class=a3 border=1 cellspacing=0 cellpadding=0 width=549
+ style='border-collapse:collapse;mso-table-layout-alt:fixed;border:none;
+ mso-yfti-tbllook:1536;mso-padding-alt:5.0pt 5.0pt 5.0pt 5.0pt;mso-border-insideh:
+ cell-none;mso-border-insidev:cell-none'>
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes;height:25.75pt'>
+  <td width=106 valign=top style='width:79.5pt;border:none;background:#F3F3F3;
+  padding:5.0pt 5.0pt 5.0pt 5.0pt;height:25.75pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:10.0pt;
+  line-height:115%;color:black;mso-color-alt:windowtext'>Symbol</span></b><span
+  lang=EN style='font-size:10.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=268 valign=top style='width:201.0pt;border:none;background:#F3F3F3;
+  padding:5.0pt 5.0pt 5.0pt 5.0pt;height:25.75pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:10.0pt;
+  line-height:115%;color:black;mso-color-alt:windowtext'>Definition</span></b><span
+  lang=EN style='font-size:10.0pt;line-height:115%'><o:p></o:p></span></p>
+  </td>
+  <td width=175 valign=top style='width:131.25pt;border:none;background:#F3F3F3;
+  padding:5.0pt 5.0pt 5.0pt 5.0pt;height:25.75pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:10.0pt;
+  line-height:115%;color:black;mso-color-alt:windowtext'>Example</span></b><b
+  style='mso-bidi-font-weight:normal'><span lang=EN style='font-size:10.0pt;
+  line-height:115%'><o:p></o:p></span></b></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:1;height:36.0pt'>
+  <td width=106 style='width:79.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:10.0pt;text-align:center;
+  border:none;mso-padding-alt:31.0pt 31.0pt 31.0pt 31.0pt;mso-border-shadow:
+  yes'><span lang=EN style='font-family:"Courier New";mso-fareast-font-family:
+  "Courier New";color:#0A0A0A;background:#EAEAEA'>&amp;<o:p></o:p></span></p>
+  </td>
+  <td width=268 valign=top style='width:201.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Boolean
+  “AND” operator<o:p></o:p></span></p>
+  </td>
+  <td width=175 valign=top style='width:131.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>A
+  &amp; B<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:2;height:36.0pt'>
+  <td width=106 style='width:79.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:10.0pt;text-align:center;
+  border:none;mso-padding-alt:31.0pt 31.0pt 31.0pt 31.0pt;mso-border-shadow:
+  yes'><span lang=EN style='font-family:"Courier New";mso-fareast-font-family:
+  "Courier New";color:#0A0A0A;background:#EAEAEA'>|<o:p></o:p></span></p>
+  </td>
+  <td width=268 valign=top style='width:201.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Boolean
+  “OR” operator<o:p></o:p></span></p>
+  </td>
+  <td width=175 valign=top style='width:131.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>A
+  | C<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:3;height:36.0pt'>
+  <td width=106 style='width:79.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:10.0pt;text-align:center;
+  border:none;mso-padding-alt:31.0pt 31.0pt 31.0pt 31.0pt;mso-border-shadow:
+  yes'><span lang=EN style='font-family:"Courier New";mso-fareast-font-family:
+  "Courier New";color:#0A0A0A;background:#EAEAEA'>!<o:p></o:p></span></p>
+  </td>
+  <td width=268 valign=top style='width:201.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Boolean
+  “NOT” operator<o:p></o:p></span></p>
+  </td>
+  <td width=175 valign=top style='width:131.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span class=GramE><span lang=EN style='font-size:10.0pt;
+  line-height:115%'>!A</span></span><span lang=EN style='font-size:10.0pt;
+  line-height:115%'><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:4;height:41.15pt'>
+  <td width=106 style='width:79.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:41.15pt'>
+  <p class=MsoNormal align=center style='margin-bottom:10.0pt;text-align:center;
+  border:none;mso-padding-alt:31.0pt 31.0pt 31.0pt 31.0pt;mso-border-shadow:
+  yes'><span lang=EN style='font-family:"Courier New";mso-fareast-font-family:
+  "Courier New";color:#0A0A0A;background:#EAEAEA'>()<o:p></o:p></span></p>
+  </td>
+  <td width=268 valign=top style='width:201.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:41.15pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Parentheses
+  to prioritize regulation<o:p></o:p></span></p>
+  </td>
+  <td width=175 valign=top style='width:131.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:41.15pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>A
+  | (D <span class=GramE>&amp; !C</span>)<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:5;height:36.0pt'>
+  <td width=106 style='width:79.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:10.0pt;text-align:center;
+  border:none;mso-padding-alt:31.0pt 31.0pt 31.0pt 31.0pt;mso-border-shadow:
+  yes'><span lang=EN style='font-family:"Courier New";mso-fareast-font-family:
+  "Courier New";color:#0A0A0A;background:#EAEAEA'>:<o:p></o:p></span></p>
+  </td>
+  <td width=268 valign=top style='width:201.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Used
+  only in multi-valued models to represent the threshold level of an input; can
+  be omitted for value of 1.<o:p></o:p></span></p>
+  </td>
+  <td width=175 valign=top style='width:131.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>A
+  &amp; B:2<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:6;mso-yfti-lastrow:yes;height:36.0pt'>
+  <td width=106 style='width:79.5pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:10.0pt;text-align:center;
+  border:none;mso-padding-alt:31.0pt 31.0pt 31.0pt 31.0pt;mso-border-shadow:
+  yes'><span lang=EN style='font-size:10.0pt;line-height:115%;font-family:"Courier New";
+  mso-fareast-font-family:"Courier New";color:#0A0A0A;background:#EAEAEA'>`space`<o:p></o:p></span></p>
+  </td>
+  <td width=268 valign=top style='width:201.0pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'>Spaces
+  will be ignored in parsing the expression<o:p></o:p></span></p>
+  </td>
+  <td width=175 valign=top style='width:131.25pt;border:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:36.0pt'>
+  <p class=MsoNormal><span lang=EN style='font-size:10.0pt;line-height:115%'><o:p>&nbsp;</o:p></span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal style='margin-bottom:10.0pt'><span lang=EN><o:p>&nbsp;</o:p></span></p>
+
+<h3><a name="_lmmk31kig52r"></a><span lang=EN>2.2.5 Other sheets</span></h3>
+
+<p class=MsoNormal style='margin-top:12.0pt;margin-right:0cm;margin-bottom:
+0cm;margin-left:36.0pt;margin-bottom:.0001pt;text-indent:-18.0pt;mso-list:l5 level1 lfo1'><![if !supportLists]><span
+lang=EN style='mso-fareast-font-family:Arial'><span style='mso-list:Ignore'>●<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><b
+style='mso-bidi-font-weight:normal'><span lang=EN style='font-family:"PT Sans Caption",sans-serif;
+mso-fareast-font-family:"PT Sans Caption";mso-bidi-font-family:"PT Sans Caption"'>README</span></b><span
+lang=EN> – instructions on using the template. Content is ignored by converters
+but for user guidance only.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:12.0pt;
+margin-left:36.0pt;text-indent:-18.0pt;mso-list:l5 level1 lfo1'><![if !supportLists]><span
+lang=EN style='mso-fareast-font-family:Arial'><span style='mso-list:Ignore'>●<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><b
+style='mso-bidi-font-weight:normal'><span lang=EN style='font-family:"PT Sans Caption",sans-serif;
+mso-fareast-font-family:"PT Sans Caption";mso-bidi-font-family:"PT Sans Caption"'>Appendix</span></b><span
+lang=EN> – controlled vocabularies and allowed option lists referenced by Type,
+Constant, Relation, Sign.</span></p>
+
+<p class=MsoNormal style='margin-top:12.0pt;margin-right:0cm;margin-bottom:
+12.0pt;margin-left:0cm'><span lang=EN>Both sheets are informational only and
+may be removed from the spreadsheet.</span></p>
+
+<h1 style='margin-left:36.0pt;text-align:justify;text-justify:inter-ideograph;
+text-indent:-18.0pt;mso-list:l2 level1 lfo3'><a name="_l1yvnndcdlhq"></a><![if !supportLists]><span
+lang=EN style='mso-fareast-font-family:Arial'><span style='mso-list:Ignore'>3.<span
+style='font:7.0pt "Times New Roman"'> </span></span></span><![endif]><span
+lang=EN>Concepts <span class=GramE>used</span></span></h1>
+
+<h3 style='margin-bottom:10.0pt'><a name="_qo707ctcmg6x"></a><span lang=EN>Compact
+identifier</span></h3>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:10.0pt;
+margin-left:36.0pt'><span lang=EN>A Compact Identifier is a unique string consisting
+of a Prefix (assigned by curator), a colon (‘:’), and an Accession (e.g. local
+identifier string). The Prefix is composed of an optional Provider Code, and an
+assigned Namespace, separated by a slash (‘/’).</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:10.0pt;
+margin-left:36.0pt'><span lang=EN>They will be put as identifiers.org URLs in
+the SBML model using the following form:</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:10.0pt;
+margin-left:36.0pt'><span lang=EN style='font-size:10.0pt;line-height:115%;
+font-family:"Courier New";mso-fareast-font-family:"Courier New";color:#0A0A0A;
+background:#EAEAEA'>https://identifiers.org/[provider_code<span class=GramE>/]namespace</span>:accession</span><span
+lang=EN style='font-size:10.0pt;line-height:115%'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:10.0pt;
+margin-left:36.0pt;border:none;mso-padding-alt:31.0pt 31.0pt 31.0pt 31.0pt;
+mso-border-shadow:yes'><b style='mso-bidi-font-weight:normal'><span lang=EN>Examples</span></b><span
+lang=EN>: uniprot:P19838, <a href="https://identifiers.org/pubmed:22140103"><span
+style='color:windowtext;text-decoration:none;text-underline:none'>pubmed:22140103</span></a>,
+<a href="https://identifiers.org/ec-code:1.1.1.1"><span style='color:windowtext;
+text-decoration:none;text-underline:none'>ec-code:1.1.1.1</span></a>, <a
+href="https://identifiers.org/taxonomy:9606"><span style='color:windowtext;
+text-decoration:none;text-underline:none'>taxonomy:9606</span></a></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:10.0pt;
+margin-left:36.0pt'><b style='mso-bidi-font-weight:normal'><span lang=EN>Reference</span></b><span
+lang=EN>: <a
+href="https://docs.identifiers.org/pages/identification_scheme.html"><span
+style='color:#1155CC'>https://docs.identifiers.org/pages/identification_scheme.html</span></a>
+</span></p>
+
+<h3 style='margin-bottom:10.0pt'><a name="_x3pmcgi6qdzs"></a><span lang=EN>Qualifiers
+(<span class=SpellE>bqmodel</span>/<span class=SpellE>bqbiol</span>)</span></h3>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:10.0pt;
+margin-left:36.0pt;border:none;mso-padding-alt:31.0pt 31.0pt 31.0pt 31.0pt;
+mso-border-shadow:yes'><span lang=EN>Qualifiers are used to describe the
+relation between a model component and the resource used to annotate it. </span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:10.0pt;
+margin-left:36.0pt;border:none;mso-padding-alt:31.0pt 31.0pt 31.0pt 31.0pt;
+mso-border-shadow:yes'><span lang=EN>One can view the annotation of a model
+component as a statement in the form of a 'triple'. The resource used in the
+annotation is the 'object', while the qualifier is the 'predicate'. In the
+cases of the model qualifiers, the 'subject' of the relation is the modelling
+concept represented by the model component referenced by the annotation. The
+modelling concept may be the model itself, a mathematical construct, or a
+hypothesis that is proposed, changing the way we previously understood the
+model, etc. In the cases of the biology qualifiers, the 'subject' of the
+relation is the biological or biochemical object represented by the enclosing
+model element.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:10.0pt;
+margin-left:36.0pt'><span lang=EN>There are two kinds of qualifiers used for
+different purposes: 1) model qualifiers, and 2) biology qualifiers. Below is
+the list of qualifiers that may be used in a model:</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:10.0pt;
+margin-left:36.0pt;border:none;mso-padding-alt:31.0pt 31.0pt 31.0pt 31.0pt;
+mso-border-shadow:yes'><b style='mso-bidi-font-weight:normal'><span lang=EN>Model
+<span class=GramE>qualifiers<span style='font-weight:normal'>:</span></span></span></b><span
+lang=EN> </span><span lang=EN style='font-size:8.0pt;line-height:115%;
+font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";mso-bidi-font-family:
+"Roboto Mono";color:#188038'>is</span><span lang=EN>, </span><span
+class=SpellE><span lang=EN style='font-size:8.0pt;line-height:115%;font-family:
+"Roboto Mono";mso-fareast-font-family:"Roboto Mono";mso-bidi-font-family:"Roboto Mono";
+color:#188038'>isDerivedFrom</span></span><span lang=EN>, </span><span
+class=SpellE><span lang=EN style='font-size:8.0pt;line-height:115%;font-family:
+"Roboto Mono";mso-fareast-font-family:"Roboto Mono";mso-bidi-font-family:"Roboto Mono";
+color:#188038'>isDescribedBy</span></span><span lang=EN>, </span><span
+class=SpellE><span lang=EN style='font-size:8.0pt;line-height:115%;font-family:
+"Roboto Mono";mso-fareast-font-family:"Roboto Mono";mso-bidi-font-family:"Roboto Mono";
+color:#188038'>isInstanceOf</span></span><span lang=EN>, </span><span
+class=SpellE><span lang=EN style='font-size:8.0pt;line-height:115%;font-family:
+"Roboto Mono";mso-fareast-font-family:"Roboto Mono";mso-bidi-font-family:"Roboto Mono";
+color:#188038'>hasInstance</span></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:10.0pt;
+margin-left:36.0pt;border:none;mso-padding-alt:31.0pt 31.0pt 31.0pt 31.0pt;
+mso-border-shadow:yes'><b style='mso-bidi-font-weight:normal'><span lang=EN>Biology
+qualifiers</span></b><span lang=EN>: </span><span lang=EN style='font-size:
+8.0pt;line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";
+mso-bidi-font-family:"Roboto Mono";color:#188038'>is</span><span lang=EN>, </span><span
+class=SpellE><span lang=EN style='font-size:8.0pt;line-height:115%;font-family:
+"Roboto Mono";mso-fareast-font-family:"Roboto Mono";mso-bidi-font-family:"Roboto Mono";
+color:#188038'>hasVersion</span></span><span lang=EN>, </span><span
+class=SpellE><span lang=EN style='font-size:8.0pt;line-height:115%;font-family:
+"Roboto Mono";mso-fareast-font-family:"Roboto Mono";mso-bidi-font-family:"Roboto Mono";
+color:#188038'>isVersionOf</span></span><span lang=EN>, </span><span
+class=SpellE><span lang=EN style='font-size:8.0pt;line-height:115%;font-family:
+"Roboto Mono";mso-fareast-font-family:"Roboto Mono";mso-bidi-font-family:"Roboto Mono";
+color:#188038'>isDescribedBy</span></span><span lang=EN>, </span><span
+class=SpellE><span lang=EN style='font-size:8.0pt;line-height:115%;font-family:
+"Roboto Mono";mso-fareast-font-family:"Roboto Mono";mso-bidi-font-family:"Roboto Mono";
+color:#188038'>hasPart</span></span><span lang=EN>, </span><span class=SpellE><span
+lang=EN style='font-size:8.0pt;line-height:115%;font-family:"Roboto Mono";
+mso-fareast-font-family:"Roboto Mono";mso-bidi-font-family:"Roboto Mono";
+color:#188038'>isPartOf</span></span><span lang=EN>, </span><span class=SpellE><span
+lang=EN style='font-size:8.0pt;line-height:115%;font-family:"Roboto Mono";
+mso-fareast-font-family:"Roboto Mono";mso-bidi-font-family:"Roboto Mono";
+color:#188038'>hasProperty</span></span><span lang=EN>, </span><span
+class=SpellE><span lang=EN style='font-size:8.0pt;line-height:115%;font-family:
+"Roboto Mono";mso-fareast-font-family:"Roboto Mono";mso-bidi-font-family:"Roboto Mono";
+color:#188038'>isPropertyOf</span></span><span lang=EN>, </span><span lang=EN
+style='font-size:8.0pt;line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:
+"Roboto Mono";mso-bidi-font-family:"Roboto Mono";color:#188038'>encodes</span><span
+lang=EN>, </span><span class=SpellE><span lang=EN style='font-size:8.0pt;
+line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";
+mso-bidi-font-family:"Roboto Mono";color:#188038'>isEncodedBy</span></span><span
+lang=EN>, </span><span class=SpellE><span lang=EN style='font-size:8.0pt;
+line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";
+mso-bidi-font-family:"Roboto Mono";color:#188038'>isHomologTo</span></span><span
+lang=EN>, </span><span class=SpellE><span lang=EN style='font-size:8.0pt;
+line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";
+mso-bidi-font-family:"Roboto Mono";color:#188038'>occursIn</span></span><span
+lang=EN>, </span><span class=SpellE><span lang=EN style='font-size:8.0pt;
+line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";
+mso-bidi-font-family:"Roboto Mono";color:#188038'>hasTaxon</span></span><span
+lang=EN>, </span><span class=SpellE><span lang=EN style='font-size:8.0pt;
+line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";
+mso-bidi-font-family:"Roboto Mono";color:#188038'>hasSource</span></span><span
+lang=EN>, </span><span class=SpellE><span lang=EN style='font-size:8.0pt;
+line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";
+mso-bidi-font-family:"Roboto Mono";color:#188038'>hasSink</span></span><span
+lang=EN>, </span><span class=SpellE><span lang=EN style='font-size:8.0pt;
+line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";
+mso-bidi-font-family:"Roboto Mono";color:#188038'>hasMediator</span></span><span
+lang=EN>, </span><span class=SpellE><span lang=EN style='font-size:8.0pt;
+line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:"Roboto Mono";
+mso-bidi-font-family:"Roboto Mono";color:#188038'>hasMultiplier</span></span><span
+lang=EN>, </span><span class=SpellE><span class=GramE><span lang=EN
+style='font-size:8.0pt;line-height:115%;font-family:"Roboto Mono";mso-fareast-font-family:
+"Roboto Mono";mso-bidi-font-family:"Roboto Mono";color:#188038'>hasPhysicalEntity</span></span></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:10.0pt;
+margin-left:36.0pt;border:none;mso-padding-alt:31.0pt 31.0pt 31.0pt 31.0pt;
+mso-border-shadow:yes'><b style='mso-bidi-font-weight:normal'><span lang=EN>Reference</span></b><span
+lang=EN>: <a
+href="https://identifiers.org/combine.specifications:qualifiers-1.1"><span
+style='color:#0969DA;background:white;mso-highlight:white'>https://identifiers.org/combine.specifications:qualifiers-1.1</span></a></span></p>
+
+<h1 style='margin-left:36.0pt;text-align:justify;text-justify:inter-ideograph;
+text-indent:-18.0pt;mso-list:l2 level1 lfo3'><a name="_vjwnswhkggws"></a><![if !supportLists]><span
+lang=EN style='mso-fareast-font-family:Arial'><span style='mso-list:Ignore'>4.<span
+style='font:7.0pt "Times New Roman"'> </span></span></span><![endif]><span
+lang=EN>Examples</span></h1>
+
+<p class=MsoNormal style='line-height:150%'><span lang=EN><a
+href="https://docs.google.com/spreadsheets/d/1_xY0VboBhejg8tWnGNyAFpEA_ZU762B0/edit?usp=sharing&amp;ouid=105819375684543832411&amp;rtpof=true&amp;sd=true"><span
+style='color:#0000EE'>ToyExample.xlsx</span></a>: A toy model in Boolean
+formalism.</span></p>
+
+<p class=MsoNormal style='line-height:150%'><span lang=EN><a
+href="https://docs.google.com/spreadsheets/d/1gcRtkNhJDny3R5ZtimwIIu-s5okNmp35/edit?usp=sharing&amp;ouid=105819375684543832411&amp;rtpof=true&amp;sd=true"><span
+style='color:#0000EE'>ToyExample_multivalue.xlsx</span></a>: A multi-valued
+version of the toy model.</span></p>
+
+<p class=MsoNormal style='line-height:150%'><span lang=EN><a
+href="https://docs.google.com/spreadsheets/d/1B9SUcuY_ioQVlY9y351yIHnW45oZ8J1t/edit?usp=sharing&amp;ouid=105819375684543832411&amp;rtpof=true&amp;sd=true"><span
+style='color:#0000EE'>Faure2006_MammalianCellCycle.xlsx</span></a>: The <span
+class=SpellE>Fauré</span> 2006 model, widely used in tools such as <span
+class=SpellE>GINsim</span>, Cell Collective, <span class=SpellE>MaBoSS</span>, <span
+class=SpellE>BoolNet</span>, etc.</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt;line-height:150%'><span lang=EN><a
+href="https://drive.google.com/file/d/1JtgSUQxFxfJAjJ9wfg0xhgroMajAz-US/view?usp=sharing"><span
+style='color:#1155CC'>Faure2006_MammalianCellCycle.sbml</span></a>: Equivalent
+SBML file of the <span class=SpellE>Fauré</span> 2006 model.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:12.0pt;
+margin-left:19.2pt;text-indent:-19.2pt;line-height:normal;mso-pagination:none;
+border:none;mso-padding-alt:31.0pt 31.0pt 31.0pt 31.0pt;mso-border-shadow:yes'><a
+name="_a0fpd5c0mxav"></a><span lang=EN><o:p>&nbsp;</o:p></span></p>
+
+</div>
+
+</body>
+
+</html>

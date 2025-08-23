@@ -1,0 +1,836 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" xmlns:qual="http://www.sbml.org/sbml/level3/version1/qual/version1" level="3" version="1" qual:required="true">
+  <model metaid="metaid_0000001" id="Faure2006" name="Mammalian Cell Cycle 2006">
+  	<notes>
+			<body xmlns="http://www.w3.org/1999/xhtml">
+        <p> 
+          <span style="font-weight: 600;">Mammalian Cell Cycle 2006</span>
+        </p>
+        <p>Taxonomy: 40674 (Mammals)</p>
+        <p>Formalism: Boolean model</p>
+        <p>Species: 10</p>
+        <p>Inputs: 1</p>
+        <p>Transitions: 10</p>
+        <p>Interactions: 35</p>
+        <p>Publication: https://doi.org/10.1093/bioinformatics/btl210</p>
+        <p>Source: https://research.cellcollective.org/dashboard#module/mammalian-cell-cycle-2006</p>
+        <p>Description: See publication</p>
+        <p>Keywords: Cell cycle, Boolean model</p>
+        <br/>
+        <p>Biological process: </p>
+        <p>The cell cycle involves a succession of molecular events leading to</p>
+        <p>the reproduction of the genome of a cell (Synthesis or S phase) and</p>
+        <p>its division into two daughter cells (Mitosis, or M phase). The M</p>
+        <p>phase itself encompasses different sub-phases (prophase, meta-</p>
+        <p>phase, anaphase, telophase) characterised by specific chromosomal</p>
+        <p>and nuclear changes (respectively: condensation of the chromatin,</p>
+        <p>alignment of the chromosomes, separation of the sister chromatids,</p>
+        <p>and formation of the two daughter nuclei). The S and M phases are</p>
+        <p>preceded by two gap phases, called G1 and G2 respectively (for a</p>
+        <p>review, see, for example, Tessema et al., 2004). These events</p>
+        <p>are very well known and can easily be monitored with an optical</p>
+        <p>microscope.</p>
+        <br/>
+        <p>Model description:</p>
+        <p>This model is a Boolean model of the G1/S restriction point control of mammalian cell cycle developed by Fauré et al.</p>
+			</body>
+		</notes>
+		<annotation>
+			<rdf:RDF
+				xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#"
+				xmlns:dcterms="http://purl.org/dc/terms/"
+				xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+				<rdf:Description rdf:about="#metaid_0000001">
+					<dc:creator>
+						<rdf:Bag>
+							<rdf:li rdf:parseType="Resource">
+								<vCard:N rdf:parseType="Resource">
+									<vCard:Family>Fauré</vCard:Family>
+									<vCard:Given>Adrien</vCard:Given>
+								</vCard:N>
+								<vCard:ORG rdf:parseType="Resource">
+									<vCard:Orgname>Institut de Biologie du Développement de Marseille-Luminy, Campus scientifique de Luminy</vCard:Orgname>
+								</vCard:ORG>
+							</rdf:li>
+						</rdf:Bag>
+						<rdf:Bag>
+							<rdf:li rdf:parseType="Resource">
+								<vCard:N rdf:parseType="Resource">
+									<vCard:Family>Thieffry</vCard:Family>
+									<vCard:Given>Denis</vCard:Given>
+								</vCard:N>
+								<vCard:EMAIL>thieffry@ibdm.univ-mrs.fr</vCard:EMAIL>
+								<vCard:ORG rdf:parseType="Resource">
+									<vCard:Orgname>Institut de Biologie du Développement de Marseille-Luminy, Campus scientifique de Luminy</vCard:Orgname>
+								</vCard:ORG>
+							</rdf:li>
+						</rdf:Bag>
+					</dc:creator>
+					<dcterms:created rdf:parseType="Resource">
+						<dcterms:W3CDTF>2006-07-15T00:00:00Z</dcterms:W3CDTF>
+					</dcterms:created>
+					<dcterms:modified rdf:parseType="Resource">
+						<dcterms:W3CDTF>2025-08-06T17:00:00Z</dcterms:W3CDTF>
+					</dcterms:modified>
+					<bqmodel:isDescribedBy>
+						<rdf:Bag>
+							<rdf:li rdf:resource="http://identifiers.org/pubmed/16873462"/>
+              <rdf:li rdf:resource="http://identifiers.org/DOI:10.1093/bioinformatics/btl210"/>
+						</rdf:Bag>
+					</bqmodel:isDescribedBy>
+					<bqmodel:isDerivedFrom>
+						<rdf:Bag>
+							<rdf:li rdf:resource="http://identifiers.org/pubmed/15363676"/>
+              <rdf:li rdf:resource="http://identifiers.org/DOI:10.1016/j.jtbi.2004.04.039"/>
+              <rdf:li rdf:resource="http://identifiers.org/biomodels.db:MODEL2006080001"/>
+						</rdf:Bag>
+					</bqmodel:isDerivedFrom>
+					<bqmodel:isVersionOf>
+						<rdf:Bag>
+							<rdf:li rdf:resource="http://identifiers.org/pubmed/GO:0007049"/>
+						</rdf:Bag>
+					</bqmodel:isVersionOf>
+          <bqbiol:hasProperty>
+            <rdf:Bag>
+              <rdf:li rdf:resource="http://identifiers.org/mamo/MAMO_0000053"/>
+            </rdf:Bag>
+          </bqbiol:hasProperty>
+          <bqbiol:hasTaxon>
+            <rdf:Bag>
+              <rdf:li rdf:resource="http://identifiers.org/taxonomy:40674"/>
+              <rdf:li rdf:resource="http://identifiers.org/BAO:0000362"/>
+            </rdf:Bag>
+          </bqbiol:hasTaxon>
+
+				</rdf:Description>
+			</rdf:RDF>
+		</annotation>
+    <listOfCompartments>
+      <compartment id="cytosol" constant="true"/>
+    </listOfCompartments>
+    <qual:listOfQualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000002" qual:id="CycD" qual:compartment="cytosol" qual:constant="false" qual:name="cdk4/6-Cyclin D" qual:maxLevel="1"/>
+      <qual:qualitativeSpecies metaid="metaid_0000003" qual:id="Rb" qual:compartment="cytosol" qual:constant="false" qual:name="Retinoblastoma 1" qual:maxLevel="1">
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000003">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P06400"/>
+                </rdf:Bag>
+              </bqbiol:is>
+              <bqbiol:encodes>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/ncbigene/5925"/>
+                </rdf:Bag>
+              </bqbiol:encodes>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </qual:qualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000004" qual:id="E2F" qual:compartment="cytosol" qual:constant="false" qual:name="E2F" qual:maxLevel="1"/>
+      <qual:qualitativeSpecies metaid="metaid_0000005" qual:id="CycE" qual:compartment="cytosol" qual:constant="false" qual:name="cdk2/Cyclin E" qual:maxLevel="1"/>
+      <qual:qualitativeSpecies metaid="metaid_0000006" qual:id="CycA" qual:compartment="cytosol" qual:constant="false" qual:name="cdk2/Cyclin A" qual:maxLevel="1"/>
+      <qual:qualitativeSpecies metaid="metaid_0000007" qual:id="p27" qual:compartment="cytosol" qual:constant="false" qual:name="CDKN1B" qual:maxLevel="1">
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000007">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P46527"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </qual:qualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000008" qual:id="Cdc20" qual:compartment="cytosol" qual:constant="false" qual:name="APC/C activator protein CDC20" qual:maxLevel="1">
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000008">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P26309"/>
+                </rdf:Bag>
+              </bqbiol:is>
+              <bqbiol:isHomologTo>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/Q12834"/>
+                </rdf:Bag>
+              </bqbiol:isHomologTo>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </qual:qualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000009" qual:id="Cdh1" qual:compartment="cytosol" qual:constant="false" qual:name="PC/C activator protein CDH1" qual:maxLevel="1">
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000009">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P53197"/>
+                </rdf:Bag>
+              </bqbiol:is>
+              <bqbiol:isHomologTo>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/Q9UM11"/>
+                </rdf:Bag>
+              </bqbiol:isHomologTo>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </qual:qualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000010" qual:id="UbcH10" qual:compartment="cytosol" qual:constant="false" qual:name="E2 ubiquitin conjugating enzyme UbcH10" qual:maxLevel="1">
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000010">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/O00762"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </qual:qualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000011" qual:id="CycB" qual:compartment="cytosol" qual:constant="false" qual:name="CycB" qual:maxLevel="1"/>
+    </qual:listOfQualitativeSpecies>
+    <qual:listOfTransitions>
+      <qual:transition metaid="metaid_0000012" qual:id="tr_CycD" qual:name="Interactions targeting CycD">
+        <notes>
+          <p xmlns="http://www.w3.org/1999/xhtml">CycD is an input, considered as constant.</p>
+        </notes>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000013" qual:qualitativeSpecies="CycD" qual:transitionEffect="none"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output metaid="metaid_0000014" qual:qualitativeSpecies="CycD" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <eq/>
+                <ci> CycD </ci>
+                <cn type="integer"> 1 </cn>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000015" qual:id="tr_Rb" qual:name="Interactions targeting Rb">
+        <notes>
+          <p xmlns="http://www.w3.org/1999/xhtml">Rb is expressed in the absence of the cyclins, which inhibit it by phosphorylation (Novak and Tyson, 2004; Taya, 1997); it can be expressed in the presence of CycE or CycA if their inhibitory activity is blocked by p27 (Coqueret, 2003).</p>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000015">
+              <bqbiol:isDescribedBy>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/pubmed/9020586"/>
+                  <rdf:li rdf:resource="http://identifiers.org/pubmed/15363676"/>
+                </rdf:Bag>
+              </bqbiol:isDescribedBy>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000016" qual:qualitativeSpecies="CycD" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000017" qual:qualitativeSpecies="CycE" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000018" qual:qualitativeSpecies="CycA" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000019" qual:qualitativeSpecies="p27" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000020" qual:qualitativeSpecies="CycB" qual:transitionEffect="none"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output metaid="metaid_0000021" qual:qualitativeSpecies="Rb" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <or/>
+                <apply>
+                  <and/>
+                  <apply>
+                    <eq/>
+                    <ci> CycA </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> CycB </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> CycD </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> CycE </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                </apply>
+                <apply>
+                  <and/>
+                  <apply>
+                    <eq/>
+                    <ci> p27 </ci>
+                    <cn type="integer"> 1 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> CycB </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> CycD </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                </apply>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000022" qual:id="tr_E2F" qual:name="Interactions targeting E2F">
+        <notes>
+          <p xmlns="http://www.w3.org/1999/xhtml">E2F is active in the absence of Rb, that blocks E2F self-transcriptional activation (Helin, 1998), and in the absence of CycA and CycB, that inhibit E2F (Novak and Tyson, 2004); CycA may be present, if its inhibitory activity is blocked by p27 (Coqueret, 2003).</p>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000022">
+              <bqbiol:isDescribedBy>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/pubmed/9529602"/>
+                  <rdf:li rdf:resource="http://identifiers.org/pubmed/15363676"/>
+                  <rdf:li rdf:resource="http://identifiers.org/pubmed/12559756"/>
+                </rdf:Bag>
+              </bqbiol:isDescribedBy>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000023" qual:qualitativeSpecies="Rb" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000024" qual:qualitativeSpecies="CycA" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000025" qual:qualitativeSpecies="p27" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000026" qual:qualitativeSpecies="CycB" qual:transitionEffect="none"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output metaid="metaid_0000027" qual:qualitativeSpecies="E2F" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <or/>
+                <apply>
+                  <and/>
+                  <apply>
+                    <eq/>
+                    <ci> Rb </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> CycA </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> CycB </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                </apply>
+                <apply>
+                  <and/>
+                  <apply>
+                    <eq/>
+                    <ci> p27 </ci>
+                    <cn type="integer"> 1 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> Rb </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> CycB </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                </apply>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000028" qual:id="tr_CycE" qual:name="Interactions targeting CycE">
+        <notes>
+          <p xmlns="http://www.w3.org/1999/xhtml">CycE activity requires the presence of E2f and the absence of Rb (Helin, 1998).</p>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000028">
+              <bqbiol:isDescribedBy>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/pubmed/9529602"/>
+                </rdf:Bag>
+              </bqbiol:isDescribedBy>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000029" qual:qualitativeSpecies="Rb" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000030" qual:qualitativeSpecies="E2F" qual:transitionEffect="none"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output metaid="metaid_0000031" qual:qualitativeSpecies="CycE" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <and/>
+                <apply>
+                  <eq/>
+                  <ci> E2F </ci>
+                  <cn type="integer"> 1 </cn>
+                </apply>
+                <apply>
+                  <eq/>
+                  <ci> Rb </ci>
+                  <cn type="integer"> 0 </cn>
+                </apply>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000032" qual:id="tr_CycA" qual:name="Interactions targeting CycA">
+        <notes>
+          <p xmlns="http://www.w3.org/1999/xhtml">The transcription of CycA is activated by E2F in the absence of Rb, which blocks this activation(Helin, 1998), in the absence of Cdc20, as well as of the pair formed by Cdh1 and UbcH10, which both lead to the degradation of CycA (Harper et al., 2002; Rape and Kirschner, 2004);CycA is stable in the absence of its inhibitors Rb, Cdc20, and of the pair Cdh1 and UbcH10.</p>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000032">
+              <bqbiol:isDescribedBy>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/pubmed/12208841"/>
+                  <rdf:li rdf:resource="http://identifiers.org/pubmed/15558010"/>
+                  <rdf:li rdf:resource="http://identifiers.org/pubmed/9529602"/>
+                </rdf:Bag>
+              </bqbiol:isDescribedBy>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000033" qual:qualitativeSpecies="Rb" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000034" qual:qualitativeSpecies="E2F" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000035" qual:qualitativeSpecies="CycA" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000036" qual:qualitativeSpecies="Cdc20" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000037" qual:qualitativeSpecies="Cdh1" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000038" qual:qualitativeSpecies="UbcH10" qual:transitionEffect="none"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output metaid="metaid_0000039" qual:qualitativeSpecies="CycA" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <or/>
+                <apply>
+                  <and/>
+                  <apply>
+                    <eq/>
+                    <ci> E2F </ci>
+                    <cn type="integer"> 1 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> Rb </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> Cdc20 </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                  <apply>
+                    <not/>
+                    <apply>
+                      <and/>
+                      <apply>
+                        <eq/>
+                        <ci> Cdh1 </ci>
+                        <cn type="integer"> 1 </cn>
+                      </apply>
+                      <apply>
+                        <eq/>
+                        <ci> UbcH10 </ci>
+                        <cn type="integer"> 1 </cn>
+                      </apply>
+                    </apply>
+                  </apply>
+                </apply>
+                <apply>
+                  <and/>
+                  <apply>
+                    <eq/>
+                    <ci> CycA </ci>
+                    <cn type="integer"> 1 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> Rb </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> Cdc20 </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                  <apply>
+                    <not/>
+                    <apply>
+                      <and/>
+                      <apply>
+                        <eq/>
+                        <ci> Cdh1 </ci>
+                        <cn type="integer"> 1 </cn>
+                      </apply>
+                      <apply>
+                        <eq/>
+                        <ci> UbcH10 </ci>
+                        <cn type="integer"> 1 </cn>
+                      </apply>
+                    </apply>
+                  </apply>
+                </apply>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000040" qual:id="tr_p27" qual:name="Interactions targeting p27">
+        <notes>
+          <p xmlns="http://www.w3.org/1999/xhtml">p27 is active in the absence of the cyclins; when p27 is already present, it blocks the action of CycE or CycA (but not both of them) by sequestration (Coqueret, 2003).</p>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000040">
+              <bqbiol:isDescribedBy>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/pubmed/12559756"/>
+                </rdf:Bag>
+              </bqbiol:isDescribedBy>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000041" qual:qualitativeSpecies="CycD" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000042" qual:qualitativeSpecies="CycE" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000043" qual:qualitativeSpecies="CycA" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000044" qual:qualitativeSpecies="p27" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000045" qual:qualitativeSpecies="CycB" qual:transitionEffect="none"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output metaid="metaid_0000046" qual:qualitativeSpecies="p27" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <or/>
+                <apply>
+                  <and/>
+                  <apply>
+                    <eq/>
+                    <ci> CycD </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> CycE </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> CycA </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> CycB </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                </apply>
+                <apply>
+                  <and/>
+                  <apply>
+                    <eq/>
+                    <ci> p27 </ci>
+                    <cn type="integer"> 1 </cn>
+                  </apply>
+                  <apply>
+                    <not/>
+                    <apply>
+                      <and/>
+                      <apply>
+                        <eq/>
+                        <ci> CycE </ci>
+                        <cn type="integer"> 1 </cn>
+                      </apply>
+                      <apply>
+                        <eq/>
+                        <ci> CycA </ci>
+                        <cn type="integer"> 1 </cn>
+                      </apply>
+                    </apply>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> CycB </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> CycD </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                </apply>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000047" qual:id="tr_Cdc20" qual:name="Interactions targeting Cdc20">
+        <notes>
+          <p xmlns="http://www.w3.org/1999/xhtml">CycB indirectly activates Cdc20 (Harper et al., 2002).</p>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000047">
+              <bqbiol:isDescribedBy>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/pubmed/12208841"/>
+                </rdf:Bag>
+              </bqbiol:isDescribedBy>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000048" qual:qualitativeSpecies="CycB" qual:transitionEffect="none"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output metaid="metaid_0000049" qual:qualitativeSpecies="Cdc20" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <eq/>
+                <ci> CycB </ci>
+                <cn type="integer"> 1 </cn>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000050" qual:id="tr_Cdh1" qual:name="Interactions targeting Cdh1">
+        <notes>
+          <p xmlns="http://www.w3.org/1999/xhtml">The activity of Cdh1 requires the absence of CycB and CycA, which inhibit it by phosphorylation (Harper et al., 2002); Cdc20 further activates Cdh1. (Novak and Tyson, 2004); p27 allows the presence of CycA, by blocking its activity.</p>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000050">
+              <bqbiol:isDescribedBy>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/pubmed/12208841"/>
+                  <rdf:li rdf:resource="http://identifiers.org/pubmed/15363676"/>
+                </rdf:Bag>
+              </bqbiol:isDescribedBy>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000051" qual:qualitativeSpecies="CycA" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000052" qual:qualitativeSpecies="p27" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000053" qual:qualitativeSpecies="Cdc20" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000054" qual:qualitativeSpecies="CycB" qual:transitionEffect="none"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output metaid="metaid_0000055" qual:qualitativeSpecies="Cdh1" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <or/>
+                <apply>
+                  <and/>
+                  <apply>
+                    <eq/>
+                    <ci> CycA </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> CycB </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                </apply>
+                <apply>
+                  <eq/>
+                  <ci> Cdc20 </ci>
+                  <cn type="integer"> 1 </cn>
+                </apply>
+                <apply>
+                  <and/>
+                  <apply>
+                    <eq/>
+                    <ci> p27 </ci>
+                    <cn type="integer"> 1 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> CycB </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                </apply>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000056" qual:id="tr_UbcH10" qual:name="Interactions targeting UbcH10">
+        <notes>
+          <p xmlns="http://www.w3.org/1999/xhtml">UbcH10 is active in the absence of Cdh1; this UbcH10 activity can be maintained in the presence of Cdh1 when at least one of its other targets is present (CycA, Cdc20, or CycB) (Rape and Kirschner, 2004).</p>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000056">
+              <bqbiol:isDescribedBy>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/pubmed/15558010"/>
+                </rdf:Bag>
+              </bqbiol:isDescribedBy>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000057" qual:qualitativeSpecies="CycA" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000058" qual:qualitativeSpecies="Cdc20" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000059" qual:qualitativeSpecies="Cdh1" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000060" qual:qualitativeSpecies="UbcH10" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000061" qual:qualitativeSpecies="CycB" qual:transitionEffect="none"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output metaid="metaid_0000062" qual:qualitativeSpecies="UbcH10" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <or/>
+                <apply>
+                  <eq/>
+                  <ci> Cdh1 </ci>
+                  <cn type="integer"> 0 </cn>
+                </apply>
+                <apply>
+                  <and/>
+                  <apply>
+                    <eq/>
+                    <ci> Cdh1 </ci>
+                    <cn type="integer"> 1 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> UbcH10 </ci>
+                    <cn type="integer"> 1 </cn>
+                  </apply>
+                  <apply>
+                    <or/>
+                    <apply>
+                      <eq/>
+                      <ci> Cdc20 </ci>
+                      <cn type="integer"> 1 </cn>
+                    </apply>
+                    <apply>
+                      <eq/>
+                      <ci> CycA </ci>
+                      <cn type="integer"> 1 </cn>
+                    </apply>
+                    <apply>
+                      <eq/>
+                      <ci> CycB </ci>
+                      <cn type="integer"> 1 </cn>
+                    </apply>
+                  </apply>
+                </apply>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000063" qual:id="tr_CycB" qual:name="Interactions targeting CycB">
+        <notes>
+          <p xmlns="http://www.w3.org/1999/xhtml">CycB is active in the absence of both Cdc20 and Cdh1, which target CycB for destruction (Harper et al., 2002).</p>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000063">
+              <bqbiol:isDescribedBy>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/pubmed/12208841"/>
+                </rdf:Bag>
+              </bqbiol:isDescribedBy>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000064" qual:qualitativeSpecies="Cdc20" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000065" qual:qualitativeSpecies="Cdh1" qual:transitionEffect="none"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output metaid="metaid_0000066" qual:qualitativeSpecies="CycB" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <and/>
+                <apply>
+                  <eq/>
+                  <ci> Cdc20 </ci>
+                  <cn type="integer"> 0 </cn>
+                </apply>
+                <apply>
+                  <eq/>
+                  <ci> Cdh1 </ci>
+                  <cn type="integer"> 0 </cn>
+                </apply>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+    </qual:listOfTransitions>
+  </model>
+</sbml>

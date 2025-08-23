@@ -1,0 +1,47 @@
+targets, factors
+EGFR, (EGF | (FAK_SRC_2 & ITGab) | TGFBR) & !RPTP
+HGFR, (HGF | ITGab) & !RPTP
+ITG_AB, ECM & RAP1
+FAK_SRC, (ROS_Hypoxia & !ITGab) | ((EGFR | cMET) & !ITGab) | (ITGab & !(ROS_Hypoxia | (EGFR & cMET)))
+FAK_SRC_2, (ROS_Hypoxia & ITGab) | (ITGab & cMET & EGFR)
+RAS, EGFR | FAK_SRC | JAK | cMET | TGFBR
+RAF1, RAS
+MEK, RAF1
+ERK, MEK
+PI3K, RAS | FAK_SRC
+ILK, ITGab & PI3K
+AKT, PI3K & ILK
+GSK3B, !AKT & !ERK & !DVL
+DVL, CK1 & YAP_TAZ
+CK1, WNT
+FAT4, FAT4L & !ERK
+LATS, (FAT4 | (ECad_AJ & BCat_AJ)) & !PI3K
+NOTCH, DELTA
+YAP_TAZ, !LATS
+RPTP, RPTPL & !FAK_SRC_2 & !ROS_Hypoxia
+RAP1, FAK_SRC | (ECad_AJ_2 & !p120Ctn_ADJ)
+TGFBR, TGFB
+JAK, IL6 | EGFR
+BCat, !GSK3B | !BCat_AJ | cMET
+NFkB, AKT | CSL | ROS_Hypoxia | TGFBR
+SMAD, TGFBR & YAP_TAZ
+STAT3, JAK | FAK_SRC
+JNK, (TGFBR | ROS_Hypoxia | FAK_SRC) & !RPTP
+HIF1a, NFkB & STAT3
+PAK, FAK_SRC | PI3K
+CSL, NOTCH & !DVL
+TCF_LEF, BCat
+SNAIL, (SMAD | ERK | CSL | JNK | NFkB) & (!GSK3B | HIF1a) & (!GSK3B | PAK | STAT3) & (!TCF_LEF | SMAD | (ERK & CSL & JNK) | (ERK & CSL & NFkB) | (ERK & JNK & NFkB) | (CSL & JNK & NFkB))
+SLUG, (TCF_LEF | ERK | CSL | HIF1a) & !miR200 & !GSK3B
+ZEB, !miR200 & (SNAIL | SLUG)
+miR200, !ZEB & !SNAIL
+ECad, (!SNAIL | miR200) & !SLUG & !ZEB
+ECad_AJ, ECad & !BCat_AJ & (RPTP | !FAK_SRC)
+ECad_AJ_2, ECad & BCat_AJ & (RPTP | !FAK_SRC)
+BCat_AJ, ECad_AJ & !JNK & (RPTP | !FAK_SRC)
+p120_AJ, ECad_AJ & !CK1 & (RAP1 | p120Ctn_ADJ)
+AJ, ECad & !ECad_AJ
+AJ_2, ECad & ECad_AJ
+FA, FAK_SRC | PAK
+FA_2, FAK_SRC & PAK
+FA_3, ITGab & FAK_SRC & PAK
