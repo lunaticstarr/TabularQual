@@ -1,6 +1,0 @@
-targets, factors
-A, A | (D & !C)
-B, A
-C, A & B
-D, D
-E, C
