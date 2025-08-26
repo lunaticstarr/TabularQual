@@ -2,6 +2,7 @@ from __future__ import annotations
 import os
 from typing import Dict, List, Tuple
 from openpyxl import load_workbook
+import warnings
 
 from . import spec
 from .types import InMemoryModel, ModelInfo, Person, Species, Transition, InteractionEvidence
@@ -90,6 +91,7 @@ def _parse_person_string(person_str: str) -> List[str]:
     return parts
 
 def read_spreadsheet_to_model(xlsx_path: str) -> InMemoryModel:
+    warnings.filterwarnings("ignore", category=UserWarning)
     wb = load_workbook(filename=xlsx_path, data_only=True)
     sheetnames = wb.sheetnames
     # Model sheet (vertical: headers in first column, values in second)

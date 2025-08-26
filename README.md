@@ -19,7 +19,7 @@ pip install -e .
 ```bash
 to-sbml \
   --input table/Faure2006_MammalianCellCycle.xlsx \
-  --output sbml/Faure2006_MammalianCellCycle.sbml
+  --output sbml/Faure2006_MammalianCellCycle_out.sbml
 ```
 
 ### Options
