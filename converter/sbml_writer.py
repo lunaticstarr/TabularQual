@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List, Tuple
+from typing import List, Tuple, Dict
 from datetime import datetime, timezone
 import libsbml
 
@@ -9,7 +9,7 @@ from .types import InMemoryModel, Species as SpeciesT, Transition as TransitionT
 from .expr_parser import parse as parse_expr, ast_to_mathml
 
 
-def write_sbml(model: InMemoryModel, *, interactions_anno: bool = True, transitions_anno: bool = True) -> libsbml.SBMLDocument:
+def write_sbml(model: InMemoryModel, *, interactions_anno: bool = True, transitions_anno: bool = True) -> str:
     # Prefer constructing document with qual namespaces; fallback to enabling package
     doc = None
     try:
@@ -45,6 +45,8 @@ def write_sbml(model: InMemoryModel, *, interactions_anno: bool = True, transiti
     # Model-level notes
     if model.model.notes:
         _append_notes(m, model.model.notes)
+    if model.model.versions:
+        _append_notes_concat(m, [f"Version: {v}" for v in model.model.versions])
 
     # Annotations for model
     if not m.isSetMetaId():
@@ -91,42 +93,80 @@ def write_sbml(model: InMemoryModel, *, interactions_anno: bool = True, transiti
         if s.annotations:
             _add_annotations(qs, s.annotations, use_model=False)
 
-    # Transitions
+    # Group transitions by target to handle multiple levels
+    transitions_by_target: Dict[str, List[TransitionT]] = {}
     for t in model.transitions:
+        if t.target not in transitions_by_target:
+            transitions_by_target[t.target] = []
+        transitions_by_target[t.target].append(t)
+
+    # Transitions
+    for target, target_transitions in transitions_by_target.items():
+        # Create one transition per target species
         qt = qual_model.createTransition()
-        if t.transition_id:
-            qt.setId(t.transition_id)
+        
+        # Use the first transition's ID or generate one
+        first_transition = target_transitions[0]
+        if first_transition.transition_id:
+            qt.setId(first_transition.transition_id)
+        else:
+            qt.setId(f"tr_{target}")
+            
         if not qt.isSetMetaId():
             qt.setMetaId(next_metaid())
-        if t.name:
-            qt.setName(t.name)
+        if first_transition.name:
+            qt.setName(first_transition.name)
+            
         # Outputs
         out = qt.createOutput()
-        out.setQualitativeSpecies(t.target)
+        out.setQualitativeSpecies(target)
         out.setTransitionEffect(_qual_enum("QUAL_TRANSITION_EFFECT_ASSIGNMENT_LEVEL", 1))
 
-        # Function terms
+        # Function terms - one for each level
         ft_default = qt.createDefaultTerm()
         ft_default.setResultLevel(0)
-        ft = qt.createFunctionTerm()
-        ft.setResultLevel(int(t.level) if t.level is not None else 1)
-        # Parse rule to MathML (content only), then wrap in <math>
-        ast = parse_expr(t.rule)
-        mathml = f"<math xmlns=\"http://www.w3.org/1998/Math/MathML\">{ast_to_mathml(ast)}</math>"
-        _set_mathml(ft, mathml)
-        # Inputs inferred from identifiers in rule: conservative approach, we add all species IDs referenced
-        for sid in _collect_ids_from_ast(ast):
+        
+        # Collect all unique species IDs from all rules for this target
+        all_species_ids = set()
+        for t in target_transitions:
+            ast = parse_expr(t.rule)
+            all_species_ids.update(_collect_ids_from_ast(ast))
+        
+        # Create inputs for all referenced species
+        for sid in sorted(all_species_ids):
             inp = qt.createInput()
             inp.setQualitativeSpecies(sid)
             if not inp.isSetMetaId():
                 inp.setMetaId(next_metaid())
             inp.setTransitionEffect(_qual_enum("QUAL_TRANSITION_EFFECT_NONE", 0))
 
-        # Notes and annotations
-        if t.notes:
-            _append_notes(qt, t.notes)
-        if transitions_anno and t.annotations:
-            _add_annotations(qt, t.annotations, use_model=False)
+        # Collect all rules for this transition to add as notes
+        rules_list = []
+        for t in target_transitions:
+            level = t.level if t.level is not None else 1
+            rules_list.append(f"Level {level}: {t.rule}")
+        
+        # Create function terms for each level
+        for t in target_transitions:
+            ft = qt.createFunctionTerm()
+            level = int(t.level) if t.level is not None else 1
+            ft.setResultLevel(level)
+            
+            # Parse rule to MathML
+            ast = parse_expr(t.rule)
+            mathml_content = ast_to_mathml(ast)
+            mathml = f"<math xmlns=\"http://www.w3.org/1998/Math/MathML\">{mathml_content}</math>"
+            _set_mathml(ft, mathml)
+
+        # Add rules as notes to the transition
+        if rules_list:
+            _append_notes(qt, rules_list)
+        
+        # Notes and annotations from the first transition
+        if first_transition.notes:
+            _append_notes_concat(qt, first_transition.notes)
+        if transitions_anno and first_transition.annotations:
+            _add_annotations(qt, first_transition.annotations, use_model=False)
 
     # Interactions (optional): add to corresponding transition inputs
     if interactions_anno and model.interactions:
@@ -179,7 +219,7 @@ def write_sbml(model: InMemoryModel, *, interactions_anno: bool = True, transiti
                         _append_notes(found_input, inter.notes)
                     break
 
-    return doc
+    return doc.toSBML()
 
 
 def _set_mathml(ft: libsbml.QualFunctionTerm, mathml: str) -> None:
@@ -194,8 +234,44 @@ def _append_notes(node: libsbml.SBase, lines: List[str]) -> None:
     node.setNotes(xhtml)
 
 
+def _append_notes_concat(node: libsbml.SBase, lines: List[str]) -> None:
+    """Append notes to existing notes instead of overwriting them"""
+    existing_notes = ""
+    if node.isSetNotes():
+        existing_notes = node.getNotesString()
+    
+    new_notes = "\n".join([f"<p>{_xml_escape(l)}</p>" for l in lines])
+    
+    if existing_notes:
+        # Extract the body content from existing notes
+        if "<body" in existing_notes and "</body>" in existing_notes:
+            start = existing_notes.find("<body")
+            start = existing_notes.find(">", start) + 1
+            end = existing_notes.find("</body>")
+            if start > 0 and end > start:
+                body_content = existing_notes[start:end]
+                combined_content = body_content + new_notes
+            else:
+                combined_content = new_notes
+        else:
+            combined_content = existing_notes + new_notes
+    else:
+        combined_content = new_notes
+    
+    xhtml = f"<body xmlns=\"http://www.w3.org/1999/xhtml\">{combined_content}</body>"
+    node.setNotes(xhtml)
+
+
 def _xml_escape(s: str) -> str:
-    return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    # XML escaping to avoid parsing errors
+    xml_escape_map = {
+        "&": "and",
+        "<": "less_than", 
+        ">": "greater_than"
+    }
+    for k, v in xml_escape_map.items():
+        s = s.replace(k, v)
+    return s
 
 
 def _add_model_annotations(m: libsbml.Model, im: InMemoryModel) -> None:
@@ -353,6 +429,10 @@ def _collect_ids_from_ast(ast) -> List[str]:
     kind = ast[0]
     if kind == 'id':
         return [ast[1]]
+    if kind in ('eq', 'le', 'ge', 'gt', 'lt', 'neq'):
+        return [ast[1]]  # Return the species name from threshold nodes
+    if kind == 'not_species':
+        return [ast[1]]  # Return the species name from negated species nodes
     if kind == 'not':
         return _collect_ids_from_ast(ast[1])
     if kind in ('and', 'or'):

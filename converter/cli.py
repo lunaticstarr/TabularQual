@@ -34,5 +34,9 @@ def to_sbml_entry(input_xlsx: str, output_sbml: str, inter_anno: bool, trans_ann
     click.echo(f"Wrote SBML to {output_sbml}")
 
 
+# Add the command to the main group
+main.add_command(to_sbml_entry)
+
+
 if __name__ == "__main__":
     main()

@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created by TabularQual version 0.1.0 with libSBML version 5.20.4 -->
+
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" xmlns:qual="http://www.sbml.org/sbml/level3/version1/qual/version1" level="3" version="1" qual:required="true">
+  <model metaid="metaid_0000001" id="ThieffryThomas1995_multivalue" name="A multi-valued model on lysis vs lysogeny decision in the phage lambda">
+    <notes>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+        <p>A number of bacterial and viral genes take part in the decision between lysis and lysogenisation in temperate bacteriophages. In the case of the bacteriophage lambda, at least 5 viral regulatory products (CI, Cro, CII, N and CIII) and several bacterial genes are involved (see 1 for an excellent overview).
+
+We focus here on the logical modelling developed in 2. As in this paper, for the sake of explanation clarity, we proceed in two steps. We present a model of the core of the lambda regulatory network, constituted by the cross-regulation between the regulatory genes CI (encoding the repressor) and Cro (see phage2.zginml). In a second step, we propose a four element model (see phageLambda4.zginml), encompassing the roles of the regulatory genes CII and N in addition of CI and Cro.
+
+Note that in 3, we considered a modified version of the four component model: phage4 (alternate).zginml. This paper deals with the Petri net representation of logical models. The versions of the two and four component models of the phage lambda switch are available in the form of Petri nets (INA format).
+
+1. Mark Ptashne. A Genetic Switch: Phage lambda and Higher Organisms. Cell Press : Blackwell Scientific Publications, Cambridge (Mass.), 2nd edition, 1992. ISBN 0865422095. URL: http://lib.ugent.be/catalog/rug01:000263939. 
+2. Denis Thieffry and René Thomas. Dynamical behaviour of biological regulatory networks—ii. immunity control in bacteriophage lambda. Bulletin of Mathematical Biology, 57(2):277–297, March 1995. doi:10.1007/bf02460619. 
+3. Claudine Chaouiya, Elisabeth Remy, and Denis Thieffry. Petri net modelling of biological regulatory networks. Journal of Discrete Algorithms, 6(2):165–177, June 2008. doi:10.1016/j.jda.2007.06.003.</p>
+        <p>Version: phageLambda4.zginml</p>
+        <p>Version: phage2.zginml</p>
+        <p>Version: phage4 (alternate).zginml</p>
+      </body>
+    </notes>
+    <annotation>
+      <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+        <rdf:Description rdf:about="#metaid_0000001">
+          <dcterms:creator>
+            <rdf:Bag>
+              <rdf:li rdf:parseType="Resource">
+                <vCard:N rdf:parseType="Resource">
+                  <vCard:Family>Thieffry</vCard:Family>
+                  <vCard:Given>Denis</vCard:Given>
+                </vCard:N>
+                <vCard:EMAIL>denis@dbm.ulb.ac.be</vCard:EMAIL>
+                <vCard:ORG rdf:parseType="Resource">
+                  <vCard:Orgname>Laboratoire de Génétique, Université Libre de Bruxelles</vCard:Orgname>
+                </vCard:ORG>
+              </rdf:li>
+              <rdf:li rdf:parseType="Resource">
+                <vCard:N rdf:parseType="Resource">
+                  <vCard:Family>Thomas</vCard:Family>
+                  <vCard:Given>René</vCard:Given>
+                </vCard:N>
+                <vCard:ORG rdf:parseType="Resource">
+                  <vCard:Orgname>Laboratoire de Génétique, Université Libre de Bruxelles</vCard:Orgname>
+                </vCard:ORG>
+              </rdf:li>
+              <rdf:li rdf:parseType="Resource">
+                <vCard:N rdf:parseType="Resource">
+                  <vCard:Family>Chaouiya</vCard:Family>
+                  <vCard:Given>Claudine</vCard:Given>
+                </vCard:N>
+                <vCard:EMAIL>claudine.chaouiya@univ-amu.fr</vCard:EMAIL>
+                <vCard:ORG rdf:parseType="Resource">
+                  <vCard:Orgname>Institut de Mathématiques de Marseille, Marseille, France</vCard:Orgname>
+                </vCard:ORG>
+              </rdf:li>
+            </rdf:Bag>
+          </dcterms:creator>
+          <dcterms:created rdf:parseType="Resource">
+            <dcterms:W3CDTF>1995-03-01T00:00:00Z</dcterms:W3CDTF>
+          </dcterms:created>
+          <dcterms:modified rdf:parseType="Resource">
+            <dcterms:W3CDTF>2025-08-26T11:23:00Z</dcterms:W3CDTF>
+          </dcterms:modified>
+          <bqmodel:is>
+            <rdf:Bag>
+              <rdf:li rdf:resource="https://ginsim.github.io/models/1995-lambda-lysis-lysogeny/"/>
+            </rdf:Bag>
+          </bqmodel:is>
+          <bqmodel:isDescribedBy>
+            <rdf:Bag>
+              <rdf:li rdf:resource="https://identifiers.org/PMID:7703921"/>
+              <rdf:li rdf:resource="https://identifiers.org/DOI:10.1007/BF02460619"/>
+            </rdf:Bag>
+          </bqmodel:isDescribedBy>
+          <bqbiol:isVersionOf>
+            <rdf:Bag>
+              <rdf:li rdf:resource="https://identifiers.org/GO:0039664"/>
+              <rdf:li rdf:resource="https://identifiers.org/GO:0075601"/>
+            </rdf:Bag>
+          </bqbiol:isVersionOf>
+          <bqbiol:hasTaxon>
+            <rdf:Bag>
+              <rdf:li rdf:resource="https://identifiers.org/taxonomy:2681611"/>
+            </rdf:Bag>
+          </bqbiol:hasTaxon>
+        </rdf:Description>
+      </rdf:RDF>
+    </annotation>
+    <listOfCompartments>
+      <compartment id="default" constant="true"/>
+    </listOfCompartments>
+    <qual:listOfQualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000002" qual:id="CI" qual:compartment="default" qual:constant="false" qual:name="lambdap50" qual:initialLevel="0" qual:maxLevel="2">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>LexA family transcriptional regulator</p>
+          </body>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000002">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="https://identifiers.org/ncbigene:2703537"/>
+                </rdf:Bag>
+              </bqbiol:is>
+              <bqbiol:encodes>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="https://identifiers.org/uniprot:P03034"/>
+                </rdf:Bag>
+              </bqbiol:encodes>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </qual:qualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000003" qual:id="Cro" qual:compartment="default" qual:constant="false" qual:name="lambdap55" qual:initialLevel="0" qual:maxLevel="3">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Cro/CI family transcriptional regulator</p>
+          </body>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000003">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="https://identifiers.org/ncbigene:2703491"/>
+                </rdf:Bag>
+              </bqbiol:is>
+              <bqbiol:encodes>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="https://identifiers.org/uniprot:P03040"/>
+                </rdf:Bag>
+              </bqbiol:encodes>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </qual:qualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000004" qual:id="CII" qual:compartment="default" qual:constant="false" qual:name="cII" qual:initialLevel="0" qual:maxLevel="1">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>CII-like transcriptional activator</p>
+          </body>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000004">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="https://identifiers.org/ncbigene:2703494"/>
+                </rdf:Bag>
+              </bqbiol:is>
+              <bqbiol:encodes>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="https://identifiers.org/uniprot:P03042"/>
+                </rdf:Bag>
+              </bqbiol:encodes>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </qual:qualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000005" qual:id="N" qual:compartment="default" qual:constant="false" qual:name="N" qual:initialLevel="0" qual:maxLevel="1">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>anti-termination protein N-like</p>
+          </body>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000005">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="https://identifiers.org/ncbigene:2703540"/>
+                </rdf:Bag>
+              </bqbiol:is>
+              <bqbiol:encodes>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="https://identifiers.org/uniprot:P03045"/>
+                </rdf:Bag>
+              </bqbiol:encodes>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </qual:qualitativeSpecies>
+    </qual:listOfQualitativeSpecies>
+    <qual:listOfTransitions>
+      <qual:transition metaid="metaid_0000006" qual:id="tr_CI">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Level 2: !Cro | ((Cro:1 | Cro:2) and CII)</p>
+          </body>
+        </notes>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000007" qual:qualitativeSpecies="CII" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000008" qual:qualitativeSpecies="Cro" qual:transitionEffect="none"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output qual:qualitativeSpecies="CI" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="2">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <or/>
+                <apply>
+                  <eq/>
+                  <ci> Cro </ci>
+                  <cn type="integer"> 0 </cn>
+                </apply>
+                <apply>
+                  <and/>
+                  <apply>
+                    <or/>
+                    <apply>
+                      <eq/>
+                      <ci> Cro </ci>
+                      <cn type="integer"> 1 </cn>
+                    </apply>
+                    <apply>
+                      <eq/>
+                      <ci> Cro </ci>
+                      <cn type="integer"> 2 </cn>
+                    </apply>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> CII </ci>
+                    <cn type="integer"> 1 </cn>
+                  </apply>
+                </apply>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000009" qual:id="tr_Cro">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Level 2: !CI and Cro:3</p>
+            <p>Level 3: !CI and Cro:2</p>
+          </body>
+        </notes>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000010" qual:qualitativeSpecies="CI" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000011" qual:qualitativeSpecies="Cro" qual:transitionEffect="none"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output qual:qualitativeSpecies="Cro" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="2">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <and/>
+                <apply>
+                  <eq/>
+                  <ci> CI </ci>
+                  <cn type="integer"> 0 </cn>
+                </apply>
+                <apply>
+                  <eq/>
+                  <ci> Cro </ci>
+                  <cn type="integer"> 3 </cn>
+                </apply>
+              </apply>
+            </math>
+          </qual:functionTerm>
+          <qual:functionTerm qual:resultLevel="3">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <and/>
+                <apply>
+                  <eq/>
+                  <ci> CI </ci>
+                  <cn type="integer"> 0 </cn>
+                </apply>
+                <apply>
+                  <eq/>
+                  <ci> Cro </ci>
+                  <cn type="integer"> 2 </cn>
+                </apply>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000012" qual:id="tr_CII">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Level 1: !CI and Cro:2 and N</p>
+          </body>
+        </notes>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000013" qual:qualitativeSpecies="CI" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000014" qual:qualitativeSpecies="Cro" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000015" qual:qualitativeSpecies="N" qual:transitionEffect="none"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output qual:qualitativeSpecies="CII" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <and/>
+                <apply>
+                  <and/>
+                  <apply>
+                    <eq/>
+                    <ci> CI </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> Cro </ci>
+                    <cn type="integer"> 2 </cn>
+                  </apply>
+                </apply>
+                <apply>
+                  <eq/>
+                  <ci> N </ci>
+                  <cn type="integer"> 1 </cn>
+                </apply>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000016" qual:id="tr_N">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Level 1: !CI and !Cro</p>
+          </body>
+        </notes>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000017" qual:qualitativeSpecies="CI" qual:transitionEffect="none"/>
+          <qual:input metaid="metaid_0000018" qual:qualitativeSpecies="Cro" qual:transitionEffect="none"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output qual:qualitativeSpecies="N" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <and/>
+                <apply>
+                  <eq/>
+                  <ci> CI </ci>
+                  <cn type="integer"> 0 </cn>
+                </apply>
+                <apply>
+                  <eq/>
+                  <ci> Cro </ci>
+                  <cn type="integer"> 0 </cn>
+                </apply>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+    </qual:listOfTransitions>
+  </model>
+</sbml>
