@@ -96,7 +96,7 @@ def parse(expr: str):
         pos += 1
         return t
 
-    def parse_comparison():
+    def parse_factor():
         """Parse comparison expressions like A>=1, B<3, C=2"""
         t = peek()
         if t is None:
@@ -137,7 +137,7 @@ def parse(expr: str):
                     parts = species_name.split(':', 1)
                     species_name = parts[0]
                     threshold = int(parts[1]) if parts[1] else 1
-                    return ('eq', species_name, threshold)
+                    return ('ge', species_name, threshold)  # A:2 means A >= 2
                 return ('id', species_name)
         
         # Handle other cases
@@ -146,9 +146,16 @@ def parse(expr: str):
             # Check if the next token is an ID (species name)
             next_t = peek()
             if next_t and next_t.kind == 'ID':
-                # This is a negated species name like !CI
+                # This could be !CI or !CI:2
                 species_name = consume('ID').value
-                return ('not_species', species_name)
+                # Check for colon notation in negated species
+                if ':' in species_name:
+                    parts = species_name.split(':', 1)
+                    species_name = parts[0]
+                    threshold = int(parts[1]) if parts[1] else 1
+                    return ('lt', species_name, threshold)  # !CI:2 means CI < 2
+                else:
+                    return ('not_species', species_name)  # !CI means CI = 0
             else:
                 # Regular negation of a complex expression
                 node = parse_factor()
@@ -159,9 +166,6 @@ def parse(expr: str):
             consume('RP')
             return node
         raise ValueError(f"Unexpected token {t.kind}")
-
-    def parse_factor():
-        return parse_comparison()
 
     def parse_term():
         node = parse_factor()

@@ -265,9 +265,11 @@ def _append_notes_concat(node: libsbml.SBase, lines: List[str]) -> None:
 def _xml_escape(s: str) -> str:
     # XML escaping to avoid parsing errors
     xml_escape_map = {
-        "&": "and",
-        "<": "less_than", 
-        ">": "greater_than"
+        "&": "&amp;",
+        "<": "&lt;", 
+        ">": "&gt;",
+        "\"": "&quot;",
+        "'": "&apos;"
     }
     for k, v in xml_escape_map.items():
         s = s.replace(k, v)

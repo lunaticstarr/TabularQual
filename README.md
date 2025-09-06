@@ -48,17 +48,21 @@ The Transition-Rules column supports boolean and comparison expressions using th
 * **Logical operators**: `&` (AND), `|` (OR), `!` (NOT)
 * **Comparison operators**: `=` (equal), `!=` (not equal), `>` (greater than), `<` (less than), `>=` (greater than or equal), `<=` (less than or equal)
 * **Parentheses**: `(` and `)` for grouping expressions
-* **Threshold notation**: Two forms supported:
-  * Explicit: `A >= 2`, `B < 1`, `C != 0`
-  * Compact: `A:2` (equivalent to `A = 2`)
-* **Negated species**: `!A` (equivalent to `A = 0`)
+* **Threshold notation**: Multi-value species support threshold-based activation:
+  * **Colon notation**: `A:2` means "A is at level 2 or higher" (`A >= 2`)
+  * **Negated colon**: `!A:2` means "A is below level 2" (`A < 2`)
+  * **Explicit comparisons**: `A >= 2`, `B <= 1`, `C != 0` for precise control
+  * **Equivalent expressions**: `!CI:2 & !Cro:3` is the same as `CI < 2 & Cro < 3` or `CI <= 1 & Cro <= 2`
+* **Simple species references**:
+  * `A` - Species A is active (level >= 1 for multi-valued, or level = 1 for binary)
+  * `!A` - Species A is inactive (level = 0)
 
 **Examples**:
 
 - `A & B` - Both A and B are active (level ≥ 1 for multi-valued)
-- `A >= 2 | B < 1` - A is at level 2+ OR B is inactive
+- `A:2 | B < 1` - A is at level 2+ OR B is inactive
+- `N & !CI:2 & !Cro:3` - N active AND CI below level 2 AND Cro below level 3
 - `(A & B) | (!C & D != 1)` - Complex grouped expression
-- `CycE:2 & !p53` - CycE at level 2 AND p53 inactive
 
 ### Notes
 

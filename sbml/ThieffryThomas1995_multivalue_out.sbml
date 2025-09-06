@@ -187,7 +187,7 @@ Note that in 3, we considered a modified version of the four component model: ph
       <qual:transition metaid="metaid_0000006" qual:id="tr_CI">
         <notes>
           <body xmlns="http://www.w3.org/1999/xhtml">
-            <p>Level 2: !Cro | ((Cro:1 | Cro:2) and CII)</p>
+            <p>Level 2: !Cro:1 | (Cro:1 &amp; CII)</p>
           </body>
         </notes>
         <qual:listOfInputs>
@@ -204,24 +204,16 @@ Note that in 3, we considered a modified version of the four component model: ph
               <apply>
                 <or/>
                 <apply>
-                  <eq/>
+                  <lt/>
                   <ci> Cro </ci>
-                  <cn type="integer"> 0 </cn>
+                  <cn type="integer"> 1 </cn>
                 </apply>
                 <apply>
                   <and/>
                   <apply>
-                    <or/>
-                    <apply>
-                      <eq/>
-                      <ci> Cro </ci>
-                      <cn type="integer"> 1 </cn>
-                    </apply>
-                    <apply>
-                      <eq/>
-                      <ci> Cro </ci>
-                      <cn type="integer"> 2 </cn>
-                    </apply>
+                    <geq/>
+                    <ci> Cro </ci>
+                    <cn type="integer"> 1 </cn>
                   </apply>
                   <apply>
                     <eq/>
@@ -237,8 +229,8 @@ Note that in 3, we considered a modified version of the four component model: ph
       <qual:transition metaid="metaid_0000009" qual:id="tr_Cro">
         <notes>
           <body xmlns="http://www.w3.org/1999/xhtml">
-            <p>Level 2: !CI and Cro:3</p>
-            <p>Level 3: !CI and Cro:2</p>
+            <p>Level 2: Cro:3 &amp; !CI:2</p>
+            <p>Level 3: !Cro:3 &amp; !CI:2</p>
           </body>
         </notes>
         <qual:listOfInputs>
@@ -255,14 +247,14 @@ Note that in 3, we considered a modified version of the four component model: ph
               <apply>
                 <and/>
                 <apply>
-                  <eq/>
-                  <ci> CI </ci>
-                  <cn type="integer"> 0 </cn>
-                </apply>
-                <apply>
-                  <eq/>
+                  <geq/>
                   <ci> Cro </ci>
                   <cn type="integer"> 3 </cn>
+                </apply>
+                <apply>
+                  <lt/>
+                  <ci> CI </ci>
+                  <cn type="integer"> 2 </cn>
                 </apply>
               </apply>
             </math>
@@ -272,13 +264,13 @@ Note that in 3, we considered a modified version of the four component model: ph
               <apply>
                 <and/>
                 <apply>
-                  <eq/>
-                  <ci> CI </ci>
-                  <cn type="integer"> 0 </cn>
+                  <lt/>
+                  <ci> Cro </ci>
+                  <cn type="integer"> 3 </cn>
                 </apply>
                 <apply>
-                  <eq/>
-                  <ci> Cro </ci>
+                  <lt/>
+                  <ci> CI </ci>
                   <cn type="integer"> 2 </cn>
                 </apply>
               </apply>
@@ -289,7 +281,7 @@ Note that in 3, we considered a modified version of the four component model: ph
       <qual:transition metaid="metaid_0000012" qual:id="tr_CII">
         <notes>
           <body xmlns="http://www.w3.org/1999/xhtml">
-            <p>Level 1: !CI and Cro:2 and N</p>
+            <p>Level 1: N &amp; !CI:2 &amp; !Cro:3</p>
           </body>
         </notes>
         <qual:listOfInputs>
@@ -310,19 +302,19 @@ Note that in 3, we considered a modified version of the four component model: ph
                   <and/>
                   <apply>
                     <eq/>
-                    <ci> CI </ci>
-                    <cn type="integer"> 0 </cn>
+                    <ci> N </ci>
+                    <cn type="integer"> 1 </cn>
                   </apply>
                   <apply>
-                    <eq/>
-                    <ci> Cro </ci>
+                    <lt/>
+                    <ci> CI </ci>
                     <cn type="integer"> 2 </cn>
                   </apply>
                 </apply>
                 <apply>
-                  <eq/>
-                  <ci> N </ci>
-                  <cn type="integer"> 1 </cn>
+                  <lt/>
+                  <ci> Cro </ci>
+                  <cn type="integer"> 3 </cn>
                 </apply>
               </apply>
             </math>
@@ -332,7 +324,7 @@ Note that in 3, we considered a modified version of the four component model: ph
       <qual:transition metaid="metaid_0000016" qual:id="tr_N">
         <notes>
           <body xmlns="http://www.w3.org/1999/xhtml">
-            <p>Level 1: !CI and !Cro</p>
+            <p>Level 1: !CI:1 &amp; !Cro:2</p>
           </body>
         </notes>
         <qual:listOfInputs>
@@ -349,14 +341,14 @@ Note that in 3, we considered a modified version of the four component model: ph
               <apply>
                 <and/>
                 <apply>
-                  <eq/>
+                  <lt/>
                   <ci> CI </ci>
-                  <cn type="integer"> 0 </cn>
+                  <cn type="integer"> 1 </cn>
                 </apply>
                 <apply>
-                  <eq/>
+                  <lt/>
                   <ci> Cro </ci>
-                  <cn type="integer"> 0 </cn>
+                  <cn type="integer"> 2 </cn>
                 </apply>
               </apply>
             </math>
