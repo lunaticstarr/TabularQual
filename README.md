@@ -43,12 +43,11 @@ to-sbml --input in.xlsx --output out.sbml
 
 ### Transition Rules Syntax
 
-The Transition-Rules column supports boolean and comparison expressions using the following operators and syntax:
+The Transition-Rules column supports boolean and comparison expressions using the following operators and syntax (space will be ignored):
 
 * **Logical operators**: `&` (AND), `|` (OR), `!` (NOT)
-* **Comparison operators**: `=` (equal), `!=` (not equal), `>` (greater than), `<` (less than), `>=` (greater than or equal), `<=` (less than or equal)
 * **Parentheses**: `(` and `)` for grouping expressions
-* **Threshold notation**: Multi-value species support threshold-based activation:
+* **For multi-value model**: threshold-based activation:
   * **Colon notation**: `A:2` means "A is at level 2 or higher" (`A >= 2`)
   * **Negated colon**: `!A:2` means "A is below level 2" (`A < 2`)
   * **Explicit comparisons**: `A >= 2`, `B <= 1`, `C != 0` for precise control
