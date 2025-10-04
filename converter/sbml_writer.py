@@ -200,13 +200,13 @@ def write_sbml(model: InMemoryModel, *, interactions_anno: bool = True, transiti
                         s = (inter.sign or "").strip().lower()
                         try:
                             if s == "positive":
-                                found_input.setSign(_qual_enum("QUAL_SIGN_POSITIVE", 1))
+                                found_input.setSign(_qual_enum("QUAL_SIGN_POSITIVE", 0))
                             elif s == "negative":
-                                found_input.setSign(_qual_enum("QUAL_SIGN_NEGATIVE", 2))
+                                found_input.setSign(_qual_enum("QUAL_SIGN_NEGATIVE", 1))
                             elif s == "dual":
-                                found_input.setSign(_qual_enum("QUAL_SIGN_DUAL", 3))
+                                found_input.setSign(_qual_enum("QUAL_SIGN_DUAL", 2))
                             elif s == "unknown":
-                                found_input.setSign(_qual_enum("QUAL_SIGN_UNKNOWN", 0))
+                                found_input.setSign(_qual_enum("QUAL_SIGN_UNKNOWN", 3))
                             else:
                                 _append_notes(found_input, [f"Sign: {inter.sign}"])
                         except Exception:
@@ -230,7 +230,26 @@ def _set_mathml(ft: libsbml.QualFunctionTerm, mathml: str) -> None:
 
 
 def _append_notes(node: libsbml.SBase, lines: List[str]) -> None:
-    xhtml = "<body xmlns=\"http://www.w3.org/1999/xhtml\">" + "".join([f"<p>{_xml_escape(l)}</p>" for l in lines]) + "</body>"
+    """Append notes to an SBML node
+    
+    For single notes or notes with embedded newlines, write directly.
+    For multiple separate notes, wrap each with separator tags to preserve them through round-trips.
+    """
+    if not lines:
+        return
+    
+    paragraphs = []
+    
+    if len(lines) == 1:
+        # Single note - write directly without separators
+        paragraphs.append(f"<p>{_xml_escape(lines[0])}</p>")
+    else:
+        # Multiple notes - wrap each with separator tags for round-trip preservation
+        for idx, note in enumerate(lines, 1):
+            wrapped = f"&lt;notes{idx}&gt;\n{_xml_escape(note)}\n&lt;/notes{idx}&gt;"
+            paragraphs.append(f"<p>{wrapped}</p>")
+    
+    xhtml = "<body xmlns=\"http://www.w3.org/1999/xhtml\">" + "".join(paragraphs) + "</body>"
     node.setNotes(xhtml)
 
 

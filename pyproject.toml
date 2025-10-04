@@ -18,6 +18,7 @@ dependencies = [
 
 [project.scripts]
 to-sbml = "converter.cli:to_sbml_entry"
+to-table = "converter.cli:to_table_entry"
 
 [tool.setuptools]
 packages = ["converter"]

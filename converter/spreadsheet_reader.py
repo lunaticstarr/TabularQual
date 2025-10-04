@@ -22,7 +22,25 @@ def _collect_repeated_columns(row: Dict[str, object], prefix: str) -> List[str]:
         if isinstance(value, str) and value.strip() == "":
             continue
         if spec.is_repeated_column(key, prefix):
-            values.append(str(value).strip())
+            value_str = str(value).strip()
+            # For Notes columns, parse note separators <notes1>...</notes1>
+            if 'notes' in prefix.lower():
+                import re
+                # Look for <notesN>content</notesN> patterns
+                pattern = r'<notes(\d+)>\s*(.*?)\s*</notes\1>'
+                matches = re.findall(pattern, value_str, re.DOTALL)
+                if matches:
+                    # Extract content from each match
+                    for _, content in matches:
+                        content = content.strip()
+                        if content:
+                            values.append(content)
+                else:
+                    # No separators found, treat as single note
+                    if value_str:
+                        values.append(value_str)
+            else:
+                values.append(value_str)
     return values
 
 def _collect_qualifier_pairs(row: Dict[str, object], relation_prefix: str, identifier_prefix: str) -> List[Tuple[str, str]]:
@@ -60,7 +78,11 @@ def _collect_qualifier_pairs(row: Dict[str, object], relation_prefix: str, ident
         rel = relations[i][1] if i < len(relations) else default_rel
         ident = identifiers[i][1] if i < len(identifiers) else None
         if ident:
-            pairs.append((rel, ident))
+            # Split comma-separated identifiers
+            for id_part in ident.split(','):
+                id_part = id_part.strip()
+                if id_part:
+                    pairs.append((rel, id_part))
     return pairs
 
 def _parse_person_string(person_str: str) -> List[str]:

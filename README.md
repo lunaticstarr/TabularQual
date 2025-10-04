@@ -14,7 +14,9 @@ pip install -r requirements.txt
 pip install -e .
 ```
 
-### Usage (Spreadsheet ➜ SBML)
+### Usage
+
+#### Spreadsheet ➜ SBML
 
 ```bash
 to-sbml \
@@ -22,11 +24,25 @@ to-sbml \
   --output sbml/Faure2006_MammalianCellCycle_out.sbml
 ```
 
+#### SBML ➜ Spreadsheet
+
+```bash
+to-table \
+  --input sbml/Faure2006_MammalianCellCycle_out.sbml \
+  --output table/Faure2006_MammalianCellCycle_reconstructed.xlsx
+```
+
 ### Options
+
+`to-sbml`:
 
 - **--inter-anno**: use interaction annotations only (unless `--trans-anno` is also set).
 - **--trans-anno**: use transition annotations only (unless `--inter-anno` is also set).
 - If you pass both `--inter-anno` and `--trans-anno` or pass neither, the converter will include **both** interaction and transition annotations.
+
+`to-table`:
+
+* **--template**: optionally specify a template file for README and Appendix sheets
 
 Examples:
 
@@ -39,6 +55,9 @@ to-sbml --input in.xlsx --output out.sbml --trans-anno
 
 # Both (default)
 to-sbml --input in.xlsx --output out.sbml
+
+# use doc/template.xlsx as template for creating tables
+to-table --input in.sbml --output out.xlsx --template doc/template.xlsx
 ```
 
 ### Transition Rules Syntax
@@ -66,4 +85,5 @@ The Transition-Rules column supports boolean and comparison expressions using th
 ### Notes
 
 - The reader ignores a first README sheet if present, and reads `Model`, `Species`, `Transitions`, and `Interactions`.
-- Reverse conversion (SBML ➜ Spreadsheet) and data validation is TODO.
+- The SBML to Spreadsheet converter automatically uses `doc/template.xlsx` if available for README and Appendix sheets.
+- TODO: automatically detect Interactions:Sign

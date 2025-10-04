@@ -196,6 +196,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
           <body xmlns="http://www.w3.org/1999/xhtml">
             <p>Level 1: CycB</p>
             <p>CycB indirectly activates Cdc20 (Harper et al., 2002).</p>
+            <p>Some curation notes.</p>
           </body>
         </notes>
         <annotation>
@@ -210,7 +211,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
           </rdf:RDF>
         </annotation>
         <qual:listOfInputs>
-          <qual:input metaid="metaid_0000013" qual:qualitativeSpecies="CycB" qual:transitionEffect="none" qual:sign="negative">
+          <qual:input metaid="metaid_0000013" qual:qualitativeSpecies="CycB" qual:transitionEffect="none" qual:sign="positive">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>CycB indirectly activates Cdc20</p>
@@ -248,7 +249,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
       <qual:transition metaid="metaid_0000014" qual:id="tr_Cdh1">
         <notes>
           <body xmlns="http://www.w3.org/1999/xhtml">
-            <p>Level 1: (! CycA and ! CycB) | (Cdc20) | (p27 and ! CycB)</p>
+            <p>Level 1: (! CycA &amp; ! CycB) | (Cdc20) | (p27 &amp; ! CycB)</p>
             <p>The activity of Cdh1 requires the absence of CycB and CycA, which inhibit it by phosphorylation (Harper et al., 2002); Cdc20 further activates Cdh1. (Novak and Tyson, 2004); p27 allows the presence of CycA, by blocking its activity.</p>
           </body>
         </notes>
@@ -265,7 +266,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
           </rdf:RDF>
         </annotation>
         <qual:listOfInputs>
-          <qual:input metaid="metaid_0000015" qual:qualitativeSpecies="Cdc20" qual:transitionEffect="none" qual:sign="negative">
+          <qual:input metaid="metaid_0000015" qual:qualitativeSpecies="Cdc20" qual:transitionEffect="none" qual:sign="positive">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>Cdc20 further activates Cdh1.</p>
@@ -283,7 +284,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
               </rdf:RDF>
             </annotation>
           </qual:input>
-          <qual:input metaid="metaid_0000016" qual:qualitativeSpecies="CycA" qual:transitionEffect="none" qual:sign="dual">
+          <qual:input metaid="metaid_0000016" qual:qualitativeSpecies="CycA" qual:transitionEffect="none" qual:sign="negative">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>The activity of Cdh1 requires the absence of CycB and CycA, which inhibit it by phosphorylation.</p>
@@ -301,7 +302,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
               </rdf:RDF>
             </annotation>
           </qual:input>
-          <qual:input metaid="metaid_0000017" qual:qualitativeSpecies="CycB" qual:transitionEffect="none" qual:sign="dual">
+          <qual:input metaid="metaid_0000017" qual:qualitativeSpecies="CycB" qual:transitionEffect="none" qual:sign="negative">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>The activity of Cdh1 requires the absence of CycB and CycA, which inhibit it by phosphorylation.</p>
@@ -319,7 +320,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
               </rdf:RDF>
             </annotation>
           </qual:input>
-          <qual:input metaid="metaid_0000018" qual:qualitativeSpecies="p27" qual:transitionEffect="none" qual:sign="negative">
+          <qual:input metaid="metaid_0000018" qual:qualitativeSpecies="p27" qual:transitionEffect="none" qual:sign="positive">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>p27 allows the presence of CycA, by blocking its activity.</p>
@@ -378,7 +379,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
       <qual:transition metaid="metaid_0000019" qual:id="tr_CycA">
         <notes>
           <body xmlns="http://www.w3.org/1999/xhtml">
-            <p>Level 1: (E2F and ! Rb and ! Cdc20 and ! (Cdh1 and UbcH10)) | (CycA and ! Rb and ! Cdc20 and ! (Cdh1 and UbcH10))</p>
+            <p>Level 1: (E2F &amp; ! Rb &amp; ! Cdc20 &amp; ! (Cdh1 &amp; UbcH10)) | (CycA &amp; ! Rb &amp; ! Cdc20 &amp; ! (Cdh1 &amp; UbcH10))</p>
             <p>The transcription of CycA is activated by E2F in the absence of Rb, which blocks this activation(Helin, 1998), in the absence of Cdc20, as well as of the pair formed by Cdh1 and UbcH10, which both lead to the degradation of CycA (Harper et al., 2002; Rape and Kirschner, 2004);CycA is stable in the absence of its inhibitors Rb, Cdc20, and of the pair Cdh1 and UbcH10.</p>
           </body>
         </notes>
@@ -396,7 +397,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
           </rdf:RDF>
         </annotation>
         <qual:listOfInputs>
-          <qual:input metaid="metaid_0000020" qual:qualitativeSpecies="Cdc20" qual:transitionEffect="none" qual:sign="dual">
+          <qual:input metaid="metaid_0000020" qual:qualitativeSpecies="Cdc20" qual:transitionEffect="none" qual:sign="negative">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>The transcription of CycA is activated in the absence of Cdc20, as well as of the pair formed by Cdh1 and UbcH10, which both lead to the degradation of CycA.</p>
@@ -415,7 +416,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
               </rdf:RDF>
             </annotation>
           </qual:input>
-          <qual:input metaid="metaid_0000021" qual:qualitativeSpecies="Cdh1" qual:transitionEffect="none" qual:sign="dual">
+          <qual:input metaid="metaid_0000021" qual:qualitativeSpecies="Cdh1" qual:transitionEffect="none" qual:sign="negative">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>The transcription of CycA is activated in the absence of Cdc20, as well as of the pair formed by Cdh1 and UbcH10, which both lead to the degradation of CycA.</p>
@@ -434,14 +435,14 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
               </rdf:RDF>
             </annotation>
           </qual:input>
-          <qual:input metaid="metaid_0000022" qual:qualitativeSpecies="CycA" qual:transitionEffect="none" qual:sign="negative">
+          <qual:input metaid="metaid_0000022" qual:qualitativeSpecies="CycA" qual:transitionEffect="none" qual:sign="positive">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>CycA is stable in the absence of its inhibitors Rb, Cdc20, and of the pair Cdh1 and UbcH10 and thus up regulates itself.</p>
               </body>
             </notes>
           </qual:input>
-          <qual:input metaid="metaid_0000023" qual:qualitativeSpecies="E2F" qual:transitionEffect="none" qual:sign="negative">
+          <qual:input metaid="metaid_0000023" qual:qualitativeSpecies="E2F" qual:transitionEffect="none" qual:sign="positive">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>The transcription of CycA is activated by E2F in the absence of Rb, which blocks this activation.</p>
@@ -459,7 +460,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
               </rdf:RDF>
             </annotation>
           </qual:input>
-          <qual:input metaid="metaid_0000024" qual:qualitativeSpecies="Rb" qual:transitionEffect="none" qual:sign="dual">
+          <qual:input metaid="metaid_0000024" qual:qualitativeSpecies="Rb" qual:transitionEffect="none" qual:sign="negative">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>The transcription of CycA is activated by E2F in the absence of Rb, which blocks this activation.</p>
@@ -477,7 +478,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
               </rdf:RDF>
             </annotation>
           </qual:input>
-          <qual:input metaid="metaid_0000025" qual:qualitativeSpecies="UbcH10" qual:transitionEffect="none" qual:sign="dual">
+          <qual:input metaid="metaid_0000025" qual:qualitativeSpecies="UbcH10" qual:transitionEffect="none" qual:sign="negative">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>The transcription of CycA is activated in the absence of Cdc20, as well as of the pair formed by Cdh1 and UbcH10, which both lead to the degradation of CycA.</p>
@@ -594,7 +595,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
       <qual:transition metaid="metaid_0000026" qual:id="tr_CycB">
         <notes>
           <body xmlns="http://www.w3.org/1999/xhtml">
-            <p>Level 1: ! Cdc20 and ! Cdh1</p>
+            <p>Level 1: ! Cdc20 &amp; ! Cdh1</p>
             <p>CycB is active in the absence of both Cdc20 and Cdh1, which target CycB for destruction (Harper et al., 2002).</p>
           </body>
         </notes>
@@ -610,7 +611,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
           </rdf:RDF>
         </annotation>
         <qual:listOfInputs>
-          <qual:input metaid="metaid_0000027" qual:qualitativeSpecies="Cdc20" qual:transitionEffect="none" qual:sign="dual">
+          <qual:input metaid="metaid_0000027" qual:qualitativeSpecies="Cdc20" qual:transitionEffect="none" qual:sign="negative">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>CycB is active in the absence of both Cdc20 and Cdh1, which target CycB for destruction.</p>
@@ -628,7 +629,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
               </rdf:RDF>
             </annotation>
           </qual:input>
-          <qual:input metaid="metaid_0000028" qual:qualitativeSpecies="Cdh1" qual:transitionEffect="none" qual:sign="dual">
+          <qual:input metaid="metaid_0000028" qual:qualitativeSpecies="Cdh1" qual:transitionEffect="none" qual:sign="negative">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>CycB is active in the absence of both Cdc20 and Cdh1, which target CycB for destruction.</p>
@@ -679,7 +680,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
           </body>
         </notes>
         <qual:listOfInputs>
-          <qual:input metaid="metaid_0000030" qual:qualitativeSpecies="CycD" qual:transitionEffect="none" qual:sign="negative">
+          <qual:input metaid="metaid_0000030" qual:qualitativeSpecies="CycD" qual:transitionEffect="none" qual:sign="positive">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>CycD activates itself and is in a constant &quot;on&quot; state in this model.</p>
@@ -706,7 +707,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
       <qual:transition metaid="metaid_0000031" qual:id="tr_CycE">
         <notes>
           <body xmlns="http://www.w3.org/1999/xhtml">
-            <p>Level 1: (E2F and ! Rb)</p>
+            <p>Level 1: (E2F &amp; ! Rb)</p>
             <p>CycE activity requires the presence of E2f and the absence of Rb (Helin, 1998).</p>
           </body>
         </notes>
@@ -722,7 +723,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
           </rdf:RDF>
         </annotation>
         <qual:listOfInputs>
-          <qual:input metaid="metaid_0000032" qual:qualitativeSpecies="E2F" qual:transitionEffect="none" qual:sign="negative">
+          <qual:input metaid="metaid_0000032" qual:qualitativeSpecies="E2F" qual:transitionEffect="none" qual:sign="positive">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>CycE activity requires the presence of E2f.</p>
@@ -740,7 +741,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
               </rdf:RDF>
             </annotation>
           </qual:input>
-          <qual:input metaid="metaid_0000033" qual:qualitativeSpecies="Rb" qual:transitionEffect="none" qual:sign="dual">
+          <qual:input metaid="metaid_0000033" qual:qualitativeSpecies="Rb" qual:transitionEffect="none" qual:sign="negative">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>CycE activity requires the absence of Rb.</p>
@@ -786,7 +787,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
       <qual:transition metaid="metaid_0000034" qual:id="tr_E2F">
         <notes>
           <body xmlns="http://www.w3.org/1999/xhtml">
-            <p>Level 1: (! Rb and ! CycA and ! CycB) | (p27 and ! Rb and ! CycB)</p>
+            <p>Level 1: (! Rb &amp; ! CycA &amp; ! CycB) | (p27 &amp; ! Rb &amp; ! CycB)</p>
             <p>E2F is active in the absence of Rb, that blocks E2F self-transcriptional activation (Helin, 1998), and in the absence of CycA and CycB, that inhibit E2F (Novak and Tyson, 2004); CycA may be present, if its inhibitory activity is blocked by p27 (Coqueret, 2003).</p>
           </body>
         </notes>
@@ -804,7 +805,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
           </rdf:RDF>
         </annotation>
         <qual:listOfInputs>
-          <qual:input metaid="metaid_0000035" qual:qualitativeSpecies="CycA" qual:transitionEffect="none" qual:sign="dual">
+          <qual:input metaid="metaid_0000035" qual:qualitativeSpecies="CycA" qual:transitionEffect="none" qual:sign="negative">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>E2F is active in the absence of CycA and CycB, that inhibit E2F; CycA may be present, if its inhibitory activity is blocked by p27.</p>
@@ -823,7 +824,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
               </rdf:RDF>
             </annotation>
           </qual:input>
-          <qual:input metaid="metaid_0000036" qual:qualitativeSpecies="CycB" qual:transitionEffect="none" qual:sign="dual">
+          <qual:input metaid="metaid_0000036" qual:qualitativeSpecies="CycB" qual:transitionEffect="none" qual:sign="negative">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>E2F is active in the absence of CycA and CycB, that inhibit E2F.</p>
@@ -841,7 +842,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
               </rdf:RDF>
             </annotation>
           </qual:input>
-          <qual:input metaid="metaid_0000037" qual:qualitativeSpecies="Rb" qual:transitionEffect="none" qual:sign="dual">
+          <qual:input metaid="metaid_0000037" qual:qualitativeSpecies="Rb" qual:transitionEffect="none" qual:sign="negative">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>E2F is active in the absence of Rb, that blocks E2F self-transcriptional activation (Helin, 1998)</p>
@@ -859,7 +860,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
               </rdf:RDF>
             </annotation>
           </qual:input>
-          <qual:input metaid="metaid_0000038" qual:qualitativeSpecies="p27" qual:transitionEffect="none" qual:sign="negative">
+          <qual:input metaid="metaid_0000038" qual:qualitativeSpecies="p27" qual:transitionEffect="none" qual:sign="positive">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>E2F may be active with CycA present, if CycA&apos;s inhibitory activity is blocked by p27.</p>
@@ -937,7 +938,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
       <qual:transition metaid="metaid_0000039" qual:id="tr_p27">
         <notes>
           <body xmlns="http://www.w3.org/1999/xhtml">
-            <p>Level 1: (! CycD and ! CycE and ! CycA and ! CycB) | (p27 and ! (CycE and CycA) and ! CycB and! CycD)</p>
+            <p>Level 1: (! CycD &amp; ! CycE &amp; ! CycA &amp; ! CycB) | (p27 &amp; ! (CycE &amp; CycA) &amp; ! CycB &amp;! CycD)</p>
             <p>p27 is active in the absence of the cyclins; when p27 is already present, it blocks the action of CycE or CycA (but not both of them) by sequestration (Coqueret, 2003).</p>
           </body>
         </notes>
@@ -953,35 +954,35 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
           </rdf:RDF>
         </annotation>
         <qual:listOfInputs>
-          <qual:input metaid="metaid_0000040" qual:qualitativeSpecies="CycA" qual:transitionEffect="none" qual:sign="dual">
+          <qual:input metaid="metaid_0000040" qual:qualitativeSpecies="CycA" qual:transitionEffect="none" qual:sign="negative">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>p27 is active in the absence of the cyclins.</p>
               </body>
             </notes>
           </qual:input>
-          <qual:input metaid="metaid_0000041" qual:qualitativeSpecies="CycB" qual:transitionEffect="none" qual:sign="dual">
+          <qual:input metaid="metaid_0000041" qual:qualitativeSpecies="CycB" qual:transitionEffect="none" qual:sign="negative">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>p27 is active in the absence of the cyclins.</p>
               </body>
             </notes>
           </qual:input>
-          <qual:input metaid="metaid_0000042" qual:qualitativeSpecies="CycD" qual:transitionEffect="none" qual:sign="dual">
+          <qual:input metaid="metaid_0000042" qual:qualitativeSpecies="CycD" qual:transitionEffect="none" qual:sign="negative">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>p27 is active in the absence of the cyclins.</p>
               </body>
             </notes>
           </qual:input>
-          <qual:input metaid="metaid_0000043" qual:qualitativeSpecies="CycE" qual:transitionEffect="none" qual:sign="dual">
+          <qual:input metaid="metaid_0000043" qual:qualitativeSpecies="CycE" qual:transitionEffect="none" qual:sign="negative">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>p27 is active in the absence of the cyclins.</p>
               </body>
             </notes>
           </qual:input>
-          <qual:input metaid="metaid_0000044" qual:qualitativeSpecies="p27" qual:transitionEffect="none" qual:sign="negative">
+          <qual:input metaid="metaid_0000044" qual:qualitativeSpecies="p27" qual:transitionEffect="none" qual:sign="positive">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>When p27 is already present, it blocks the action of CycE or CycA (but not both of them) by sequestration (1,2).</p>
@@ -1086,7 +1087,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
       <qual:transition metaid="metaid_0000045" qual:id="tr_Rb">
         <notes>
           <body xmlns="http://www.w3.org/1999/xhtml">
-            <p>Level 1: (! CycA and ! CycB and ! CycD and ! CycE) | (p27 and ! CycB and ! CycD)</p>
+            <p>Level 1: (! CycA &amp; ! CycB &amp; ! CycD &amp; ! CycE) | (p27 &amp; ! CycB &amp; ! CycD)</p>
             <p>Rb is expressed in the absence of the cyclins, which inhibit it by phosphorylation (Novak and Tyson, 2004; Taya, 1997); it can be expressed in the presence of CycE or CycA if their inhibitory activity is blocked by p27 (Coqueret, 2003).</p>
           </body>
         </notes>
@@ -1103,7 +1104,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
           </rdf:RDF>
         </annotation>
         <qual:listOfInputs>
-          <qual:input metaid="metaid_0000046" qual:qualitativeSpecies="CycA" qual:transitionEffect="none" qual:sign="dual">
+          <qual:input metaid="metaid_0000046" qual:qualitativeSpecies="CycA" qual:transitionEffect="none" qual:sign="negative">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>Rb is expressed in the absence of the cyclins, which inhibit it by phosphorylation.</p>
@@ -1122,7 +1123,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
               </rdf:RDF>
             </annotation>
           </qual:input>
-          <qual:input metaid="metaid_0000047" qual:qualitativeSpecies="CycB" qual:transitionEffect="none" qual:sign="dual">
+          <qual:input metaid="metaid_0000047" qual:qualitativeSpecies="CycB" qual:transitionEffect="none" qual:sign="negative">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>Rb is expressed in the absence of the cyclins, which inhibit it by phosphorylation.</p>
@@ -1141,7 +1142,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
               </rdf:RDF>
             </annotation>
           </qual:input>
-          <qual:input metaid="metaid_0000048" qual:qualitativeSpecies="CycD" qual:transitionEffect="none" qual:sign="dual">
+          <qual:input metaid="metaid_0000048" qual:qualitativeSpecies="CycD" qual:transitionEffect="none" qual:sign="negative">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>Rb is expressed in the absence of the cyclins, which inhibit it by phosphorylation.</p>
@@ -1160,7 +1161,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
               </rdf:RDF>
             </annotation>
           </qual:input>
-          <qual:input metaid="metaid_0000049" qual:qualitativeSpecies="CycE" qual:transitionEffect="none" qual:sign="dual">
+          <qual:input metaid="metaid_0000049" qual:qualitativeSpecies="CycE" qual:transitionEffect="none" qual:sign="negative">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>Rb is expressed in the absence of the cyclins, which inhibit it by phosphorylation (1,2,3).</p>
@@ -1179,7 +1180,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
               </rdf:RDF>
             </annotation>
           </qual:input>
-          <qual:input metaid="metaid_0000050" qual:qualitativeSpecies="p27" qual:transitionEffect="none" qual:sign="negative">
+          <qual:input metaid="metaid_0000050" qual:qualitativeSpecies="p27" qual:transitionEffect="none" qual:sign="positive">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>Rb can be expressed in the presence of CycE or CycA if their inhibitory activity is blocked by p27.</p>
@@ -1265,7 +1266,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
       <qual:transition metaid="metaid_0000051" qual:id="tr_UbcH10">
         <notes>
           <body xmlns="http://www.w3.org/1999/xhtml">
-            <p>Level 1: ! Cdh1 | (Cdh1 and UbcH10 and (Cdc20 | CycA | CycB))</p>
+            <p>Level 1: ! Cdh1 | (Cdh1 &amp; UbcH10 &amp; (Cdc20 | CycA | CycB))</p>
             <p>UbcH10 is active in the absence of Cdh1; this UbcH10 activity can be maintained in the presence of Cdh1 when at least one of its other targets is present (CycA, Cdc20, or CycB) (Rape and Kirschner, 2004).</p>
           </body>
         </notes>
@@ -1281,7 +1282,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
           </rdf:RDF>
         </annotation>
         <qual:listOfInputs>
-          <qual:input metaid="metaid_0000052" qual:qualitativeSpecies="Cdc20" qual:transitionEffect="none" qual:sign="negative">
+          <qual:input metaid="metaid_0000052" qual:qualitativeSpecies="Cdc20" qual:transitionEffect="none" qual:sign="positive">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>UbcH10 activity can be maintained (Ubc must be active and therefore is a positive regulator of itself) in the presence of negative regulator Cdh1 when at least one of its other targets is present (CycA, Cdc20, or CycB).</p>
@@ -1299,7 +1300,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
               </rdf:RDF>
             </annotation>
           </qual:input>
-          <qual:input metaid="metaid_0000053" qual:qualitativeSpecies="Cdh1" qual:transitionEffect="none" qual:sign="dual">
+          <qual:input metaid="metaid_0000053" qual:qualitativeSpecies="Cdh1" qual:transitionEffect="none" qual:sign="negative">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>UbcH10 is active in the absence of Cdh1.</p>
@@ -1317,7 +1318,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
               </rdf:RDF>
             </annotation>
           </qual:input>
-          <qual:input metaid="metaid_0000054" qual:qualitativeSpecies="CycA" qual:transitionEffect="none" qual:sign="negative">
+          <qual:input metaid="metaid_0000054" qual:qualitativeSpecies="CycA" qual:transitionEffect="none" qual:sign="positive">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>UbcH10 activity can be maintained (Ubc must be active and therefore is a positive regulator of itself) in the presence of negative regulator Cdh1 when at least one of its other targets is present (CycA, Cdc20, or CycB).</p>
@@ -1335,7 +1336,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
               </rdf:RDF>
             </annotation>
           </qual:input>
-          <qual:input metaid="metaid_0000055" qual:qualitativeSpecies="CycB" qual:transitionEffect="none" qual:sign="negative">
+          <qual:input metaid="metaid_0000055" qual:qualitativeSpecies="CycB" qual:transitionEffect="none" qual:sign="positive">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>UbcH10 activity can be maintained (Ubc must be active and therefore is a positive regulator of itself) in the presence of negative regulator Cdh1 when at least one of its other targets is present (CycA, Cdc20, or CycB).</p>
@@ -1353,7 +1354,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
               </rdf:RDF>
             </annotation>
           </qual:input>
-          <qual:input metaid="metaid_0000056" qual:qualitativeSpecies="UbcH10" qual:transitionEffect="none" qual:sign="negative">
+          <qual:input metaid="metaid_0000056" qual:qualitativeSpecies="UbcH10" qual:transitionEffect="none" qual:sign="positive">
             <notes>
               <body xmlns="http://www.w3.org/1999/xhtml">
                 <p>UbcH10 activity can be maintained (Ubc must be active and therefore is a positive regulator of itself) in the presence of negative regulator Cdh1 when at least one of its other targets is present (CycA, Cdc20, or CycB).</p>
