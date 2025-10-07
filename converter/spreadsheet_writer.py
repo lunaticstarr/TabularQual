@@ -9,8 +9,15 @@ import shutil
 from .types import InMemoryModel, Person
 
 
-def write_spreadsheet(model: InMemoryModel, output_path: str, template_path: str = None):
-    """Write InMemoryModel to spreadsheet format"""
+def write_spreadsheet(model: InMemoryModel, output_path: str, template_path: str = None, rule_format: str = "operators"):
+    """Write InMemoryModel to spreadsheet format
+    
+    Args:
+        model: The in-memory model to write
+        output_path: Path to output spreadsheet file
+        template_path: Optional path to template.xlsx for README and Appendix sheets
+        rule_format: Format for transition rules - "operators" (default, uses >=, <=, etc.) or "colon" (uses : notation)
+    """
     
     # Use template if provided, otherwise create new workbook
     if template_path and Path(template_path).exists():
@@ -35,7 +42,7 @@ def write_spreadsheet(model: InMemoryModel, output_path: str, template_path: str
     _write_model_sheet(wb, model, insert_pos)
     _write_species_sheet(wb, model, insert_pos + 1)
     _write_interactions_sheet(wb, model, insert_pos + 2)
-    _write_transitions_sheet(wb, model, insert_pos + 3)
+    _write_transitions_sheet(wb, model, insert_pos + 3, rule_format)
     
     # Save
     wb.save(output_path)
@@ -134,10 +141,13 @@ def _write_model_sheet(wb: openpyxl.Workbook, model: InMemoryModel, position: in
     
     # Version
     if model.model.versions:
-        for version in model.model.versions:
-            ws.cell(row=row, column=1, value="Version")
-            ws.cell(row=row, column=2, value=version)
-            row += 1
+        ws.cell(row=row, column=1, value="Version")
+        # Format as "Version: version1, version2, ..." if multiple versions
+        version_str = ", ".join(model.model.versions)
+        if len(model.model.versions) > 1 or not version_str.startswith("Version:"):
+            version_str = f"Version: {version_str}"
+        ws.cell(row=row, column=2, value=version_str)
+        row += 1
     
     # Notes - combine all into single cell as Notes1
     if model.model.notes:
@@ -177,6 +187,9 @@ def _write_species_sheet(wb: openpyxl.Workbook, model: InMemoryModel, position: 
             grouped[qualifier].append(identifier)
         max_qualifiers = max(max_qualifiers, len(grouped))
         max_notes = max(max_notes, len(species.notes))
+    
+    # Ensure at least 2 Relation/Identifier pairs as per template
+    max_qualifiers = max(max_qualifiers, 2)
     
     # Build headers
     headers = ["Species_ID", "Name"]
@@ -264,7 +277,7 @@ def _write_species_sheet(wb: openpyxl.Workbook, model: InMemoryModel, position: 
     ws.column_dimensions['B'].width = 30
 
 
-def _write_transitions_sheet(wb: openpyxl.Workbook, model: InMemoryModel, position: int = 0):
+def _write_transitions_sheet(wb: openpyxl.Workbook, model: InMemoryModel, position: int = 0, rule_format: str = "operators"):
     """Write Transitions sheet"""
     ws = wb.create_sheet("Transitions", position)
     
@@ -285,6 +298,9 @@ def _write_transitions_sheet(wb: openpyxl.Workbook, model: InMemoryModel, positi
             grouped[qualifier].append(identifier)
         max_qualifiers = max(max_qualifiers, len(grouped))
         max_notes = max(max_notes, len(transition.notes))
+    
+    # Ensure at least 1 Relation/Identifier pair as per template
+    max_qualifiers = max(max_qualifiers, 1)
     
     # Build headers
     headers = ["Transition_ID", "Name", "Target", "Level", "Rule"]
@@ -328,8 +344,11 @@ def _write_transitions_sheet(wb: openpyxl.Workbook, model: InMemoryModel, positi
             ws.cell(row=row_idx, column=col, value=transition.level)
         col += 1
         
-        # Rule
-        ws.cell(row=row_idx, column=col, value=transition.rule)
+        # Rule - convert format if needed
+        rule = transition.rule
+        if rule_format == "colon":
+            rule = _convert_rule_to_colon(rule)
+        ws.cell(row=row_idx, column=col, value=rule)
         col += 1
         
         # Annotations - group by qualifier and combine identifiers
@@ -364,9 +383,7 @@ def _write_transitions_sheet(wb: openpyxl.Workbook, model: InMemoryModel, positi
 
 def _write_interactions_sheet(wb: openpyxl.Workbook, model: InMemoryModel, position: int = 0):
     """Write Interactions sheet"""
-    if not model.interactions:
-        return  # Skip if no interactions
-    
+    # Always create the sheet, even if no interactions
     ws = wb.create_sheet("Interactions", position)
     
     # Header style
@@ -385,6 +402,9 @@ def _write_interactions_sheet(wb: openpyxl.Workbook, model: InMemoryModel, posit
             grouped[qualifier].append(identifier)
         max_qualifiers = max(max_qualifiers, len(grouped))
         max_notes = max(max_notes, len(interaction.notes))
+    
+    # Ensure at least 1 Relation/Identifier pair as per template
+    max_qualifiers = max(max_qualifiers, 1)
     
     # Build headers
     headers = ["Target", "Source", "Sign"]
@@ -472,3 +492,65 @@ def _person_to_string(person: Person) -> str:
     if person.email:
         parts.append(person.email)
     return ", ".join(parts) if parts else ""
+
+
+def _convert_rule_to_colon(rule: str) -> str:
+    """Convert rule from operator format to colon format
+    
+    Examples:
+        A >= 2 -> A:2
+        B < 2 -> !B:2
+        C = 0 -> !C
+        D = 1 -> D
+        E >= 1 -> E
+    """
+    import re
+    
+    # Handle >= operator (replace with colon notation)
+    # A >= 2 becomes A:2, but A >= 1 becomes A
+    def replace_geq(match):
+        var = match.group(1)
+        threshold = match.group(2)
+        if threshold == '1':
+            return var
+        return f"{var}:{threshold}"
+    
+    rule = re.sub(r'(\w+)\s*>=\s*(\d+)', replace_geq, rule)
+    
+    # Handle < operator (replace with negation and colon notation)
+    # A < 2 becomes !A:2, but A < 1 becomes !A
+    def replace_lt(match):
+        var = match.group(1)
+        threshold = match.group(2)
+        if threshold == '1':
+            return f"!{var}"
+        return f"!{var}:{threshold}"
+    
+    rule = re.sub(r'(\w+)\s*<\s*(\d+)', replace_lt, rule)
+    
+    # Handle = operator
+    # A = 0 becomes !A, A = 1 becomes A, A = N becomes A:N
+    def replace_eq(match):
+        var = match.group(1)
+        threshold = match.group(2)
+        if threshold == '0':
+            return f"!{var}"
+        elif threshold == '1':
+            return var
+        return f"{var}:{threshold}"
+    
+    rule = re.sub(r'(\w+)\s*=\s*(\d+)', replace_eq, rule)
+    
+    # Handle == operator (same as =)
+    def replace_eqeq(match):
+        var = match.group(1)
+        threshold = match.group(2)
+        if threshold == '0':
+            return f"!{var}"
+        elif threshold == '1':
+            return var
+        return f"{var}:{threshold}"
+    
+    rule = re.sub(r'(\w+)\s*==\s*(\d+)', replace_eqeq, rule)
+    
+    return rule

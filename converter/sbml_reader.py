@@ -213,22 +213,6 @@ def _read_transitions(qual_model) -> Tuple[List[Transition], List[InteractionEvi
                     notes=inter_notes
                 ))
         
-        # Get function terms and convert to rule
-        rule = None
-        level = None
-        
-        for j in range(tr.getNumFunctionTerms()):
-            ft = tr.getFunctionTerm(j)
-            if ft.isSetResultLevel():
-                level = ft.getResultLevel()
-            if ft.isSetMath():
-                math_ast = ft.getMath()
-                rule = _mathml_to_rule(math_ast, inputs_with_signs)
-        
-        # If no rule found, create default
-        if rule is None and inputs_with_signs:
-            rule = " & ".join([src for src, _, _ in inputs_with_signs])
-        
         # Parse transition notes (filter out "Level X:" lines)
         notes = []
         if tr.isSetNotes():
@@ -241,15 +225,68 @@ def _read_transitions(qual_model) -> Tuple[List[Transition], List[InteractionEvi
             anno_str = tr.getAnnotationString()
             annotations = _parse_annotations_to_list(anno_str)
         
-        transitions.append(Transition(
-            transition_id=transition_id,
-            name=name,
-            target=target,
-            level=level,
-            rule=rule or "",
-            annotations=annotations,
-            notes=notes
-        ))
+        # Get function terms and create separate transitions for each level
+        # Collect all non-default function terms
+        function_terms = []
+        for j in range(tr.getNumFunctionTerms()):
+            ft = tr.getFunctionTerm(j)
+            if ft.isSetResultLevel() and ft.getResultLevel() > 0:  # Skip default term (level 0)
+                level = ft.getResultLevel()
+                rule = None
+                if ft.isSetMath():
+                    math_ast = ft.getMath()
+                    rule = _mathml_to_rule(math_ast, inputs_with_signs)
+                
+                # If no rule found, create default
+                if rule is None and inputs_with_signs:
+                    rule = " & ".join([src for src, _, _ in inputs_with_signs])
+                
+                function_terms.append((level, rule or ""))
+        
+        # If no function terms with rules, create one transition without level
+        if not function_terms:
+            rule = None
+            level = None
+            # Check if there's any function term at all
+            for j in range(tr.getNumFunctionTerms()):
+                ft = tr.getFunctionTerm(j)
+                if ft.isSetMath():
+                    math_ast = ft.getMath()
+                    rule = _mathml_to_rule(math_ast, inputs_with_signs)
+                    if ft.isSetResultLevel():
+                        level = ft.getResultLevel()
+                    break
+            
+            if rule is None and inputs_with_signs:
+                rule = " & ".join([src for src, _, _ in inputs_with_signs])
+            
+            transitions.append(Transition(
+                transition_id=transition_id,
+                name=name,
+                target=target,
+                level=level,
+                rule=rule or "",
+                annotations=annotations,
+                notes=notes
+            ))
+        else:
+            # Create separate transition for each function term (level)
+            for idx, (level, rule) in enumerate(function_terms):
+                # Create transition ID with level suffix if multiple levels
+                if len(function_terms) > 1:
+                    tid = f"{transition_id}_{level}" if transition_id else None
+                else:
+                    tid = transition_id
+                
+                transitions.append(Transition(
+                    transition_id=tid,
+                    name=name,
+                    target=target,
+                    level=level,
+                    rule=rule,
+                    annotations=annotations,
+                    notes=notes
+                ))
     
     return transitions, interactions
 

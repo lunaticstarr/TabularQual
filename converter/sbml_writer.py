@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import List, Tuple, Dict
 from datetime import datetime, timezone
+import re
 import libsbml
 
 from . import spec
@@ -106,9 +107,16 @@ def write_sbml(model: InMemoryModel, *, interactions_anno: bool = True, transiti
         qt = qual_model.createTransition()
         
         # Use the first transition's ID or generate one
+        # Strip level suffix from transition ID (e.g., tr_Cro_2 -> tr_Cro)
         first_transition = target_transitions[0]
         if first_transition.transition_id:
-            qt.setId(first_transition.transition_id)
+            # Remove level suffix if present (e.g., _2, _3)
+            base_id = first_transition.transition_id
+            # Match pattern like tr_Cro_2 and extract tr_Cro
+            match = re.match(r'^(.+)_(\d+)$', base_id)
+            if match:
+                base_id = match.group(1)
+            qt.setId(base_id)
         else:
             qt.setId(f"tr_{target}")
             
@@ -334,7 +342,7 @@ def _add_model_history(m: libsbml.Model, im: InMemoryModel) -> None:
         if p.organization:
             c.setOrganization(p.organization)
         history.addCreator(c)
-    # Contributors (use addContributor if available; otherwise fall back to addCreator)
+    # Contributors (not available in libsbml 5.20.4; fall back to addCreator)
     for p in im.model.contributors:
         c = libsbml.ModelCreator()
         if p.family_name:

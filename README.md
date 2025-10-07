@@ -43,6 +43,7 @@ to-table \
 `to-table`:
 
 * **--template**: optionally specify a template file for README and Appendix sheets
+* **--colon-format**: use colon notation for transition rules (`:` means `>=`). Default uses operators (`>=`, `<`, etc.)
 
 Examples:
 
@@ -56,8 +57,11 @@ to-sbml --input in.xlsx --output out.sbml --trans-anno
 # Both (default)
 to-sbml --input in.xlsx --output out.sbml
 
-# use doc/template.xlsx as template for creating tables
+# Use doc/template.xlsx as template for creating tables
 to-table --input in.sbml --output out.xlsx --template doc/template.xlsx
+
+# Use colon notation for rules (A:2 instead of A >= 2)
+to-table --input in.sbml --output out.xlsx --colon-format
 ```
 
 ### Transition Rules Syntax
@@ -82,8 +86,10 @@ The Transition-Rules column supports boolean and comparison expressions using th
 - `N & !CI:2 & !Cro:3` - N active AND CI below level 2 AND Cro below level 3
 - `(A & B) | (!C & D != 1)` - Complex grouped expression
 
+**Note**: When converting SBML to spreadsheet, rules are exported in **operator format** by default (`A >= 2`, `B < 3`). Use `--colon-format` to export in colon notation (`A:2`, `!B:3`) instead.
+
 ### Notes
 
 - The reader ignores a first README sheet if present, and reads `Model`, `Species`, `Transitions`, and `Interactions`.
 - The SBML to Spreadsheet converter automatically uses `doc/template.xlsx` if available for README and Appendix sheets.
-- TODO: automatically detect Interactions:Sign
+- TODO: automatically detect Species:Type, Interactions:Target, Source and Sign

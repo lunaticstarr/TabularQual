@@ -6,7 +6,7 @@ from .sbml_reader import read_sbml
 from .spreadsheet_writer import write_spreadsheet
 
 
-def convert_sbml_to_spreadsheet(sbml_path: str, output_path: str, template_path: str = None):
+def convert_sbml_to_spreadsheet(sbml_path: str, output_path: str, template_path: str = None, rule_format: str = "operators"):
     """
     Convert an SBML-qual file to SpreadSBML spreadsheet format.
     
@@ -14,6 +14,7 @@ def convert_sbml_to_spreadsheet(sbml_path: str, output_path: str, template_path:
         sbml_path: Path to input SBML file
         output_path: Path to output spreadsheet file
         template_path: Optional path to template.xlsx for README and Appendix sheets
+        rule_format: Format for transition rules - "operators" (default, uses >=, <=, etc.) or "colon" (uses : notation)
     """
     # Suppress openpyxl warnings
     warnings.filterwarnings('ignore', category=UserWarning, module='openpyxl')
@@ -27,5 +28,5 @@ def convert_sbml_to_spreadsheet(sbml_path: str, output_path: str, template_path:
     print(f"{len(model.interactions)} interactions found.")
     
     # Write spreadsheet
-    write_spreadsheet(model, output_path, template_path)
+    write_spreadsheet(model, output_path, template_path, rule_format)
 

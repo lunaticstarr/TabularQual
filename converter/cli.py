@@ -40,7 +40,8 @@ def to_sbml_entry(input_xlsx: str, output_sbml: str, inter_anno: bool, trans_ann
 @click.option("--input", "input_sbml", required=True, type=click.Path(exists=True, dir_okay=False))
 @click.option("--output", "output_xlsx", required=True, type=click.Path(dir_okay=False))
 @click.option("--template", "template_xlsx", type=click.Path(exists=True, dir_okay=False), help="Template file for README and Appendix sheets")
-def to_table_entry(input_sbml: str, output_xlsx: str, template_xlsx: str = None):
+@click.option("--colon-format", "colon_format", is_flag=True, default=False, help="Use colon notation for transition rules (A:2 means A>=2). Default uses operators (>=, <, etc.)")
+def to_table_entry(input_sbml: str, output_xlsx: str, template_xlsx: str = None, colon_format: bool = False):
     # Auto-detect template if not provided
     if template_xlsx is None:
         # Look for template.xlsx in doc/ directory relative to this file
@@ -49,7 +50,8 @@ def to_table_entry(input_sbml: str, output_xlsx: str, template_xlsx: str = None)
         if template_path.exists():
             template_xlsx = str(template_path)
     
-    convert_sbml_to_spreadsheet(input_sbml, output_xlsx, template_xlsx)
+    rule_format = "colon" if colon_format else "operators"
+    convert_sbml_to_spreadsheet(input_sbml, output_xlsx, template_xlsx, rule_format)
     click.echo(f"Wrote spreadsheet to {output_xlsx}")
 
 
