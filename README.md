@@ -1,6 +1,6 @@
 ## TabularQual Converter
 
-Convert spreadsheets specified in `SpreadSBML specification.html` to SBML-qual and back.
+Convert between spreadsheets specified in [SpreadSBML specification](.doc/SpreadSBML specification.docx) and SBML-qual for logical models (Boolean and multi-valued).
 
 ### Install
 
@@ -20,16 +20,16 @@ pip install -e .
 
 ```bash
 to-sbml \
-  --input table/Faure2006_MammalianCellCycle.xlsx \
-  --output sbml/Faure2006_MammalianCellCycle_out.sbml
+  --input examples/Faure2006/Faure2006.xlsx \
+  --output examples/Faure2006/Faure2006_out.sbml
 ```
 
 #### SBML ➜ Spreadsheet
 
 ```bash
 to-table \
-  --input sbml/Faure2006_MammalianCellCycle_out.sbml \
-  --output table/Faure2006_MammalianCellCycle_reconstructed.xlsx
+  --input examples/Faure2006/Faure2006_out.sbml \
+  --output examples/Faure2006/Faure2006_reconstructed.xlsx
 ```
 
 ### Options
