@@ -6,7 +6,8 @@ Convert between spreadsheets specified in [SpreadSBML specification](.doc/Spread
 
 Use TabularQual directly in your browser - no installation required!
 
-🔗 **[Launch Web App](https://your-app-url.streamlit.app)**
+🔗 **[Launch Web App](https://tabularqual.streamlit.app/)**
+
 
 ---
 
