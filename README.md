@@ -2,21 +2,40 @@
 
 Convert between spreadsheets specified in [SpreadSBML specification](.doc/SpreadSBML specification.docx) and SBML-qual for logical models (Boolean and multi-valued).
 
+### Web App
+
+Use TabularQual directly in your browser - no installation required!
+
+🔗 **[Launch Web App](https://your-app-url.streamlit.app)**
+
+---
+
 ### Install
 
-```bash
-# 1) Create and activate a virtual environment (macOS/Linux)
-python -m venv .venv
-source .venv/bin/activate
+#### Option 1: Run Web App Locally
 
-# 2) Install dependencies and console script
+```bash
+
+# 1) Install dependencies
+pip install -r requirements.txt
+
+# 2) Launch the web app
+streamlit run app.py
+```
+
+The app will open in your browser at `http://localhost:8501`
+
+#### Option 2: Command-Line Tools
+
+```bash
+# Install dependencies and console script
 pip install -r requirements.txt
 pip install -e .
 ```
 
 ### Usage
 
-#### Spreadsheet ➜ SBML
+* Spreadsheet ➜ SBML
 
 ```bash
 to-sbml \

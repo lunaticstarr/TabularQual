@@ -43,6 +43,10 @@ Note that in 3, we considered a modified version of the four component model: ph
                   <vCard:Orgname>Laboratoire de Génétique, Université Libre de Bruxelles</vCard:Orgname>
                 </vCard:ORG>
               </rdf:li>
+            </rdf:Bag>
+          </dcterms:creator>
+          <dcterms:contributor>
+            <rdf:Bag>
               <rdf:li rdf:parseType="Resource">
                 <vCard:N rdf:parseType="Resource">
                   <vCard:Family>Chaouiya</vCard:Family>
@@ -54,7 +58,7 @@ Note that in 3, we considered a modified version of the four component model: ph
                 </vCard:ORG>
               </rdf:li>
             </rdf:Bag>
-          </dcterms:creator>
+          </dcterms:contributor>
           <dcterms:created rdf:parseType="Resource">
             <dcterms:W3CDTF>1995-03-01T00:00:00Z</dcterms:W3CDTF>
           </dcterms:created>
