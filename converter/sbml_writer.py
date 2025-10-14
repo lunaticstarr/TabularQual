@@ -4,6 +4,7 @@ from typing import List, Tuple, Dict
 from datetime import datetime, timezone
 import re
 import libsbml
+import gc
 
 from . import spec
 from .types import InMemoryModel, Species as SpeciesT, Transition as TransitionT, InteractionEvidence
@@ -227,7 +228,13 @@ def write_sbml(model: InMemoryModel, *, interactions_anno: bool = True, transiti
                         _append_notes(found_input, inter.notes)
                     break
 
-    return doc.toSBML()
+    sbml_string = doc.toSBML()
+    
+    # Clean up libsbml document to release memory
+    del doc
+    gc.collect()
+    
+    return sbml_string
 
 
 def _set_mathml(ft: libsbml.QualFunctionTerm, mathml: str) -> None:

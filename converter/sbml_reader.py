@@ -3,6 +3,8 @@ from __future__ import annotations
 from typing import List, Tuple, Dict, Optional
 import libsbml
 from xml.etree import ElementTree as ET
+import os
+import gc
 
 from .types import InMemoryModel, ModelInfo, Species, Transition, InteractionEvidence, Person
 
@@ -10,43 +12,57 @@ from .types import InMemoryModel, ModelInfo, Species, Transition, InteractionEvi
 def read_sbml(sbml_path: str) -> InMemoryModel:
     """Read an SBML-qual file and convert it to InMemoryModel"""
     doc = libsbml.readSBMLFromFile(sbml_path)
-    if doc.getNumErrors() > 0:
-        errors = []
-        for i in range(doc.getNumErrors()):
-            err = doc.getError(i)
-            if err.getSeverity() >= libsbml.LIBSBML_SEV_ERROR:
-                errors.append(str(err.getMessage()))
-        if errors:
-            raise ValueError(f"SBML parsing errors: {'; '.join(errors)}")
     
-    model = doc.getModel()
-    if model is None:
-        raise ValueError("No model found in SBML file")
-    
-    qual_model = model.getPlugin("qual")
-    if qual_model is None:
-        raise ValueError("No qual plugin found in model")
-    
-    # Read model info
-    model_info = _read_model_info(model)
-    
-    # Read species
-    species_dict = _read_species(qual_model)
-    
-    # Read transitions
-    transitions, interactions = _read_transitions(qual_model)
-    
-    return InMemoryModel(
-        model=model_info,
-        species=species_dict,
-        transitions=transitions,
-        interactions=interactions
-    )
+    try:
+        if doc.getNumErrors() > 0:
+            errors = []
+            for i in range(doc.getNumErrors()):
+                err = doc.getError(i)
+                if err.getSeverity() >= libsbml.LIBSBML_SEV_ERROR:
+                    errors.append(str(err.getMessage()))
+            if errors:
+                raise ValueError(f"SBML parsing errors: {'; '.join(errors)}")
+        
+        model = doc.getModel()
+        if model is None:
+            raise ValueError("No model found in SBML file")
+        
+        qual_model = model.getPlugin("qual")
+        if qual_model is None:
+            raise ValueError("No qual plugin found in model")
+        
+        # Read model info
+        model_info = _read_model_info(model, sbml_path)
+        
+        # Read species
+        species_dict = _read_species(qual_model)
+        
+        # Read transitions
+        transitions, interactions = _read_transitions(qual_model)
+        
+        result = InMemoryModel(
+            model=model_info,
+            species=species_dict,
+            transitions=transitions,
+            interactions=interactions
+        )
+        
+        return result
+    finally:
+        # delete the libsbml document
+        del doc
+        gc.collect()
 
 
-def _read_model_info(model: libsbml.Model) -> ModelInfo:
+def _read_model_info(model: libsbml.Model, sbml_path: str) -> ModelInfo:
     """Extract model-level information"""
-    model_id = model.getId() if model.isSetId() else "model"
+    if model.isSetId():
+        model_id = model.getId()
+    else:
+        # Use filename without extension if no id provided
+        filename = os.path.basename(sbml_path)
+        model_id = os.path.splitext(filename)[0]
+    
     name = model.getName() if model.isSetName() else None
     
     # Parse notes

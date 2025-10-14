@@ -46,6 +46,7 @@ def write_spreadsheet(model: InMemoryModel, output_path: str, template_path: str
     
     # Save
     wb.save(output_path)
+    wb.close()
 
 
 def _write_model_sheet(wb: openpyxl.Workbook, model: InMemoryModel, position: int = 0):
@@ -59,10 +60,10 @@ def _write_model_sheet(wb: openpyxl.Workbook, model: InMemoryModel, position: in
     row = 1
     
     # Model_source
+    ws.cell(row=row, column=1, value="Model_source")
     if model.model.source_urls:
-        ws.cell(row=row, column=1, value="Model_source")
         ws.cell(row=row, column=2, value=", ".join(_url_to_compact_id(url) for url in model.model.source_urls))
-        row += 1
+    row += 1
     
     # Model_ID (required)
     cell = ws.cell(row=row, column=1, value="Model_ID")
@@ -71,16 +72,16 @@ def _write_model_sheet(wb: openpyxl.Workbook, model: InMemoryModel, position: in
     row += 1
     
     # Name
+    ws.cell(row=row, column=1, value="Name")
     if model.model.name:
-        ws.cell(row=row, column=1, value="Name")
         ws.cell(row=row, column=2, value=model.model.name)
-        row += 1
+    row += 1
     
     # Publication
+    ws.cell(row=row, column=1, value="Publication")
     if model.model.described_by:
-        ws.cell(row=row, column=1, value="Publication")
         ws.cell(row=row, column=2, value=", ".join(_url_to_compact_id(url) for url in model.model.described_by))
-        row += 1
+    row += 1
     
     # Origin_publication & Origin_model (from derived_from)
     origin_pubs = []
@@ -93,33 +94,33 @@ def _write_model_sheet(wb: openpyxl.Workbook, model: InMemoryModel, position: in
             else:
                 origin_pubs.append(compact_id)
     
+    ws.cell(row=row, column=1, value="Origin_publication")
     if origin_pubs:
-        ws.cell(row=row, column=1, value="Origin_publication")
         ws.cell(row=row, column=2, value=", ".join(origin_pubs))
-        row += 1
+    row += 1
     
+    ws.cell(row=row, column=1, value="Origin_model")
     if origin_models:
-        ws.cell(row=row, column=1, value="Origin_model")
         ws.cell(row=row, column=2, value=", ".join(origin_models))
-        row += 1
+    row += 1
     
     # Taxon
+    ws.cell(row=row, column=1, value="Taxon")
     if model.model.taxons:
-        ws.cell(row=row, column=1, value="Taxon")
         ws.cell(row=row, column=2, value=", ".join(_url_to_compact_id(taxon) for taxon in model.model.taxons))
-        row += 1
+    row += 1
     
     # Biological_process
+    ws.cell(row=row, column=1, value="Biological_process")
     if model.model.biological_processes:
-        ws.cell(row=row, column=1, value="Biological_process")
         ws.cell(row=row, column=2, value=", ".join(_url_to_compact_id(process) for process in model.model.biological_processes))
-        row += 1
+    row += 1
     
     # Created
+    ws.cell(row=row, column=1, value="Created")
     if model.model.created_iso:
-        ws.cell(row=row, column=1, value="Created")
         ws.cell(row=row, column=2, value=model.model.created_iso)
-        row += 1
+    row += 1
     
     # Modified - use current timestamp
     from datetime import datetime, timezone
@@ -128,32 +129,37 @@ def _write_model_sheet(wb: openpyxl.Workbook, model: InMemoryModel, position: in
     row += 1
     
     # Creators
-    for idx, creator in enumerate(model.model.creators, 1):
+    max_creators = max(2, len(model.model.creators))
+    for idx in range(1, max_creators + 1):
         ws.cell(row=row, column=1, value=f"Creator{idx}")
-        ws.cell(row=row, column=2, value=_person_to_string(creator))
+        if idx <= len(model.model.creators):
+            ws.cell(row=row, column=2, value=_person_to_string(model.model.creators[idx - 1]))
         row += 1
     
     # Contributors
-    for idx, contributor in enumerate(model.model.contributors, 1):
+    max_contributors = max(2, len(model.model.contributors))
+    for idx in range(1, max_contributors + 1):
         ws.cell(row=row, column=1, value=f"Contributor{idx}")
-        ws.cell(row=row, column=2, value=_person_to_string(contributor))
+        if idx <= len(model.model.contributors):
+            ws.cell(row=row, column=2, value=_person_to_string(model.model.contributors[idx - 1]))
         row += 1
     
     # Version
+    ws.cell(row=row, column=1, value="Version")
     if model.model.versions:
-        ws.cell(row=row, column=1, value="Version")
         # Format as "Version: version1, version2, ..." if multiple versions
         version_str = ", ".join(model.model.versions)
         if len(model.model.versions) > 1 or not version_str.startswith("Version:"):
             version_str = f"Version: {version_str}"
         ws.cell(row=row, column=2, value=version_str)
-        row += 1
+    row += 1
     
-    # Notes - combine all into single cell as Notes1
-    if model.model.notes:
-        ws.cell(row=row, column=1, value="Notes1")
-        # Join all notes with double newline
-        ws.cell(row=row, column=2, value="\n\n".join(model.model.notes))
+    # Notes
+    max_notes = max(3, len(model.model.notes))
+    for idx in range(1, max_notes + 1):
+        ws.cell(row=row, column=1, value=f"Notes{idx}")
+        if idx <= len(model.model.notes):
+            ws.cell(row=row, column=2, value=model.model.notes[idx - 1])
         row += 1
     
     # Comments - add TabularQual version
@@ -188,8 +194,10 @@ def _write_species_sheet(wb: openpyxl.Workbook, model: InMemoryModel, position: 
         max_qualifiers = max(max_qualifiers, len(grouped))
         max_notes = max(max_notes, len(species.notes))
     
-    # Ensure at least 2 Relation/Identifier pairs as per template
+    # Ensure at least 2 Relation/Identifier pairs
     max_qualifiers = max(max_qualifiers, 2)
+    # Ensure at least Notes1 column
+    max_notes = max(max_notes, 1)
     
     # Build headers
     headers = ["Species_ID", "Name"]
@@ -299,8 +307,10 @@ def _write_transitions_sheet(wb: openpyxl.Workbook, model: InMemoryModel, positi
         max_qualifiers = max(max_qualifiers, len(grouped))
         max_notes = max(max_notes, len(transition.notes))
     
-    # Ensure at least 1 Relation/Identifier pair as per template
+    # Ensure at least 1 Relation/Identifier pair
     max_qualifiers = max(max_qualifiers, 1)
+    # Ensure at least Notes1 column
+    max_notes = max(max_notes, 1)
     
     # Build headers
     headers = ["Transition_ID", "Name", "Target", "Level", "Rule"]
@@ -403,8 +413,10 @@ def _write_interactions_sheet(wb: openpyxl.Workbook, model: InMemoryModel, posit
         max_qualifiers = max(max_qualifiers, len(grouped))
         max_notes = max(max_notes, len(interaction.notes))
     
-    # Ensure at least 1 Relation/Identifier pair as per template
+    # Ensure at least 1 Relation/Identifier pair
     max_qualifiers = max(max_qualifiers, 1)
+    # Ensure at least Notes1 column
+    max_notes = max(max_notes, 1)
     
     # Build headers
     headers = ["Target", "Source", "Sign"]

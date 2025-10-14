@@ -114,7 +114,7 @@ def _parse_person_string(person_str: str) -> List[str]:
 
 def read_spreadsheet_to_model(xlsx_path: str) -> InMemoryModel:
     warnings.filterwarnings("ignore", category=UserWarning)
-    wb = load_workbook(filename=xlsx_path, data_only=True)
+    wb = load_workbook(filename=xlsx_path, data_only=True, read_only=True)
     sheetnames = wb.sheetnames
     # Model sheet (vertical: headers in first column, values in second)
     if spec.SHEET_MODEL in sheetnames:
@@ -263,6 +263,8 @@ def read_spreadsheet_to_model(xlsx_path: str) -> InMemoryModel:
     else:
         print("No interactions sheet found, skipping.")
 
+    wb.close()
+    
     return InMemoryModel(model=model_info, species=species, transitions=transitions, interactions=interactions)
 
 

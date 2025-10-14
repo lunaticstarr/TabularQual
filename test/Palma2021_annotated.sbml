@@ -1,0 +1,1006 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created by TabularQual version unknown with libSBML version 5.20.4 -->
+
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" xmlns:qual="http://www.sbml.org/sbml/level3/version1/qual/version1" level="3" version="1" qual:required="true">
+  <model metaid="metaid_0000001" id="Palma2021">
+    <listOfCompartments>
+      <compartment id="comp1" constant="true"/>
+    </listOfCompartments>
+    <qual:listOfQualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000002" qual:id="AKT1" qual:compartment="comp1" qual:constant="false" qual:name="akt" qual:maxLevel="1">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Protein family, formed by AKT1, AKT2, AKT3</p>
+          </body>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000002">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="https://identifiers.org/HGNC:391"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </qual:qualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000003" qual:id="APOPTOSIS" qual:compartment="comp1" qual:constant="false" qual:maxLevel="1"/>
+      <qual:qualitativeSpecies metaid="metaid_0000004" qual:id="BCL2" qual:compartment="comp1" qual:constant="false" qual:name="bcl2" qual:maxLevel="1">
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000004">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="https://identifiers.org/HGNC:990"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </qual:qualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000005" qual:id="CCND1" qual:compartment="comp1" qual:constant="false" qual:name="ccnd1" qual:maxLevel="1">
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000005">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="https://identifiers.org/HGNC:1582"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </qual:qualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000006" qual:id="CDKN2A" qual:compartment="comp1" qual:constant="false" qual:name="cdkn2a/arf" qual:maxLevel="1">
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000006">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="https://identifiers.org/HGNC:1787"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </qual:qualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000007" qual:id="CEBPA" qual:compartment="comp1" qual:constant="false" qual:name="cebpa" qual:maxLevel="1">
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000007">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="https://identifiers.org/HGNC:1833"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </qual:qualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000008" qual:id="DIFFERENTIATION" qual:compartment="comp1" qual:constant="false" qual:maxLevel="1"/>
+      <qual:qualitativeSpecies metaid="metaid_0000009" qual:id="DNMT3A" qual:compartment="comp1" qual:constant="false" qual:name="dnmt3a" qual:maxLevel="1">
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000009">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="https://identifiers.org/HGNC:2978"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </qual:qualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000010" qual:id="ETV6" qual:compartment="comp1" qual:constant="false" qual:name="etv6" qual:maxLevel="1">
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000010">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="https://identifiers.org/HGNC:3495"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </qual:qualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000011" qual:id="FBXW7" qual:compartment="comp1" qual:constant="false" qual:name="fbxw7" qual:maxLevel="1">
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000011">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="https://identifiers.org/HGNC:16712"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </qual:qualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000012" qual:id="FLT3" qual:compartment="comp1" qual:constant="false" qual:name="flt3" qual:maxLevel="1">
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000012">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="https://identifiers.org/HGNC:3765"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </qual:qualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000013" qual:id="GSK3B" qual:compartment="comp1" qual:constant="false" qual:name="gsk3b" qual:maxLevel="1">
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000013">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="https://identifiers.org/HGNC:4617"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </qual:qualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000014" qual:id="HOXA9" qual:compartment="comp1" qual:constant="false" qual:name="hoxa9" qual:maxLevel="1">
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000014">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="https://identifiers.org/HGNC:5109"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </qual:qualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000015" qual:id="MAPK1" qual:compartment="comp1" qual:constant="false" qual:name="erk" qual:maxLevel="1">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Protein family, formed by MAPK1, MAPK3</p>
+          </body>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000015">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="https://identifiers.org/HGNC:6871"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </qual:qualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000016" qual:id="MEIS1" qual:compartment="comp1" qual:constant="false" qual:name="meis1" qual:maxLevel="1">
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000016">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="https://identifiers.org/HGNC:7000"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </qual:qualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000017" qual:id="MYC" qual:compartment="comp1" qual:constant="false" qual:name="myc" qual:maxLevel="1">
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000017">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="https://identifiers.org/HGNC:7553"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </qual:qualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000018" qual:id="NPM1" qual:compartment="comp1" qual:constant="false" qual:name="npm1" qual:maxLevel="1">
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000018">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="https://identifiers.org/HGNC:7910"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </qual:qualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000019" qual:id="PROLIFERATION" qual:compartment="comp1" qual:constant="false" qual:maxLevel="1"/>
+      <qual:qualitativeSpecies metaid="metaid_0000020" qual:id="SOX4" qual:compartment="comp1" qual:constant="false" qual:name="sox4" qual:maxLevel="1">
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000020">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="https://identifiers.org/HGNC:11200"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </qual:qualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000021" qual:id="STAT5A" qual:compartment="comp1" qual:constant="false" qual:name="stat5a" qual:maxLevel="1">
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000021">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="https://identifiers.org/HGNC:11366"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </qual:qualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000022" qual:id="TP53" qual:compartment="comp1" qual:constant="false" qual:name="tp53" qual:maxLevel="1">
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#metaid_0000022">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="https://identifiers.org/HGNC:11998"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </qual:qualitativeSpecies>
+    </qual:listOfQualitativeSpecies>
+    <qual:listOfTransitions>
+      <qual:transition metaid="metaid_0000023" qual:id="tr_FLT3">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Level 1: FLT3</p>
+          </body>
+        </notes>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000024" qual:qualitativeSpecies="FLT3" qual:transitionEffect="none" qual:sign="positive"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output qual:qualitativeSpecies="FLT3" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <eq/>
+                <ci> FLT3 </ci>
+                <cn type="integer"> 1 </cn>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000025" qual:id="tr_NPM1">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Level 1: NPM1</p>
+          </body>
+        </notes>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000026" qual:qualitativeSpecies="NPM1" qual:transitionEffect="none" qual:sign="positive"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output qual:qualitativeSpecies="NPM1" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <eq/>
+                <ci> NPM1 </ci>
+                <cn type="integer"> 1 </cn>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000027" qual:id="tr_AKT1">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Level 1: FLT3</p>
+          </body>
+        </notes>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000028" qual:qualitativeSpecies="FLT3" qual:transitionEffect="none" qual:sign="positive"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output qual:qualitativeSpecies="AKT1" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <eq/>
+                <ci> FLT3 </ci>
+                <cn type="integer"> 1 </cn>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000029" qual:id="tr_APOPTOSIS">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Level 1: !BCL2 &amp; TP53</p>
+          </body>
+        </notes>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000030" qual:qualitativeSpecies="BCL2" qual:transitionEffect="none" qual:sign="negative"/>
+          <qual:input metaid="metaid_0000031" qual:qualitativeSpecies="TP53" qual:transitionEffect="none" qual:sign="positive"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output qual:qualitativeSpecies="APOPTOSIS" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <and/>
+                <apply>
+                  <eq/>
+                  <ci> BCL2 </ci>
+                  <cn type="integer"> 0 </cn>
+                </apply>
+                <apply>
+                  <eq/>
+                  <ci> TP53 </ci>
+                  <cn type="integer"> 1 </cn>
+                </apply>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000032" qual:id="tr_BCL2">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Level 1: MAPK1 &amp; !TP53</p>
+          </body>
+        </notes>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000033" qual:qualitativeSpecies="MAPK1" qual:transitionEffect="none" qual:sign="positive"/>
+          <qual:input metaid="metaid_0000034" qual:qualitativeSpecies="TP53" qual:transitionEffect="none" qual:sign="negative"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output qual:qualitativeSpecies="BCL2" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <and/>
+                <apply>
+                  <eq/>
+                  <ci> MAPK1 </ci>
+                  <cn type="integer"> 1 </cn>
+                </apply>
+                <apply>
+                  <eq/>
+                  <ci> TP53 </ci>
+                  <cn type="integer"> 0 </cn>
+                </apply>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000035" qual:id="tr_CCND1">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Level 1: !DNMT3A &amp; !GSK3B</p>
+          </body>
+        </notes>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000036" qual:qualitativeSpecies="DNMT3A" qual:transitionEffect="none" qual:sign="negative"/>
+          <qual:input metaid="metaid_0000037" qual:qualitativeSpecies="GSK3B" qual:transitionEffect="none" qual:sign="negative"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output qual:qualitativeSpecies="CCND1" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <and/>
+                <apply>
+                  <eq/>
+                  <ci> DNMT3A </ci>
+                  <cn type="integer"> 0 </cn>
+                </apply>
+                <apply>
+                  <eq/>
+                  <ci> GSK3B </ci>
+                  <cn type="integer"> 0 </cn>
+                </apply>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000038" qual:id="tr_CDKN2A">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Level 1: NPM1</p>
+          </body>
+        </notes>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000039" qual:qualitativeSpecies="NPM1" qual:transitionEffect="none" qual:sign="positive"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output qual:qualitativeSpecies="CDKN2A" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <eq/>
+                <ci> NPM1 </ci>
+                <cn type="integer"> 1 </cn>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000040" qual:id="tr_CEBPA">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Level 1: !FLT3</p>
+          </body>
+        </notes>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000041" qual:qualitativeSpecies="FLT3" qual:transitionEffect="none" qual:sign="negative"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output qual:qualitativeSpecies="CEBPA" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <eq/>
+                <ci> FLT3 </ci>
+                <cn type="integer"> 0 </cn>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000042" qual:id="tr_DIFFERENTIATION">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Level 1: (!CEBPA &amp; ETV6 &amp; !MEIS1) | (CEBPA &amp; !MEIS1)</p>
+          </body>
+        </notes>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000043" qual:qualitativeSpecies="CEBPA" qual:transitionEffect="none" qual:sign="positive"/>
+          <qual:input metaid="metaid_0000044" qual:qualitativeSpecies="ETV6" qual:transitionEffect="none" qual:sign="positive"/>
+          <qual:input metaid="metaid_0000045" qual:qualitativeSpecies="MEIS1" qual:transitionEffect="none" qual:sign="negative"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output qual:qualitativeSpecies="DIFFERENTIATION" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <or/>
+                <apply>
+                  <and/>
+                  <apply>
+                    <and/>
+                    <apply>
+                      <eq/>
+                      <ci> CEBPA </ci>
+                      <cn type="integer"> 0 </cn>
+                    </apply>
+                    <apply>
+                      <eq/>
+                      <ci> ETV6 </ci>
+                      <cn type="integer"> 1 </cn>
+                    </apply>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> MEIS1 </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                </apply>
+                <apply>
+                  <and/>
+                  <apply>
+                    <eq/>
+                    <ci> CEBPA </ci>
+                    <cn type="integer"> 1 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> MEIS1 </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                </apply>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000046" qual:id="tr_DNMT3A">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Level 1: DNMT3A</p>
+          </body>
+        </notes>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000047" qual:qualitativeSpecies="DNMT3A" qual:transitionEffect="none" qual:sign="positive"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output qual:qualitativeSpecies="DNMT3A" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <eq/>
+                <ci> DNMT3A </ci>
+                <cn type="integer"> 1 </cn>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000048" qual:id="tr_MAPK1">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Level 1: FLT3</p>
+          </body>
+        </notes>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000049" qual:qualitativeSpecies="FLT3" qual:transitionEffect="none" qual:sign="positive"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output qual:qualitativeSpecies="MAPK1" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <eq/>
+                <ci> FLT3 </ci>
+                <cn type="integer"> 1 </cn>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000050" qual:id="tr_ETV6">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Level 1: !MAPK1</p>
+          </body>
+        </notes>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000051" qual:qualitativeSpecies="MAPK1" qual:transitionEffect="none" qual:sign="negative"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output qual:qualitativeSpecies="ETV6" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <eq/>
+                <ci> MAPK1 </ci>
+                <cn type="integer"> 0 </cn>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000052" qual:id="tr_FBXW7">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Level 1: NPM1</p>
+          </body>
+        </notes>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000053" qual:qualitativeSpecies="NPM1" qual:transitionEffect="none" qual:sign="positive"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output qual:qualitativeSpecies="FBXW7" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <eq/>
+                <ci> NPM1 </ci>
+                <cn type="integer"> 1 </cn>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000054" qual:id="tr_GSK3B">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Level 1: !AKT1</p>
+          </body>
+        </notes>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000055" qual:qualitativeSpecies="AKT1" qual:transitionEffect="none" qual:sign="negative"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output qual:qualitativeSpecies="GSK3B" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <eq/>
+                <ci> AKT1 </ci>
+                <cn type="integer"> 0 </cn>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000056" qual:id="tr_HOXA9">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Level 1: !NPM1</p>
+          </body>
+        </notes>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000057" qual:qualitativeSpecies="NPM1" qual:transitionEffect="none" qual:sign="negative"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output qual:qualitativeSpecies="HOXA9" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <eq/>
+                <ci> NPM1 </ci>
+                <cn type="integer"> 0 </cn>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000058" qual:id="tr_MEIS1">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Level 1: !DNMT3A &amp; HOXA9</p>
+          </body>
+        </notes>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000059" qual:qualitativeSpecies="DNMT3A" qual:transitionEffect="none" qual:sign="negative"/>
+          <qual:input metaid="metaid_0000060" qual:qualitativeSpecies="HOXA9" qual:transitionEffect="none" qual:sign="positive"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output qual:qualitativeSpecies="MEIS1" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <and/>
+                <apply>
+                  <eq/>
+                  <ci> DNMT3A </ci>
+                  <cn type="integer"> 0 </cn>
+                </apply>
+                <apply>
+                  <eq/>
+                  <ci> HOXA9 </ci>
+                  <cn type="integer"> 1 </cn>
+                </apply>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000061" qual:id="tr_MYC">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Level 1: (MAPK1 &amp; !FBXW7) | (MAPK1 &amp; FBXW7 &amp; !GSK3B)</p>
+          </body>
+        </notes>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000062" qual:qualitativeSpecies="FBXW7" qual:transitionEffect="none" qual:sign="negative"/>
+          <qual:input metaid="metaid_0000063" qual:qualitativeSpecies="GSK3B" qual:transitionEffect="none" qual:sign="negative"/>
+          <qual:input metaid="metaid_0000064" qual:qualitativeSpecies="MAPK1" qual:transitionEffect="none" qual:sign="positive"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output qual:qualitativeSpecies="MYC" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <or/>
+                <apply>
+                  <and/>
+                  <apply>
+                    <eq/>
+                    <ci> MAPK1 </ci>
+                    <cn type="integer"> 1 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> FBXW7 </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                </apply>
+                <apply>
+                  <and/>
+                  <apply>
+                    <and/>
+                    <apply>
+                      <eq/>
+                      <ci> MAPK1 </ci>
+                      <cn type="integer"> 1 </cn>
+                    </apply>
+                    <apply>
+                      <eq/>
+                      <ci> FBXW7 </ci>
+                      <cn type="integer"> 1 </cn>
+                    </apply>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> GSK3B </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                </apply>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000065" qual:id="tr_PROLIFERATION">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Level 1: (!CCND1 &amp; !MEIS1 &amp; !MYC &amp; !SOX4 &amp; STAT5A) | (!CCND1 &amp; !MEIS1 &amp; !MYC &amp; SOX4) | (!CCND1 &amp; !MEIS1 &amp; MYC) | (!CCND1 &amp; MEIS1) | CCND1</p>
+          </body>
+        </notes>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000066" qual:qualitativeSpecies="CCND1" qual:transitionEffect="none" qual:sign="positive"/>
+          <qual:input metaid="metaid_0000067" qual:qualitativeSpecies="MEIS1" qual:transitionEffect="none" qual:sign="positive"/>
+          <qual:input metaid="metaid_0000068" qual:qualitativeSpecies="MYC" qual:transitionEffect="none" qual:sign="positive"/>
+          <qual:input metaid="metaid_0000069" qual:qualitativeSpecies="SOX4" qual:transitionEffect="none" qual:sign="positive"/>
+          <qual:input metaid="metaid_0000070" qual:qualitativeSpecies="STAT5A" qual:transitionEffect="none" qual:sign="positive"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output qual:qualitativeSpecies="PROLIFERATION" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <or/>
+                <apply>
+                  <or/>
+                  <apply>
+                    <or/>
+                    <apply>
+                      <or/>
+                      <apply>
+                        <and/>
+                        <apply>
+                          <and/>
+                          <apply>
+                            <and/>
+                            <apply>
+                              <and/>
+                              <apply>
+                                <eq/>
+                                <ci> CCND1 </ci>
+                                <cn type="integer"> 0 </cn>
+                              </apply>
+                              <apply>
+                                <eq/>
+                                <ci> MEIS1 </ci>
+                                <cn type="integer"> 0 </cn>
+                              </apply>
+                            </apply>
+                            <apply>
+                              <eq/>
+                              <ci> MYC </ci>
+                              <cn type="integer"> 0 </cn>
+                            </apply>
+                          </apply>
+                          <apply>
+                            <eq/>
+                            <ci> SOX4 </ci>
+                            <cn type="integer"> 0 </cn>
+                          </apply>
+                        </apply>
+                        <apply>
+                          <eq/>
+                          <ci> STAT5A </ci>
+                          <cn type="integer"> 1 </cn>
+                        </apply>
+                      </apply>
+                      <apply>
+                        <and/>
+                        <apply>
+                          <and/>
+                          <apply>
+                            <and/>
+                            <apply>
+                              <eq/>
+                              <ci> CCND1 </ci>
+                              <cn type="integer"> 0 </cn>
+                            </apply>
+                            <apply>
+                              <eq/>
+                              <ci> MEIS1 </ci>
+                              <cn type="integer"> 0 </cn>
+                            </apply>
+                          </apply>
+                          <apply>
+                            <eq/>
+                            <ci> MYC </ci>
+                            <cn type="integer"> 0 </cn>
+                          </apply>
+                        </apply>
+                        <apply>
+                          <eq/>
+                          <ci> SOX4 </ci>
+                          <cn type="integer"> 1 </cn>
+                        </apply>
+                      </apply>
+                    </apply>
+                    <apply>
+                      <and/>
+                      <apply>
+                        <and/>
+                        <apply>
+                          <eq/>
+                          <ci> CCND1 </ci>
+                          <cn type="integer"> 0 </cn>
+                        </apply>
+                        <apply>
+                          <eq/>
+                          <ci> MEIS1 </ci>
+                          <cn type="integer"> 0 </cn>
+                        </apply>
+                      </apply>
+                      <apply>
+                        <eq/>
+                        <ci> MYC </ci>
+                        <cn type="integer"> 1 </cn>
+                      </apply>
+                    </apply>
+                  </apply>
+                  <apply>
+                    <and/>
+                    <apply>
+                      <eq/>
+                      <ci> CCND1 </ci>
+                      <cn type="integer"> 0 </cn>
+                    </apply>
+                    <apply>
+                      <eq/>
+                      <ci> MEIS1 </ci>
+                      <cn type="integer"> 1 </cn>
+                    </apply>
+                  </apply>
+                </apply>
+                <apply>
+                  <eq/>
+                  <ci> CCND1 </ci>
+                  <cn type="integer"> 1 </cn>
+                </apply>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000071" qual:id="tr_SOX4">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Level 1: !CEBPA</p>
+          </body>
+        </notes>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000072" qual:qualitativeSpecies="CEBPA" qual:transitionEffect="none" qual:sign="negative"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output qual:qualitativeSpecies="SOX4" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <eq/>
+                <ci> CEBPA </ci>
+                <cn type="integer"> 0 </cn>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000073" qual:id="tr_STAT5A">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Level 1: FLT3</p>
+          </body>
+        </notes>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000074" qual:qualitativeSpecies="FLT3" qual:transitionEffect="none" qual:sign="positive"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output qual:qualitativeSpecies="STAT5A" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <eq/>
+                <ci> FLT3 </ci>
+                <cn type="integer"> 1 </cn>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition metaid="metaid_0000075" qual:id="tr_TP53">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Level 1: CDKN2A</p>
+          </body>
+        </notes>
+        <qual:listOfInputs>
+          <qual:input metaid="metaid_0000076" qual:qualitativeSpecies="CDKN2A" qual:transitionEffect="none" qual:sign="positive"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output qual:qualitativeSpecies="TP53" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"/>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <eq/>
+                <ci> CDKN2A </ci>
+                <cn type="integer"> 1 </cn>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+    </qual:listOfTransitions>
+  </model>
+</sbml>

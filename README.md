@@ -8,6 +8,7 @@ Use TabularQual directly in your browser - no installation required!
 
 🔗 **[Launch Web App](https://tabularqual.streamlit.app/)**
 
+Note: there are currently resource limits on Streamlit cloud, please run it locally for large networks.
 
 ---
 

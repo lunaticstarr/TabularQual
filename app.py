@@ -13,6 +13,7 @@ import warnings
 from io import BytesIO
 import sys
 from io import StringIO
+import gc
 
 # Import converter functions
 from converter.convert_spreadsheet_to_sbml import convert_spreadsheet_to_sbml
@@ -70,7 +71,7 @@ st.markdown("""
 
 # Header
 st.markdown('<p class="main-header">🔄 TabularQual Converter</p>', unsafe_allow_html=True)
-st.markdown('<p class="sub-header">Convert between SpreadSBML spreadsheets and SBML-qual files for logical models.</p>', unsafe_allow_html=True)
+st.markdown('<p class="sub-header">Convert between spreadsheets and SBML-qual files for logical models (Boolean and multi-valued).</p>', unsafe_allow_html=True)
 
 # Sidebar with information
 with st.sidebar:
@@ -79,8 +80,6 @@ with st.sidebar:
     This tool converts between:
     - **SpreadSBML** spreadsheets (.xlsx)
     - **SBML-qual** files (.sbml)
-    
-    Supports Boolean and multi-valued logical models.
     """)
     st.header("🔍 Examples")
     st.markdown("""
@@ -142,11 +141,14 @@ with tab1:
         )
     
     if uploaded_xlsx is not None:
+        # Store file content once
+        file_content = uploaded_xlsx.getvalue()
+        
         # Preview uploaded spreadsheet
         with st.expander("📊 Preview Uploaded Spreadsheet", expanded=False):
             try:
-                # Load workbook for preview
-                wb = load_workbook(BytesIO(uploaded_xlsx.getvalue()), read_only=True)
+                # Use read_only and data_only for memory efficiency
+                wb = load_workbook(BytesIO(file_content), read_only=True, data_only=True)
                 
                 # Skip README and Appendix sheets
                 skip_sheets = ["README", "Appendix"]
@@ -164,7 +166,10 @@ with tab1:
                     # Read sheet data
                     sheet = wb[sheet_name]
                     data = []
-                    for row in sheet.iter_rows(values_only=True):
+                    max_preview_rows = 50
+                    for idx, row in enumerate(sheet.iter_rows(values_only=True)):
+                        if idx >= max_preview_rows:
+                            break
                         data.append(row)
                     
                     if data:
@@ -174,10 +179,16 @@ with tab1:
                         padded_data = [list(row) + [None] * (max_cols - len(row)) for row in data]
                         df = pd.DataFrame(padded_data)
                         st.dataframe(df, use_container_width=True)
+                        if idx >= max_preview_rows - 1 and sheet.max_row > max_preview_rows:
+                            st.info(f"Preview limited to {max_preview_rows} rows (sheet has {sheet.max_row} rows)")
+                        del df, padded_data, data
+                        gc.collect()
                     else:
                         st.info("Sheet is empty")
                 
                 wb.close()
+                del wb  # Explicit cleanup
+                gc.collect()  # Force garbage collection
             except Exception as e:
                 st.error(f"Error previewing spreadsheet: {str(e)}")
         
@@ -195,46 +206,47 @@ with tab1:
         if st.button("🔄 Convert to SBML", type="primary", key="convert_to_sbml"):
             with st.spinner("Converting..."):
                 try:
-                    # Create temporary files
+                    # Create temporary file ONCE
                     with tempfile.NamedTemporaryFile(suffix='.xlsx', delete=False) as tmp_in:
-                        tmp_in.write(uploaded_xlsx.getvalue())
+                        tmp_in.write(file_content)
                         input_path = tmp_in.name
                     
                     with tempfile.NamedTemporaryFile(suffix='.sbml', delete=False) as tmp_out:
                         output_path = tmp_out.name
                     
-                    # Read the model to get statistics first
-                    model = read_spreadsheet_to_model(input_path)
-                    species_count = len(model.species)
-                    transitions_count = len(model.transitions)
-                    interactions_count = len(model.interactions)
-                    
-                    # Perform conversion
-                    convert_spreadsheet_to_sbml(
+                    # conversion
+                    stats = convert_spreadsheet_to_sbml(
                         input_path,
                         output_path,
                         interactions_anno=inter_anno,
                         transitions_anno=trans_anno
                     )
+                    species_count = stats['species']
+                    transitions_count = stats['transitions']
+                    interactions_count = stats['interactions']
                     
-                    # Read the output file
+                    # Read output file
                     with open(output_path, 'r', encoding='utf-8') as f:
                         sbml_content = f.read()
                     
                     # Success message
                     st.markdown('<div class="success-box">✅ Conversion successful!</div>', unsafe_allow_html=True)
                     
-                    # Display statistics from the model
+                    # Display statistics
                     col1, col2, col3 = st.columns(3)
                     col1.metric("Species", species_count)
                     col2.metric("Transitions", transitions_count)
                     col3.metric("Interactions", interactions_count)
                     
-                    # Preview SBML - show full content with scrollable area
-                    with st.expander("📄 Preview SBML Output", expanded=True):
-                        st.code(sbml_content, language="xml")
+                    # LIMIT preview size
+                    with st.expander("📄 Preview SBML Output", expanded=False):
+                        if len(sbml_content) > 50000:  # ~50KB
+                            preview_lines = sbml_content.split('\n')[:100]
+                            st.code('\n'.join(preview_lines) + "\n\n... (truncated, download to see full file)", language="xml")
+                        else:
+                            st.code(sbml_content, language="xml")
                     
-                    # Download button with custom filename
+                    # Download button
                     final_filename = f"{output_filename}.sbml" if output_filename else f"{original_name}_out.sbml"
                     st.download_button(
                         label="⬇️ Download SBML File",
@@ -244,15 +256,18 @@ with tab1:
                         type="primary"
                     )
                     
-                    # Clean up temp files
+                    # Cleanup
+                    del sbml_content
                     os.unlink(input_path)
                     os.unlink(output_path)
+                    gc.collect()
                     
                 except Exception as e:
                     st.error(f"❌ Conversion failed: {str(e)}")
                     import traceback
                     with st.expander("Error Details"):
                         st.code(traceback.format_exc())
+                    gc.collect()
 
 # Tab 2: SBML to Spreadsheet
 with tab2:
@@ -294,11 +309,19 @@ with tab2:
         )
     
     if uploaded_sbml is not None:
-        # Preview uploaded SBML - show full content
+        # Store file content
+        file_content = uploaded_sbml.getvalue()
+        
+        # Preview
         with st.expander("📄 Preview Uploaded SBML", expanded=False):
             try:
-                sbml_text = uploaded_sbml.getvalue().decode('utf-8')
-                st.code(sbml_text, language="xml")
+                sbml_text = file_content.decode('utf-8')
+                if len(sbml_text) > 50000:  # ~50KB
+                    preview_lines = sbml_text.split('\n')[:100]
+                    st.code('\n'.join(preview_lines) + "\n\n... (truncated)", language="xml")
+                else:
+                    st.code(sbml_text, language="xml")
+                del sbml_text
             except Exception as e:
                 st.error(f"Error previewing SBML: {str(e)}")
         
@@ -307,7 +330,7 @@ with tab2:
         original_name = uploaded_sbml.name.rsplit('.', 1)[0]
         output_filename = st.text_input(
             "Edit output filename (without extension)",
-            value=f"{original_name}_reconstructed",
+            value=f"{original_name}_out",
             key="xlsx_output_name",
             help="The file will be saved with .xlsx extension"
         )
@@ -318,7 +341,7 @@ with tab2:
                 try:
                     # Create temporary files
                     with tempfile.NamedTemporaryFile(suffix='.sbml', delete=False) as tmp_in:
-                        tmp_in.write(uploaded_sbml.getvalue())
+                        tmp_in.write(file_content)
                         input_path = tmp_in.name
                     
                     with tempfile.NamedTemporaryFile(suffix='.xlsx', delete=False) as tmp_out:
@@ -328,9 +351,7 @@ with tab2:
                     template_path = None
                     template_tmp_path = None
                     
-                    # Priority: custom template > default template > no template
                     if custom_template is not None:
-                        # Save custom template to temp file
                         with tempfile.NamedTemporaryFile(suffix='.xlsx', delete=False) as tmp_template:
                             tmp_template.write(custom_template.getvalue())
                             template_tmp_path = tmp_template.name
@@ -360,17 +381,15 @@ with tab2:
                     # Success message
                     st.markdown('<div class="success-box">✅ Conversion successful!</div>', unsafe_allow_html=True)
                     
-                    # Load workbook for preview and stats
-                    wb = load_workbook(BytesIO(xlsx_content))
-                    
                     # Display statistics
+                    wb = load_workbook(BytesIO(xlsx_content), read_only=True, data_only=True)
                     col1, col2, col3 = st.columns(3)
                     col1.metric("Sheets", len(wb.sheetnames))
                     col2.metric("File Size", f"{len(xlsx_content)} bytes")
                     col3.metric("Format", "Colon" if colon_format else "Operators")
                     
-                    # Preview spreadsheet - skip README and Appendix
-                    with st.expander("📊 Preview Spreadsheet Output", expanded=True):
+                    # LIMITED Preview
+                    with st.expander("📊 Preview Spreadsheet Output", expanded=False):
                         skip_sheets = ["README", "Appendix"]
                         skipped_sheets = [s for s in wb.sheetnames if s in skip_sheets]
                         
@@ -382,10 +401,14 @@ with tab2:
                                 continue
                             
                             st.subheader(f"Sheet: {sheet_name}")
-                            
                             sheet = wb[sheet_name]
+                            
+                            # LIMIT rows for preview
                             data = []
-                            for row in sheet.iter_rows(values_only=True):
+                            max_preview_rows = 50  # Only show first 50 rows
+                            for idx, row in enumerate(sheet.iter_rows(values_only=True)):
+                                if idx >= max_preview_rows:
+                                    break
                                 data.append(row)
                             
                             if data:
@@ -393,10 +416,14 @@ with tab2:
                                 padded_data = [list(row) + [None] * (max_cols - len(row)) for row in data]
                                 df = pd.DataFrame(padded_data)
                                 st.dataframe(df, use_container_width=True)
+                                if idx >= max_preview_rows:
+                                    st.info(f"Preview limited to {max_preview_rows} rows")
+                                del df, padded_data, data
                     
                     wb.close()
+                    del wb
                     
-                    # Download button with custom filename
+                    # Download button
                     final_filename = f"{output_filename}.xlsx" if output_filename else f"{original_name}_out.xlsx"
                     st.download_button(
                         label="⬇️ Download Spreadsheet",
@@ -406,17 +433,20 @@ with tab2:
                         type="primary"
                     )
                     
-                    # Clean up temp files
+                    # Cleanup
+                    del xlsx_content
                     os.unlink(input_path)
                     os.unlink(output_path)
                     if template_tmp_path:
                         os.unlink(template_tmp_path)
+                    gc.collect()
                     
                 except Exception as e:
                     st.error(f"❌ Conversion failed: {str(e)}")
                     import traceback
                     with st.expander("Error Details"):
                         st.code(traceback.format_exc())
+                    gc.collect()
 
 # Footer
 st.markdown("---")
