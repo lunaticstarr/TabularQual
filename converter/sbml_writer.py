@@ -141,8 +141,12 @@ def write_sbml(model: InMemoryModel, *, interactions_anno: bool = True, transiti
             ast = parse_expr(t.rule)
             all_species_ids.update(_collect_ids_from_ast(ast))
         
-        # Create inputs for all referenced species
-        for sid in sorted(all_species_ids):
+        # Filter out IDs that don't correspond to actual species (e.g., constants like "1")
+        valid_species_ids = [sid for sid in all_species_ids if sid in model.species]
+        
+        # Create inputs only for valid species references
+        # If no valid species (e.g., rule is just "1"), listOfInputs will be omitted
+        for sid in sorted(valid_species_ids):
             inp = qt.createInput()
             inp.setQualitativeSpecies(sid)
             if not inp.isSetMetaId():
@@ -337,7 +341,9 @@ def _add_model_history(m: libsbml.Model, im: InMemoryModel) -> None:
         history = libsbml.ModelHistory()
     except Exception:
         return
+    
     # Creators
+    has_creators = False
     for p in im.model.creators:
         c = libsbml.ModelCreator()
         if p.family_name:
@@ -349,6 +355,16 @@ def _add_model_history(m: libsbml.Model, im: InMemoryModel) -> None:
         if p.organization:
             c.setOrganization(p.organization)
         history.addCreator(c)
+        has_creators = True
+    
+    # If no creators, add a placeholder to enable model history
+    # (libsbml requires at least one creator with both family and given names)
+    if not has_creators:
+        c = libsbml.ModelCreator()
+        c.setFamilyName("Unknown")
+        c.setGivenName("User")
+        history.addCreator(c)
+    
     # Contributors (not available in libsbml 5.20.4; fall back to addCreator)
     for p in im.model.contributors:
         c = libsbml.ModelCreator()
@@ -365,18 +381,47 @@ def _add_model_history(m: libsbml.Model, im: InMemoryModel) -> None:
         else:
             history.addCreator(c)
     # Dates
-    created = _to_iso8601(im.model.created_iso)
-    if created:
-        d = libsbml.Date()
-        if hasattr(d, "setDateAsString"):
-            d.setDateAsString(created)
+    # Use current time if created_iso is None
+    created_iso = im.model.created_iso
+    if not created_iso:
+        created_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    
+    # Parse created date and create Date object with components
+    # (libsbml's setDateAsString doesn't work reliably)
+    created_dt = _to_iso8601(created_iso)
+    if created_dt:
+        try:
+            d = libsbml.Date(
+                created_dt.year,
+                created_dt.month,
+                created_dt.day,
+                created_dt.hour,
+                created_dt.minute,
+                created_dt.second,
+                1, 0, 0  # sign=1 (positive offset), hours offset=0, minutes offset=0
+            )
             history.setCreatedDate(d)
-    modified = _to_iso8601(im.model.modified_iso)
-    if modified:
-        d = libsbml.Date()
-        if hasattr(d, "setDateAsString"):
-            d.setDateAsString(modified)
-            history.setModifiedDate(d)
+        except Exception:
+            pass
+    
+    # Parse modified date and create Date object with components
+    if im.model.modified_iso:
+        modified_dt = _to_iso8601(im.model.modified_iso)
+        if modified_dt:
+            try:
+                d = libsbml.Date(
+                    modified_dt.year,
+                    modified_dt.month,
+                    modified_dt.day,
+                    modified_dt.hour,
+                    modified_dt.minute,
+                    modified_dt.second,
+                    1, 0, 0
+                )
+                history.setModifiedDate(d)
+            except Exception:
+                pass
+    
     m.setModelHistory(history)
 
 
@@ -440,6 +485,14 @@ def _add_cvterm(node: libsbml.SBase, is_model: bool, predicate: int, uri: str) -
 
 
 def _to_identifiers_url(identifier: str) -> str:
+    """Convert compact identifier or URL to identifiers.org URL
+    
+    Handles:
+    - Direct URLs (http://, https://, etc.) - kept as-is
+    - Compact IDs with colon (ncbigene:7132) -> https://identifiers.org/ncbigene:7132
+    - Compact IDs with slash (ncbigene/7132) -> https://identifiers.org/ncbigene:7132
+    - Plain strings -> https://identifiers.org/{string}
+    """
     s = identifier.strip()
     if not s:
         return s
@@ -447,6 +500,12 @@ def _to_identifiers_url(identifier: str) -> str:
     # Check if it's already a URL/URI
     if s.startswith(("http://", "https://", "ftp://", "urn:", "doi:")):
         return s
+    
+    # Check if it's a compact identifier with slash (e.g., ncbigene/7132)
+    # Convert to colon format before creating URL
+    if "/" in s and ":" not in s:
+        # Convert first slash to colon
+        s = s.replace("/", ":", 1)
     
     # Check if it's a compact identifier (prefix:accession pattern)
     if ":" in s and not s.startswith(":"):
@@ -462,9 +521,14 @@ def _to_identifiers_url(identifier: str) -> str:
 
 
 def _collect_ids_from_ast(ast) -> List[str]:
+    """Collect species IDs from AST, excluding numeric constants"""
     kind = ast[0]
     if kind == 'id':
-        return [ast[1]]
+        name = ast[1]
+        # Skip numeric constants (e.g., "1", "0")
+        if name.isdigit():
+            return []
+        return [name]
     if kind in ('eq', 'le', 'ge', 'gt', 'lt', 'neq'):
         return [ast[1]]  # Return the species name from threshold nodes
     if kind == 'not_species':
@@ -484,7 +548,12 @@ def _qual_enum(name: str, default_value: int) -> int:
     return default_value
 
 
-def _to_iso8601(value: str | None) -> str | None:
+def _to_iso8601(value: str | None):
+    """Parse an ISO8601 date string and return a datetime object
+    
+    Returns:
+        datetime object in UTC, or None if parsing fails
+    """
     if not value:
         return None
     s = str(value).strip()
@@ -530,15 +599,12 @@ def _to_iso8601(value: str | None) -> str | None:
                 continue
     if dt is None:
         return None
-    # Normalize to UTC and return ISO string without microseconds, with Z
+    # Normalize to UTC and return datetime object
     try:
         if dt.tzinfo is None:
             dt = dt.replace(tzinfo=timezone.utc)
         else:
             dt = dt.astimezone(timezone.utc)
-        iso = dt.replace(microsecond=0).isoformat()
-        if iso.endswith("+00:00"):
-            iso = iso[:-6] + "Z"
-        return iso
+        return dt.replace(microsecond=0)
     except Exception:
         return None

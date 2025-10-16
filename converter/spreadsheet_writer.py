@@ -7,7 +7,7 @@ from pathlib import Path
 import shutil
 
 from .types import InMemoryModel, Person
-
+from . import spec
 
 def write_spreadsheet(model: InMemoryModel, output_path: str, template_path: str = None, rule_format: str = "operators"):
     """Write InMemoryModel to spreadsheet format
@@ -118,8 +118,12 @@ def _write_model_sheet(wb: openpyxl.Workbook, model: InMemoryModel, position: in
     
     # Created
     ws.cell(row=row, column=1, value="Created")
-    if model.model.created_iso:
-        ws.cell(row=row, column=2, value=model.model.created_iso)
+    created_value = model.model.created_iso
+    if not created_value:
+        # Fallback to current time if not set
+        from datetime import datetime, timezone
+        created_value = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    ws.cell(row=row, column=2, value=created_value)
     row += 1
     
     # Modified - use current timestamp
@@ -164,7 +168,7 @@ def _write_model_sheet(wb: openpyxl.Workbook, model: InMemoryModel, position: in
     
     # Comments - add TabularQual version
     ws.cell(row=row, column=1, value="Comments")
-    ws.cell(row=row, column=2, value="Created by TabularQual version 0.1.0")
+    ws.cell(row=row, column=2, value=f"Created by TabularQual version {spec.VERSION}")
     row += 1
     
     # Adjust column widths
@@ -483,12 +487,23 @@ def _write_interactions_sheet(wb: openpyxl.Workbook, model: InMemoryModel, posit
 
 
 def _url_to_compact_id(url: str) -> str:
-    """Convert identifiers.org URL to compact ID"""
+    """Convert identifiers.org URL to compact ID
+    
+    Handles:
+    - identifiers.org/ncbigene:7132 -> ncbigene:7132
+    - identifiers.org/ncbigene/7132 -> ncbigene:7132 (slash to colon)
+    - Other URLs are kept as-is
+    """
     if "identifiers.org/" in url:
         # Extract the part after identifiers.org/
         parts = url.split("identifiers.org/")
         if len(parts) > 1:
-            return parts[1]
+            compact_id = parts[1]
+            # Convert slash to colon if present (e.g., ncbigene/7132 -> ncbigene:7132)
+            # Only convert the first slash to maintain compatibility with nested identifiers
+            if "/" in compact_id and ":" not in compact_id:
+                compact_id = compact_id.replace("/", ":", 1)
+            return compact_id
     return url
 
 

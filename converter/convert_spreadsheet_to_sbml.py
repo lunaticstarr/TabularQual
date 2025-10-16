@@ -21,18 +21,26 @@ def _get_version_info() -> str:
     return f"Created by TabularQual version {tabularqual_version} with libSBML version {libsbml_version}"
 
 def convert_spreadsheet_to_sbml(input_xlsx: str, output_sbml: str, *, interactions_anno: bool = True, transitions_anno: bool = True) -> dict:
-    """Convert spreadsheet to SBML and return statistics.
+    """Convert spreadsheet to SBML and return statistics and warnings.
     
     Returns:
-        dict: Statistics including 'species', 'transitions', and 'interactions' counts
+        dict: Statistics including 'species', 'transitions', 'interactions' counts, and 'warnings' list
     """
-    im = read_spreadsheet_to_model(input_xlsx)
+    im, validation_warnings = read_spreadsheet_to_model(input_xlsx)
+    
+    # Print warnings to console
+    for warning in validation_warnings:
+        if warning.startswith("Found ") or warning.startswith("No "):
+            print(warning)  # Info messages
+        else:
+            print(f"Warning: {warning}")  # Actual warnings
     
     # Collect stats
     stats = {
         'species': len(im.species),
         'transitions': len(im.transitions),
-        'interactions': len(im.interactions)
+        'interactions': len(im.interactions),
+        'warnings': validation_warnings
     }
     
     sbml_string = write_sbml(im, interactions_anno=interactions_anno, transitions_anno=transitions_anno)

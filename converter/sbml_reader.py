@@ -5,6 +5,8 @@ import libsbml
 from xml.etree import ElementTree as ET
 import os
 import gc
+import warnings
+from datetime import datetime, timezone
 
 from .types import InMemoryModel, ModelInfo, Species, Transition, InteractionEvidence, Person
 
@@ -111,6 +113,10 @@ def _read_model_info(model: libsbml.Model, sbml_path: str) -> ModelInfo:
             creators = anno_dict['dcterms:creator']
         if 'dcterms:contributor' in anno_dict:
             contributors = anno_dict['dcterms:contributor']
+    
+    # Set current time if Created field is empty
+    if not created_iso:
+        created_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     
     return ModelInfo(
         model_id=model_id,
@@ -257,6 +263,11 @@ def _read_transitions(qual_model) -> Tuple[List[Transition], List[InteractionEvi
                 if rule is None and inputs_with_signs:
                     rule = " & ".join([src for src, _, _ in inputs_with_signs])
                 
+                # Warn about blank or empty rules
+                if not rule or rule.strip() == "" or rule.strip() == "()":
+                    warnings.warn(f"Warning: Transition for target '{target}' has blank or empty rule. Setting to 1 (default level).")
+                    rule = "1"
+
                 function_terms.append((level, rule or ""))
         
         # If no function terms with rules, create one transition without level
@@ -276,6 +287,12 @@ def _read_transitions(qual_model) -> Tuple[List[Transition], List[InteractionEvi
             if rule is None and inputs_with_signs:
                 rule = " & ".join([src for src, _, _ in inputs_with_signs])
             
+            # Warn about blank or empty rules
+            if not rule or rule.strip() == "" or rule.strip() == "()":
+                warnings.warn(f"Warning: Transition for target '{target}' has blank or empty rule. Setting to 1 (default level).")
+                rule = "1"
+            # TODO: set the species to Constant=True if the rule is blank?
+
             transitions.append(Transition(
                 transition_id=transition_id,
                 name=name,
@@ -308,7 +325,7 @@ def _read_transitions(qual_model) -> Tuple[List[Transition], List[InteractionEvi
 
 
 def _mathml_to_rule(math_ast, inputs_with_signs) -> str:
-    """Convert MathML AST to rule string compatible with our parser"""
+    """Convert MathML AST to rule string"""
     
     def convert_ast_node(node) -> str:
         """Recursively convert AST node to expression string"""
@@ -390,7 +407,11 @@ def _mathml_to_rule(math_ast, inputs_with_signs) -> str:
         else:
             return libsbml.formulaToL3String(node)
     
-    return convert_ast_node(math_ast)
+    result = convert_ast_node(math_ast)
+    # Clean up empty results or "()" patterns
+    if result and result.strip() in ["", "()", "(  )"]:
+        return ""
+    return result
 
 
 def _parse_rdf_annotation(anno_str: str) -> Dict[str, List]:

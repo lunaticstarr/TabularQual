@@ -12,13 +12,12 @@ from openpyxl import load_workbook
 import warnings
 from io import BytesIO
 import sys
-from io import StringIO
 import gc
 
 # Import converter functions
 from converter.convert_spreadsheet_to_sbml import convert_spreadsheet_to_sbml
 from converter.convert_sbml_to_spreadsheet import convert_sbml_to_spreadsheet
-from converter.spreadsheet_reader import read_spreadsheet_to_model
+from converter import spec
 
 # Suppress openpyxl warnings
 warnings.filterwarnings('ignore', category=UserWarning, module='openpyxl')
@@ -35,13 +34,13 @@ st.set_page_config(
 st.markdown("""
     <style>
     .main-header {
-        font-size: 2.5rem;
+        /* font-size: 3rem; */
         font-weight: bold;
         color: #1f77b4;
         margin-bottom: 0.5rem;
     }
     .sub-header {
-        font-size: 1.2rem;
+        /* font-size: 2.5rem; */
         color: #666;
         margin-bottom: 2rem;
     }
@@ -71,20 +70,20 @@ st.markdown("""
 
 # Header
 st.markdown('<p class="main-header">🔄 TabularQual Converter</p>', unsafe_allow_html=True)
-st.markdown('<p class="sub-header">Convert between spreadsheets and SBML-qual files for logical models (Boolean and multi-valued).</p>', unsafe_allow_html=True)
+st.markdown('<p class="sub-header">Convert between spreadsheets and SBML-qual files for logical models (Boolean and multi-valued). <br>For more about the format, see the <a href="https://docs.google.com/document/d/1RCIN4bOsw4Uq9X2I-gdfBXDydyViYzaVhQK8cpdEWhA/edit?usp=sharing">Spreadsheet specification</a></p>', unsafe_allow_html=True)
 
 # Sidebar with information
 with st.sidebar:
     st.header("ℹ️ About")
     st.markdown("""
     This tool converts between:
-    - **SpreadSBML** spreadsheets (.xlsx)
+    - **Spreadsheets** (.xlsx)
     - **SBML-qual** files (.sbml)
     """)
     st.header("🔍 Examples")
     st.markdown("""
-    - [Faure2006 - Boolean Model](https://docs.google.com/spreadsheets/d/1B9SUcuY_ioQVlY9y351yIHnW45oZ8J1t/edit?usp=drive_link&ouid=105819375684543832411&rtpof=true&sd=true)
-    - [ThieffryThomas1995 - Multi-valued Model](https://docs.google.com/spreadsheets/d/1Auepvb1Z0Q4lIjMqaesjWdh3oHWTwjA8/edit?usp=drive_link&ouid=105819375684543832411&rtpof=true&sd=true)
+    - [Faure2006 (Boolean)](https://docs.google.com/spreadsheets/d/1B9SUcuY_ioQVlY9y351yIHnW45oZ8J1t/edit?usp=drive_link&ouid=105819375684543832411&rtpof=true&sd=true)
+    - [ThieffryThomas1995 (Multi-valued)](https://docs.google.com/spreadsheets/d/1Auepvb1Z0Q4lIjMqaesjWdh3oHWTwjA8/edit?usp=drive_link&ouid=105819375684543832411&rtpof=true&sd=true)
     """)
     
     st.header("📖 Documentation")
@@ -94,11 +93,6 @@ with st.sidebar:
     - Comparisons: `>=`, `<=`, `<`, `>`, `!=`
     - Colon notation: `A:2` means `A >= 2`
     - Negated: `!A:2` means `A < 2`
-    
-    **Examples:**
-    - `A & B` - Both active
-    - `A:2 | B < 1` - A at level 2+ OR B inactive
-    - `(A & B) | !C` - Grouped expression
     """)
     
     st.header("🔗 Links")
@@ -119,10 +113,10 @@ with tab1:
     
     with col1:
         uploaded_xlsx = st.file_uploader(
-            "Upload SpreadSBML Excel file (.xlsx)",
+            "Upload Excel file (.xlsx), you may use this [template](https://docs.google.com/spreadsheets/d/1_welMPd8-Wdbu3fTrCjUZz159yT5kxNO/edit?usp=sharing&ouid=105819375684543832411&rtpof=true&sd=true).",
             type=["xlsx"],
             key="xlsx_upload",
-            help="Upload a spreadsheet following the SpreadSBML specification"
+            help="Upload a spreadsheet following the specification"
         )
     
     with col2:
@@ -131,13 +125,13 @@ with tab1:
             "Include Interaction Annotations",
             value=True,
             key="inter_anno",
-            help="Include interaction annotations in the SBML output"
+            help="Include annotations from the Interaction tab in the SBML output"
         )
         trans_anno = st.checkbox(
             "Include Transition Annotations",
             value=True,
             key="trans_anno",
-            help="Include transition annotations in the SBML output"
+            help="Include annotations from the Transitions tab in the SBML output"
         )
     
     if uploaded_xlsx is not None:
@@ -224,6 +218,7 @@ with tab1:
                     species_count = stats['species']
                     transitions_count = stats['transitions']
                     interactions_count = stats['interactions']
+                    all_messages = stats.get('warnings', [])
                     
                     # Read output file
                     with open(output_path, 'r', encoding='utf-8') as f:
@@ -231,6 +226,21 @@ with tab1:
                     
                     # Success message
                     st.markdown('<div class="success-box">✅ Conversion successful!</div>', unsafe_allow_html=True)
+                    
+                    # Display messages
+                    if all_messages:
+                        # Separate info messages from warnings
+                        info_msgs = [m for m in all_messages if m.startswith("Found ") or m.startswith("No ")]
+                        warning_msgs = [m for m in all_messages if m not in info_msgs]
+                        
+                        # if info_msgs:
+                        #     with st.expander("ℹ️ Conversion Details", expanded=False):
+                        #         for msg in info_msgs:
+                        #             st.info(msg)
+                        
+                        if warning_msgs:
+                            for msg in warning_msgs:
+                                st.warning(f"{msg}")
                     
                     # Display statistics
                     col1, col2, col3 = st.columns(3)
@@ -366,8 +376,8 @@ with tab2:
                     # Determine rule format
                     rule_format = "colon" if colon_format else "operators"
                     
-                    # Perform conversion
-                    convert_sbml_to_spreadsheet(
+                    # Perform conversion and capture messages
+                    message_list = convert_sbml_to_spreadsheet(
                         input_path,
                         output_path,
                         template_path=template_path,
@@ -380,6 +390,21 @@ with tab2:
                     
                     # Success message
                     st.markdown('<div class="success-box">✅ Conversion successful!</div>', unsafe_allow_html=True)
+                    
+                    # Display messages
+                    if message_list:
+                        # Separate info messages from warnings
+                        info_msgs = [m for m in message_list if m.startswith("Found ")]
+                        warning_msgs = [m for m in message_list if m not in info_msgs]
+                        
+                        # if info_msgs:
+                        #     with st.expander("ℹ️ Conversion Details", expanded=False):
+                        #         for msg in info_msgs:
+                        #             st.info(msg)
+                        
+                        if warning_msgs:
+                            for msg in warning_msgs:
+                                st.warning(f"{msg}")
                     
                     # Display statistics
                     wb = load_workbook(BytesIO(xlsx_content), read_only=True, data_only=True)
@@ -449,10 +474,9 @@ with tab2:
                     gc.collect()
 
 # Footer
-st.markdown("---")
-st.markdown("""
+st.markdown(f"""
 <div style='text-align: center; color: #666; padding: 2rem 0;'>
-    <p>TabularQual v0.1.0</p>
+    <p class="version">TabularQual v{spec.VERSION}</p>
     <p>For issues or feedback, please visit our <a href='https://github.com/sys-bio/TabularQual'>GitHub repository</a></p>
 </div>
 """, unsafe_allow_html=True)

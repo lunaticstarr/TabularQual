@@ -200,8 +200,15 @@ def parse(expr: str):
 def ast_to_mathml(ast) -> str:
     if ast[0] == 'id':
         name = ast[1]
-        # For simple identifiers, we need to create a boolean expression
-        return f"<apply><eq/><ci>{name}</ci><cn type=\"integer\">1</cn></apply>"
+        # Check if it's a numeric constant (e.g., "1", "0", "2")
+        if name.isdigit():
+            # For numeric constants, interpret as boolean: 0 = false, non-zero = true
+            if name == '0':
+                return "<false/>"
+            else:
+                return "<true/>"
+        # For simple identifiers (species names), create a boolean expression (species >= 1)
+        return f"<apply><geq/><ci>{name}</ci><cn type=\"integer\">1</cn></apply>"
     if ast[0] == 'eq':
         name = ast[1]
         threshold = ast[2]
