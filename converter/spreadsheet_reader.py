@@ -44,7 +44,7 @@ def _collect_repeated_columns(row: Dict[str, object], prefix: str) -> List[str]:
                 values.append(value_str)
     return values
 
-def _collect_qualifier_pairs(row: Dict[str, object], relation_prefix: str, identifier_prefix: str) -> List[Tuple[str, str]]:
+def _collect_qualifier_pairs(row: Dict[str, object], relation_prefix: str, identifier_prefix: str, validation_warnings: List[str] = None, context: str = "") -> List[Tuple[str, str]]:
     relations = []
     identifiers = []
     for key, value in row.items():
@@ -77,13 +77,21 @@ def _collect_qualifier_pairs(row: Dict[str, object], relation_prefix: str, ident
     max_len = max(len(relations), len(identifiers))
     for i in range(max_len):
         rel = relations[i][1] if i < len(relations) else default_rel
+        # Normalize relation to correct case
+        normalized_rel = spec.normalize_relation(rel)
+        if normalized_rel is None and validation_warnings is not None:
+            validation_warnings.append(f"{context}: Invalid Relation '{rel}'. Valid values: {', '.join(spec.RELATIONS)}")
+            normalized_rel = rel  # Keep original if invalid for error tracking
+        else:
+            normalized_rel = normalized_rel or rel
+        
         ident = identifiers[i][1] if i < len(identifiers) else None
         if ident:
             # Split comma-separated identifiers
             for id_part in ident.split(','):
                 id_part = id_part.strip()
                 if id_part:
-                    pairs.append((rel, id_part))
+                    pairs.append((normalized_rel, id_part))
     return pairs
 
 def _parse_person_string(person_str: str) -> List[str]:
@@ -212,15 +220,13 @@ def read_spreadsheet_to_model(xlsx_path: str) -> tuple[InMemoryModel, list[str]]
             species_row_num += 1
             continue
         
-        # Validate species type if provided
+        # Validate and normalize species type if provided
         species_type = str(rowd.get(spec.SPECIES_TYPE) or "").strip()
-        if species_type and species_type not in spec.TYPES:
-            validation_warnings.append(f"Species '{sid}' (row {species_row_num}): Invalid Type '{species_type}'. Valid values: {', '.join(spec.TYPES)}")
-        
-        # Validate relation qualifiers
-        for rel, ident in _collect_qualifier_pairs(rowd, spec.SPECIES_RELATION_PREFIX, spec.SPECIES_IDENTIFIER_PREFIX):
-            if rel not in spec.RELATIONS:
-                validation_warnings.append(f"Species '{sid}' (row {species_row_num}): Invalid Relation '{rel}'. Valid values: {', '.join(spec.RELATIONS)}")
+        normalized_species_type = None
+        if species_type:
+            normalized_species_type = spec.normalize_type(species_type)
+            if normalized_species_type is None:
+                validation_warnings.append(f"Species '{sid}' (row {species_row_num}): Invalid Type '{species_type}'. Valid values: {', '.join(spec.TYPES)}")
         
         sp = Species(
             species_id=sid,
@@ -229,7 +235,7 @@ def read_spreadsheet_to_model(xlsx_path: str) -> tuple[InMemoryModel, list[str]]
             constant=_to_bool(rowd.get(spec.SPECIES_CONSTANT)),
             initial_level=_to_int(rowd.get(spec.SPECIES_INITIAL_LEVEL)),
             max_level=_to_int(rowd.get(spec.SPECIES_MAX_LEVEL)),
-            annotations=_collect_qualifier_pairs(rowd, spec.SPECIES_RELATION_PREFIX, spec.SPECIES_IDENTIFIER_PREFIX),
+            annotations=_collect_qualifier_pairs(rowd, spec.SPECIES_RELATION_PREFIX, spec.SPECIES_IDENTIFIER_PREFIX, validation_warnings, f"Species '{sid}' (row {species_row_num})"),
             notes=_collect_repeated_columns(rowd, spec.SPECIES_NOTES_PREFIX),
         )
         species[sid] = sp
@@ -260,11 +266,6 @@ def read_spreadsheet_to_model(xlsx_path: str) -> tuple[InMemoryModel, list[str]]
             trans_row_num += 1
             continue
         
-        # Validate relation qualifiers
-        for rel, ident in _collect_qualifier_pairs(rowd, spec.TRANSITION_RELATION_PREFIX, spec.TRANSITION_IDENTIFIER_PREFIX):
-            if rel not in spec.RELATIONS:
-                validation_warnings.append(f"Transition '{target}' (row {trans_row_num}): Invalid Relation '{rel}'. Valid values: {', '.join(spec.RELATIONS)}")
-        
         transitions.append(
             Transition(
                 transition_id=str(rowd.get(spec.TRANSITION_ID) or "").strip() or None,
@@ -272,7 +273,7 @@ def read_spreadsheet_to_model(xlsx_path: str) -> tuple[InMemoryModel, list[str]]
                 target=target,
                 level=_to_int(rowd.get(spec.TRANSITION_LEVEL)),
                 rule=rule,
-                annotations=_collect_qualifier_pairs(rowd, spec.TRANSITION_RELATION_PREFIX, spec.TRANSITION_IDENTIFIER_PREFIX),
+                annotations=_collect_qualifier_pairs(rowd, spec.TRANSITION_RELATION_PREFIX, spec.TRANSITION_IDENTIFIER_PREFIX, validation_warnings, f"Transition '{target}' (row {trans_row_num})"),
                 notes=_collect_repeated_columns(rowd, spec.TRANSITION_NOTES_PREFIX),
             )
         )
@@ -298,22 +299,20 @@ def read_spreadsheet_to_model(xlsx_path: str) -> tuple[InMemoryModel, list[str]]
                 inter_row_num += 1
                 continue
             
-            # Validate sign
+            # Validate and normalize sign
             sign = str(rowd.get(spec.INTER_SIGN) or "").strip() or None
-            if sign and sign not in spec.SIGN:
-                validation_warnings.append(f"Interaction '{source}→{target}' (row {inter_row_num}): Invalid Sign '{sign}'. Valid values: {', '.join(spec.SIGN)}")
-            
-            # Validate relation qualifiers
-            for rel, ident in _collect_qualifier_pairs(rowd, spec.INTER_RELATION_PREFIX, spec.INTER_IDENTIFIER_PREFIX):
-                if rel not in spec.RELATIONS:
-                    validation_warnings.append(f"Interaction '{source}→{target}' (row {inter_row_num}): Invalid Relation '{rel}'. Valid values: {', '.join(spec.RELATIONS)}")
+            normalized_sign = None
+            if sign:
+                normalized_sign = spec.normalize_sign(sign)
+                if normalized_sign is None:
+                    validation_warnings.append(f"Interaction '{source}→{target}' (row {inter_row_num}): Invalid Sign '{sign}'. Valid values: {', '.join(spec.SIGN)}")
             
             interactions.append(
                 InteractionEvidence(
                     target=target,
                     source=source,
-                    sign=sign,
-                    annotations=_collect_qualifier_pairs(rowd, spec.INTER_RELATION_PREFIX, spec.INTER_IDENTIFIER_PREFIX),
+                    sign=normalized_sign,
+                    annotations=_collect_qualifier_pairs(rowd, spec.INTER_RELATION_PREFIX, spec.INTER_IDENTIFIER_PREFIX, validation_warnings, f"Interaction '{source}→{target}' (row {inter_row_num})"),
                     notes=_collect_repeated_columns(rowd, spec.INTER_NOTES_PREFIX),
                 )
             )

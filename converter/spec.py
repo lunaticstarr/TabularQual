@@ -76,6 +76,28 @@ RELATIONS = ["is", "hasVersion", "isVersionOf", "isDescribedBy", "hasPart", "isP
 TYPES = ["Input", "Internal", "Output"]
 SIGN = ["positive", "negative", "dual", "unknown"]
 
+# Case-insensitive lookup maps for normalization
+_RELATIONS_LOWER = {rel.lower(): rel for rel in RELATIONS}
+_TYPES_LOWER = {typ.lower(): typ for typ in TYPES}
+_SIGN_LOWER = {sign.lower(): sign for sign in SIGN}
+
+
+def normalize_relation(input_rel: str) -> str | None:
+    if not input_rel:
+        return None
+    return _RELATIONS_LOWER.get(input_rel.lower())
+
+
+def normalize_type(input_type: str) -> str | None:
+    if not input_type:
+        return None
+    return _TYPES_LOWER.get(input_type.lower())
+
+
+def normalize_sign(input_sign: str) -> str | None:
+    if not input_sign:
+        return None
+    return _SIGN_LOWER.get(input_sign.lower())
 
 
 def is_repeated_column(column_name: str, prefix: str) -> bool:
