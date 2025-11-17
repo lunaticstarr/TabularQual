@@ -81,6 +81,7 @@ def tokenize(expr: str) -> List[Token]:
 def parse(expr: str):
     tokens = tokenize(expr)
     pos = 0
+    paren_stack = []  # Track parentheses for better error messages
 
     def peek() -> Token | None:
         nonlocal pos
@@ -90,8 +91,23 @@ def parse(expr: str):
         nonlocal pos
         t = peek()
         if t is None:
-            raise ValueError("Unexpected end of expression")
+            if kind == 'RP' and paren_stack:
+                # Specific error for missing closing parenthesis
+                open_count = sum(1 for tk in tokens if tk.kind == 'LP')
+                close_count = sum(1 for tk in tokens if tk.kind == 'RP')
+                raise ValueError(
+                    f"Unexpected end of expression. Missing closing parenthesis ')'. "
+                    f"Found {open_count} opening '(' but only {close_count} closing ')' in: {expr}"
+                )
+            raise ValueError(f"Unexpected end of expression. Expected more tokens after: {expr}")
         if kind and t.kind != kind:
+            if kind == 'RP':
+                open_count = sum(1 for tk in tokens if tk.kind == 'LP')
+                close_count = sum(1 for tk in tokens if tk.kind == 'RP')
+                raise ValueError(
+                    f"Expected closing parenthesis ')', got {t.kind}. "
+                    f"Check parentheses balance: {open_count} opening '(' vs {close_count} closing ')'"
+                )
             raise ValueError(f"Expected {kind}, got {t.kind}")
         pos += 1
         return t
@@ -161,9 +177,11 @@ def parse(expr: str):
                 node = parse_factor()
                 return ('not', node)
         if t.kind == 'LP':
+            paren_stack.append(pos)  # Track opening parenthesis position
             consume('LP')
             node = parse_expr()
             consume('RP')
+            paren_stack.pop() if paren_stack else None  # Remove tracked position
             return node
         raise ValueError(f"Unexpected token {t.kind}")
 

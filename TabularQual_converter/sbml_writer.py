@@ -12,7 +12,6 @@ from .expr_parser import parse as parse_expr, ast_to_mathml
 
 
 def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_anno: bool = True) -> str:
-    # Prefer constructing document with qual namespaces; fallback to enabling package
     doc = None
     try:
         ns = libsbml.QualPkgNamespaces(3, 1, 1)
@@ -138,6 +137,7 @@ def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_
         # Collect all unique species IDs from all rules for this target
         all_species_ids = set()
         for t in target_transitions:
+            # print("target_transition: ", t.transition_id, t.rule)
             ast = parse_expr(t.rule)
             all_species_ids.update(_collect_ids_from_ast(ast))
         
