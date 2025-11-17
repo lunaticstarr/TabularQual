@@ -7,11 +7,11 @@ import libsbml
 import gc
 
 from . import spec
-from .types import InMemoryModel, Species as SpeciesT, Transition as TransitionT, InteractionEvidence
+from .types import QualModel, Species as SpeciesT, Transition as TransitionT, InteractionEvidence
 from .expr_parser import parse as parse_expr, ast_to_mathml
 
 
-def write_sbml(model: InMemoryModel, *, interactions_anno: bool = True, transitions_anno: bool = True) -> str:
+def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_anno: bool = True) -> str:
     # Prefer constructing document with qual namespaces; fallback to enabling package
     doc = None
     try:
@@ -314,7 +314,7 @@ def _xml_escape(s: str) -> str:
     return s
 
 
-def _add_model_annotations(m: libsbml.Model, im: InMemoryModel) -> None:
+def _add_model_annotations(m: libsbml.Model, im: QualModel) -> None:
     # Publications / sources / derivedFrom etc. as CVTerms on model
     for url in im.model.source_urls:
         uri = _to_identifiers_url(url)
@@ -336,7 +336,7 @@ def _add_model_annotations(m: libsbml.Model, im: InMemoryModel) -> None:
     _add_model_history(m, im)
 
 
-def _add_model_history(m: libsbml.Model, im: InMemoryModel) -> None:
+def _add_model_history(m: libsbml.Model, im: QualModel) -> None:
     try:
         history = libsbml.ModelHistory()
     except Exception:

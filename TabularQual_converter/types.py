@@ -63,7 +63,7 @@ class Transition:
 
 
 @dataclass
-class InMemoryModel:
+class QualModel:
     model: ModelInfo
     species: Dict[str, Species]
     transitions: List[Transition]

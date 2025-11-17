@@ -6,11 +6,11 @@ from openpyxl.styles import Font, PatternFill
 from pathlib import Path
 import shutil
 
-from .types import InMemoryModel, Person
+from .types import QualModel, Person
 from . import spec
 
-def write_spreadsheet(model: InMemoryModel, output_path: str, template_path: str = None, rule_format: str = "operators"):
-    """Write InMemoryModel to spreadsheet format
+def write_spreadsheet(model: QualModel, output_path: str, template_path: str = None, rule_format: str = "operators"):
+    """Write QualModel to spreadsheet format
     
     Args:
         model: The in-memory model to write
@@ -49,7 +49,7 @@ def write_spreadsheet(model: InMemoryModel, output_path: str, template_path: str
     wb.close()
 
 
-def _write_model_sheet(wb: openpyxl.Workbook, model: InMemoryModel, position: int = 0):
+def _write_model_sheet(wb: openpyxl.Workbook, model: QualModel, position: int = 0):
     """Write Model sheet"""
     ws = wb.create_sheet("Model", position)
     
@@ -176,7 +176,7 @@ def _write_model_sheet(wb: openpyxl.Workbook, model: InMemoryModel, position: in
     ws.column_dimensions['B'].width = 80
 
 
-def _write_species_sheet(wb: openpyxl.Workbook, model: InMemoryModel, position: int = 0):
+def _write_species_sheet(wb: openpyxl.Workbook, model: QualModel, position: int = 0):
     """Write Species sheet"""
     ws = wb.create_sheet("Species", position)
     
@@ -289,7 +289,7 @@ def _write_species_sheet(wb: openpyxl.Workbook, model: InMemoryModel, position: 
     ws.column_dimensions['B'].width = 30
 
 
-def _write_transitions_sheet(wb: openpyxl.Workbook, model: InMemoryModel, position: int = 0, rule_format: str = "operators"):
+def _write_transitions_sheet(wb: openpyxl.Workbook, model: QualModel, position: int = 0, rule_format: str = "operators"):
     """Write Transitions sheet"""
     ws = wb.create_sheet("Transitions", position)
     
@@ -395,7 +395,7 @@ def _write_transitions_sheet(wb: openpyxl.Workbook, model: InMemoryModel, positi
     ws.column_dimensions['E'].width = 40
 
 
-def _write_interactions_sheet(wb: openpyxl.Workbook, model: InMemoryModel, position: int = 0):
+def _write_interactions_sheet(wb: openpyxl.Workbook, model: QualModel, position: int = 0):
     """Write Interactions sheet"""
     # Always create the sheet, even if no interactions
     ws = wb.create_sheet("Interactions", position)

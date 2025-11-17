@@ -1,5 +1,5 @@
 """
-TabularQual Web Converter
+TabularQual Web converter
 A Streamlit web application for converting between SpreadSBML spreadsheets and SBML-qual files.
 """
 
@@ -14,17 +14,17 @@ from io import BytesIO
 import sys
 import gc
 
-# Import converter functions
-from converter.convert_spreadsheet_to_sbml import convert_spreadsheet_to_sbml
-from converter.convert_sbml_to_spreadsheet import convert_sbml_to_spreadsheet
-from converter import spec
+# Import TabularQual_converter functions
+from TabularQual_converter.convert_spreadsheet_to_sbml import convert_spreadsheet_to_sbml
+from TabularQual_converter.convert_sbml_to_spreadsheet import convert_sbml_to_spreadsheet
+from TabularQual_converter import spec
 
 # Suppress openpyxl warnings
 warnings.filterwarnings('ignore', category=UserWarning, module='openpyxl')
 
 # Page configuration
 st.set_page_config(
-    page_title="TabularQual Converter",
+    page_title="TabularQual TabularQual_converter",
     page_icon="🔄",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -69,7 +69,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Header
-st.markdown('<p class="main-header">🔄 TabularQual Converter</p>', unsafe_allow_html=True)
+st.markdown('<p class="main-header">🔄 TabularQual TabularQual_converter</p>', unsafe_allow_html=True)
 st.markdown('<p class="sub-header">Convert between spreadsheets and SBML-qual files for logical models (Boolean and multi-valued). <br>For more about the format, see the <a href="https://docs.google.com/document/d/1RCIN4bOsw4Uq9X2I-gdfBXDydyViYzaVhQK8cpdEWhA/edit?usp=sharing">Spreadsheet specification</a></p>', unsafe_allow_html=True)
 
 # Sidebar with information
@@ -78,7 +78,7 @@ with st.sidebar:
     st.markdown("""
     This tool converts between:
     - **Spreadsheets** (.xlsx)
-    - **SBML-qual** files (.sbml)
+    - **SBML-qual** files (.sbml/.xml)
     """)
     st.header("🔍 Examples")
     st.markdown("""

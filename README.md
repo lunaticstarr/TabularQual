@@ -1,4 +1,4 @@
-## TabularQual Converter
+## TabularQual converter
 
 Convert between spreadsheets specified in [SpreadSBML specification](.doc/SpreadSBML specification.docx) and SBML-qual for logical models (Boolean and multi-valued).
 

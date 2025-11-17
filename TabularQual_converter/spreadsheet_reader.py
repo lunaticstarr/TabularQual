@@ -6,7 +6,7 @@ import warnings
 from datetime import datetime, timezone
 
 from . import spec
-from .types import InMemoryModel, ModelInfo, Person, Species, Transition, InteractionEvidence
+from .types import QualModel, ModelInfo, Person, Species, Transition, InteractionEvidence
 
 def _normalize_header(header: str) -> str:
     return header.strip()
@@ -121,11 +121,11 @@ def _parse_person_string(person_str: str) -> List[str]:
     
     return parts
 
-def read_spreadsheet_to_model(xlsx_path: str) -> tuple[InMemoryModel, list[str]]:
+def read_spreadsheet_to_model(xlsx_path: str) -> tuple[QualModel, list[str]]:
     """Read spreadsheet and return model with validation warnings
     
     Returns:
-        tuple: (InMemoryModel, list of warning messages)
+        tuple: (QualModel, list of warning messages)
     """
     warnings.filterwarnings("ignore", category=UserWarning)
     validation_warnings = []
@@ -323,7 +323,7 @@ def read_spreadsheet_to_model(xlsx_path: str) -> tuple[InMemoryModel, list[str]]
 
     wb.close()
     
-    return InMemoryModel(model=model_info, species=species, transitions=transitions, interactions=interactions), validation_warnings
+    return QualModel(model=model_info, species=species, transitions=transitions, interactions=interactions), validation_warnings
 
 
 def _to_bool(v) -> bool | None:

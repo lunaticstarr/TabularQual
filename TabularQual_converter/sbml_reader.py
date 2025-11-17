@@ -8,11 +8,11 @@ import gc
 import warnings
 from datetime import datetime, timezone
 
-from .types import InMemoryModel, ModelInfo, Species, Transition, InteractionEvidence, Person
+from .types import QualModel, ModelInfo, Species, Transition, InteractionEvidence, Person
 
 
-def read_sbml(sbml_path: str) -> InMemoryModel:
-    """Read an SBML-qual file and convert it to InMemoryModel"""
+def read_sbml(sbml_path: str) -> QualModel:
+    """Read an SBML-qual file and convert it to QualModel"""
     doc = libsbml.readSBMLFromFile(sbml_path)
     
     try:
@@ -42,7 +42,7 @@ def read_sbml(sbml_path: str) -> InMemoryModel:
         # Read transitions
         transitions, interactions = _read_transitions(qual_model)
         
-        result = InMemoryModel(
+        result = QualModel(
             model=model_info,
             species=species_dict,
             transitions=transitions,

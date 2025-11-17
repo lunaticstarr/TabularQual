@@ -17,8 +17,8 @@ dependencies = [
 ]
 
 [project.scripts]
-to-sbml = "converter.cli:to_sbml_entry"
-to-table = "converter.cli:to_table_entry"
+to-sbml = "TabularQual_converter.cli:to_sbml_entry"
+to-table = "TabularQual_converter.cli:to_table_entry"
 
 [tool.setuptools]
-packages = ["converter"]
+packages = ["TabularQual_converter"]
