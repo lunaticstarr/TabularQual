@@ -37,6 +37,7 @@ class Species:
     constant: Optional[bool] = None
     initial_level: Optional[int] = None
     max_level: Optional[int] = None
+    type: Optional[str] = None  # Input/Internal/Output
     # list of (qualifier, identifier)
     annotations: List[Tuple[str, str]] = field(default_factory=list)
     notes: List[str] = field(default_factory=list)

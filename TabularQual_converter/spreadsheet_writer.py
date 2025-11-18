@@ -257,7 +257,8 @@ def _write_species_sheet(wb: openpyxl.Workbook, model: QualModel, position: int 
         ws.cell(row=row_idx, column=col, value=species.compartment)
         col += 1
         
-        # Type (not in our data structure, skip)
+        # Type
+        ws.cell(row=row_idx, column=col, value=species.type)
         col += 1
         
         # Constant

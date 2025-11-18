@@ -148,11 +148,22 @@ def _read_species(qual_model) -> Dict[str, Species]:
         initial_level = qs.getInitialLevel() if qs.isSetInitialLevel() else None
         max_level = qs.getMaxLevel() if qs.isSetMaxLevel() else None
         
-        # Parse notes
+        # Parse notes and extract type information
         notes = []
+        species_type = None
         if qs.isSetNotes():
             notes_str = qs.getNotesString()
-            notes = _extract_text_from_notes(notes_str)
+            all_notes = _extract_text_from_notes(notes_str)
+            # Check for type information in notes
+            for note in all_notes:
+                if note.startswith("Type:"):
+                    # Extract type value
+                    type_value = note.replace("Type:", "").strip()
+                    # Validate against allowed types
+                    from . import spec
+                    species_type = spec.normalize_type(type_value)
+                else:
+                    notes.append(note)
         
         # Parse annotations
         annotations = []
@@ -167,6 +178,7 @@ def _read_species(qual_model) -> Dict[str, Species]:
             constant=constant,
             initial_level=initial_level,
             max_level=max_level,
+            type=species_type,
             annotations=annotations,
             notes=notes
         )

@@ -88,9 +88,14 @@ def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_
             qs.setInitialLevel(int(s.initial_level))
         if s.max_level is not None:
             qs.setMaxLevel(int(s.max_level))
+        # Add notes (including type if present)
+        notes_to_add = []
+        if s.type:
+            notes_to_add.append(f"Type: {s.type}")
         if s.notes:
-            _append_notes(qs, s.notes)
-        # TODO: add Type to notes?
+            notes_to_add.extend(s.notes)
+        if notes_to_add:
+            _append_notes(qs, notes_to_add)
         if s.annotations:
             _add_annotations(qs, s.annotations, use_model=False)
 
@@ -233,6 +238,10 @@ def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_
                     break
 
     sbml_string = doc.toSBML()
+    
+    # Add XML declaration with encoding if not present
+    if not sbml_string.startswith('<?xml'):
+        sbml_string = '<?xml version="1.0" encoding="UTF-8"?>\n' + sbml_string
     
     # Clean up libsbml document to release memory
     del doc

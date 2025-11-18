@@ -235,6 +235,7 @@ def read_spreadsheet_to_model(xlsx_path: str) -> tuple[QualModel, list[str]]:
             constant=_to_bool(rowd.get(spec.SPECIES_CONSTANT)),
             initial_level=_to_int(rowd.get(spec.SPECIES_INITIAL_LEVEL)),
             max_level=_to_int(rowd.get(spec.SPECIES_MAX_LEVEL)),
+            type=normalized_species_type,
             annotations=_collect_qualifier_pairs(rowd, spec.SPECIES_RELATION_PREFIX, spec.SPECIES_IDENTIFIER_PREFIX, validation_warnings, f"Species '{sid}' (row {species_row_num})"),
             notes=_collect_repeated_columns(rowd, spec.SPECIES_NOTES_PREFIX),
         )
