@@ -317,7 +317,7 @@ def _write_transitions_sheet(wb: openpyxl.Workbook, model: QualModel, position: 
     max_notes = max(max_notes, 1)
     
     # Build headers
-    headers = ["Transition_ID", "Name", "Target", "Level", "Rule"]
+    headers = ["Transitions_ID", "Name", "Target", "Level", "Rule"]
     
     # Add Relation/Identifier pairs
     for i in range(max_qualifiers):
