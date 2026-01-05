@@ -66,8 +66,13 @@ def tokenize(expr: str) -> List[Token]:
                 i += 1
             continue
         if ch == '=':
-            tokens.append(Token('EQ', '='))
-            i += 1
+            # Check for ==
+            if i + 1 < len(s) and s[i + 1] == '=':
+                tokens.append(Token('EQ', '=='))
+                i += 2
+            else:
+                tokens.append(Token('EQ', '='))
+                i += 1
             continue
         raise ValueError(f"Unexpected character in rule: {ch}")
     return tokens
