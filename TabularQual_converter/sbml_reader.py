@@ -3,50 +3,68 @@ from __future__ import annotations
 from typing import List, Tuple, Dict, Optional
 import libsbml
 from xml.etree import ElementTree as ET
+import os
+import gc
+import warnings
+from datetime import datetime, timezone
 
-from .types import InMemoryModel, ModelInfo, Species, Transition, InteractionEvidence, Person
+from .types import QualModel, ModelInfo, Species, Transition, InteractionEvidence, Person
 
 
-def read_sbml(sbml_path: str) -> InMemoryModel:
-    """Read an SBML-qual file and convert it to InMemoryModel"""
+def read_sbml(sbml_path: str) -> QualModel:
+    """Read an SBML-qual file and convert it to QualModel"""
     doc = libsbml.readSBMLFromFile(sbml_path)
-    if doc.getNumErrors() > 0:
-        errors = []
-        for i in range(doc.getNumErrors()):
-            err = doc.getError(i)
-            if err.getSeverity() >= libsbml.LIBSBML_SEV_ERROR:
-                errors.append(str(err.getMessage()))
-        if errors:
-            raise ValueError(f"SBML parsing errors: {'; '.join(errors)}")
     
-    model = doc.getModel()
-    if model is None:
-        raise ValueError("No model found in SBML file")
-    
-    qual_model = model.getPlugin("qual")
-    if qual_model is None:
-        raise ValueError("No qual plugin found in model")
-    
-    # Read model info
-    model_info = _read_model_info(model)
-    
-    # Read species
-    species_dict = _read_species(qual_model)
-    
-    # Read transitions
-    transitions, interactions = _read_transitions(qual_model)
-    
-    return InMemoryModel(
-        model=model_info,
-        species=species_dict,
-        transitions=transitions,
-        interactions=interactions
-    )
+    try:
+        if doc.getNumErrors() > 0:
+            errors = []
+            for i in range(doc.getNumErrors()):
+                err = doc.getError(i)
+                if err.getSeverity() >= libsbml.LIBSBML_SEV_ERROR:
+                    errors.append(str(err.getMessage()))
+            if errors:
+                raise ValueError(f"SBML parsing errors: {'; '.join(errors)}")
+        
+        model = doc.getModel()
+        if model is None:
+            raise ValueError("No model found in SBML file")
+        
+        qual_model = model.getPlugin("qual")
+        if qual_model is None:
+            raise ValueError("No qual plugin found in model")
+        
+        # Read model info
+        model_info = _read_model_info(model, sbml_path)
+        
+        # Read species
+        species_dict = _read_species(qual_model)
+        
+        # Read transitions
+        transitions, interactions = _read_transitions(qual_model)
+        
+        result = QualModel(
+            model=model_info,
+            species=species_dict,
+            transitions=transitions,
+            interactions=interactions
+        )
+        
+        return result
+    finally:
+        # delete the libsbml document
+        del doc
+        gc.collect()
 
 
-def _read_model_info(model: libsbml.Model) -> ModelInfo:
+def _read_model_info(model: libsbml.Model, sbml_path: str) -> ModelInfo:
     """Extract model-level information"""
-    model_id = model.getId() if model.isSetId() else "model"
+    if model.isSetId():
+        model_id = model.getId()
+    else:
+        # Use filename without extension if no id provided
+        filename = os.path.basename(sbml_path)
+        model_id = os.path.splitext(filename)[0]
+    
     name = model.getName() if model.isSetName() else None
     
     # Parse notes
@@ -96,6 +114,10 @@ def _read_model_info(model: libsbml.Model) -> ModelInfo:
         if 'dcterms:contributor' in anno_dict:
             contributors = anno_dict['dcterms:contributor']
     
+    # Set current time if Created field is empty
+    if not created_iso:
+        created_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    
     return ModelInfo(
         model_id=model_id,
         name=name,
@@ -126,11 +148,22 @@ def _read_species(qual_model) -> Dict[str, Species]:
         initial_level = qs.getInitialLevel() if qs.isSetInitialLevel() else None
         max_level = qs.getMaxLevel() if qs.isSetMaxLevel() else None
         
-        # Parse notes
+        # Parse notes and extract type information
         notes = []
+        species_type = None
         if qs.isSetNotes():
             notes_str = qs.getNotesString()
-            notes = _extract_text_from_notes(notes_str)
+            all_notes = _extract_text_from_notes(notes_str)
+            # Check for type information in notes
+            for note in all_notes:
+                if note.startswith("Type:"):
+                    # Extract type value
+                    type_value = note.replace("Type:", "").strip()
+                    # Validate against allowed types
+                    from . import spec
+                    species_type = spec.normalize_type(type_value)
+                else:
+                    notes.append(note)
         
         # Parse annotations
         annotations = []
@@ -145,6 +178,7 @@ def _read_species(qual_model) -> Dict[str, Species]:
             constant=constant,
             initial_level=initial_level,
             max_level=max_level,
+            type=species_type,
             annotations=annotations,
             notes=notes
         )
@@ -241,6 +275,11 @@ def _read_transitions(qual_model) -> Tuple[List[Transition], List[InteractionEvi
                 if rule is None and inputs_with_signs:
                     rule = " & ".join([src for src, _, _ in inputs_with_signs])
                 
+                # Warn about blank or empty rules
+                if not rule or rule.strip() == "" or rule.strip() == "()":
+                    warnings.warn(f"Warning: Transition for target '{target}' has blank or empty rule. Setting to 1 (default level).")
+                    rule = "1"
+
                 function_terms.append((level, rule or ""))
         
         # If no function terms with rules, create one transition without level
@@ -260,6 +299,12 @@ def _read_transitions(qual_model) -> Tuple[List[Transition], List[InteractionEvi
             if rule is None and inputs_with_signs:
                 rule = " & ".join([src for src, _, _ in inputs_with_signs])
             
+            # Warn about blank or empty rules
+            if not rule or rule.strip() == "" or rule.strip() == "()":
+                warnings.warn(f"Warning: Transition for target '{target}' has blank or empty rule. Setting to 1 (default level).")
+                rule = "1"
+            # TODO: set the species to Constant=True if the rule is blank?
+
             transitions.append(Transition(
                 transition_id=transition_id,
                 name=name,
@@ -292,7 +337,7 @@ def _read_transitions(qual_model) -> Tuple[List[Transition], List[InteractionEvi
 
 
 def _mathml_to_rule(math_ast, inputs_with_signs) -> str:
-    """Convert MathML AST to rule string compatible with our parser"""
+    """Convert MathML AST to rule string"""
     
     def convert_ast_node(node) -> str:
         """Recursively convert AST node to expression string"""
@@ -374,7 +419,11 @@ def _mathml_to_rule(math_ast, inputs_with_signs) -> str:
         else:
             return libsbml.formulaToL3String(node)
     
-    return convert_ast_node(math_ast)
+    result = convert_ast_node(math_ast)
+    # Clean up empty results or "()" patterns
+    if result and result.strip() in ["", "()", "(  )"]:
+        return ""
+    return result
 
 
 def _parse_rdf_annotation(anno_str: str) -> Dict[str, List]:

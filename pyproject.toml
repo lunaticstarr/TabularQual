@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tabularqual"
-version = "0.1.0"
+version = "0.1.1"
 description = "Convert spreadsheets specified in SpreadSBML to SBML-qual"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -17,8 +17,8 @@ dependencies = [
 ]
 
 [project.scripts]
-to-sbml = "converter.cli:to_sbml_entry"
-to-table = "converter.cli:to_table_entry"
+to-sbml = "TabularQual_converter.cli:to_sbml_entry"
+to-table = "TabularQual_converter.cli:to_table_entry"
 
 [tool.setuptools]
-packages = ["converter"]
+packages = ["TabularQual_converter"]

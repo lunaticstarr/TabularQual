@@ -66,8 +66,13 @@ def tokenize(expr: str) -> List[Token]:
                 i += 1
             continue
         if ch == '=':
-            tokens.append(Token('EQ', '='))
-            i += 1
+            # Check for ==
+            if i + 1 < len(s) and s[i + 1] == '=':
+                tokens.append(Token('EQ', '=='))
+                i += 2
+            else:
+                tokens.append(Token('EQ', '='))
+                i += 1
             continue
         raise ValueError(f"Unexpected character in rule: {ch}")
     return tokens
@@ -81,6 +86,7 @@ def tokenize(expr: str) -> List[Token]:
 def parse(expr: str):
     tokens = tokenize(expr)
     pos = 0
+    paren_stack = []  # Track parentheses for better error messages
 
     def peek() -> Token | None:
         nonlocal pos
@@ -90,8 +96,23 @@ def parse(expr: str):
         nonlocal pos
         t = peek()
         if t is None:
-            raise ValueError("Unexpected end of expression")
+            if kind == 'RP' and paren_stack:
+                # Specific error for missing closing parenthesis
+                open_count = sum(1 for tk in tokens if tk.kind == 'LP')
+                close_count = sum(1 for tk in tokens if tk.kind == 'RP')
+                raise ValueError(
+                    f"Unexpected end of expression. Missing closing parenthesis ')'. "
+                    f"Found {open_count} opening '(' but only {close_count} closing ')' in: {expr}"
+                )
+            raise ValueError(f"Unexpected end of expression. Expected more tokens after: {expr}")
         if kind and t.kind != kind:
+            if kind == 'RP':
+                open_count = sum(1 for tk in tokens if tk.kind == 'LP')
+                close_count = sum(1 for tk in tokens if tk.kind == 'RP')
+                raise ValueError(
+                    f"Expected closing parenthesis ')', got {t.kind}. "
+                    f"Check parentheses balance: {open_count} opening '(' vs {close_count} closing ')'"
+                )
             raise ValueError(f"Expected {kind}, got {t.kind}")
         pos += 1
         return t
@@ -161,9 +182,11 @@ def parse(expr: str):
                 node = parse_factor()
                 return ('not', node)
         if t.kind == 'LP':
+            paren_stack.append(pos)  # Track opening parenthesis position
             consume('LP')
             node = parse_expr()
             consume('RP')
+            paren_stack.pop() if paren_stack else None  # Remove tracked position
             return node
         raise ValueError(f"Unexpected token {t.kind}")
 
@@ -200,8 +223,15 @@ def parse(expr: str):
 def ast_to_mathml(ast) -> str:
     if ast[0] == 'id':
         name = ast[1]
-        # For simple identifiers, we need to create a boolean expression
-        return f"<apply><eq/><ci>{name}</ci><cn type=\"integer\">1</cn></apply>"
+        # Check if it's a numeric constant (e.g., "1", "0", "2")
+        if name.isdigit():
+            # For numeric constants, interpret as boolean: 0 = false, non-zero = true
+            if name == '0':
+                return "<false/>"
+            else:
+                return "<true/>"
+        # For simple identifiers (species names), create a boolean expression (species >= 1)
+        return f"<apply><geq/><ci>{name}</ci><cn type=\"integer\">1</cn></apply>"
     if ast[0] == 'eq':
         name = ast[1]
         threshold = ast[2]

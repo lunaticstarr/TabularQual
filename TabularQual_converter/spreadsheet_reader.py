@@ -3,9 +3,10 @@ import os
 from typing import Dict, List, Tuple
 from openpyxl import load_workbook
 import warnings
+from datetime import datetime, timezone
 
 from . import spec
-from .types import InMemoryModel, ModelInfo, Person, Species, Transition, InteractionEvidence
+from .types import QualModel, ModelInfo, Person, Species, Transition, InteractionEvidence
 
 def _normalize_header(header: str) -> str:
     return header.strip()
@@ -43,7 +44,7 @@ def _collect_repeated_columns(row: Dict[str, object], prefix: str) -> List[str]:
                 values.append(value_str)
     return values
 
-def _collect_qualifier_pairs(row: Dict[str, object], relation_prefix: str, identifier_prefix: str) -> List[Tuple[str, str]]:
+def _collect_qualifier_pairs(row: Dict[str, object], relation_prefix: str, identifier_prefix: str, validation_warnings: List[str] = None, context: str = "") -> List[Tuple[str, str]]:
     relations = []
     identifiers = []
     for key, value in row.items():
@@ -76,13 +77,21 @@ def _collect_qualifier_pairs(row: Dict[str, object], relation_prefix: str, ident
     max_len = max(len(relations), len(identifiers))
     for i in range(max_len):
         rel = relations[i][1] if i < len(relations) else default_rel
+        # Normalize relation to correct case
+        normalized_rel = spec.normalize_relation(rel)
+        if normalized_rel is None and validation_warnings is not None:
+            validation_warnings.append(f"{context}: Invalid Relation '{rel}'. Valid values: {', '.join(spec.RELATIONS)}")
+            normalized_rel = rel  # Keep original if invalid for error tracking
+        else:
+            normalized_rel = normalized_rel or rel
+        
         ident = identifiers[i][1] if i < len(identifiers) else None
         if ident:
             # Split comma-separated identifiers
             for id_part in ident.split(','):
                 id_part = id_part.strip()
                 if id_part:
-                    pairs.append((rel, id_part))
+                    pairs.append((normalized_rel, id_part))
     return pairs
 
 def _parse_person_string(person_str: str) -> List[str]:
@@ -112,9 +121,15 @@ def _parse_person_string(person_str: str) -> List[str]:
     
     return parts
 
-def read_spreadsheet_to_model(xlsx_path: str) -> InMemoryModel:
+def read_spreadsheet_to_model(xlsx_path: str) -> tuple[QualModel, list[str]]:
+    """Read spreadsheet and return model with validation warnings
+    
+    Returns:
+        tuple: (QualModel, list of warning messages)
+    """
     warnings.filterwarnings("ignore", category=UserWarning)
-    wb = load_workbook(filename=xlsx_path, data_only=True)
+    validation_warnings = []
+    wb = load_workbook(filename=xlsx_path, data_only=True, read_only=True)
     sheetnames = wb.sheetnames
     # Model sheet (vertical: headers in first column, values in second)
     if spec.SHEET_MODEL in sheetnames:
@@ -151,6 +166,10 @@ def read_spreadsheet_to_model(xlsx_path: str) -> InMemoryModel:
 
         model_info.created_iso = (model_kv.get(spec.MODEL_CREATED) or "").strip() or None
         model_info.modified_iso = (model_kv.get(spec.MODEL_MODIFIED) or "").strip() or None
+        
+        # Set current time if Created field is empty
+        if not model_info.created_iso:
+            model_info.created_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
         # Repeated rows for creators/contributors/notes: Creator, Creator2, ...
         creators: List[Person] = []
@@ -179,10 +198,13 @@ def read_spreadsheet_to_model(xlsx_path: str) -> InMemoryModel:
         model_info.contributors = contributors
         model_info.notes = notes_list
     else: # fallback to filename if missing/empty
-        print("No model sheet found, using filename as model_id.")
+        validation_warnings.append("No Model sheet found, using filename as model_id")
         model_info = ModelInfo(
             model_id=os.path.splitext(os.path.basename(xlsx_path))[0]
         )
+        # Set current time if Created field is empty
+        if not model_info.created_iso:
+            model_info.created_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     # Species sheet
     if spec.SHEET_SPECIES not in sheetnames:
@@ -190,11 +212,22 @@ def read_spreadsheet_to_model(xlsx_path: str) -> InMemoryModel:
     ws_species = wb[spec.SHEET_SPECIES]
     sp_headers = [_normalize_header(c.value or "") for c in next(ws_species.iter_rows(min_row=1, max_row=1))[0:ws_species.max_column]]
     species: Dict[str, Species] = {}
+    species_row_num = 2
     for r in ws_species.iter_rows(min_row=2, values_only=True):
         rowd = _row_to_dict(sp_headers, list(r or ()))
         sid = str(rowd.get(spec.SPECIES_ID) or "").strip()
         if not sid:
+            species_row_num += 1
             continue
+        
+        # Validate and normalize species type if provided
+        species_type = str(rowd.get(spec.SPECIES_TYPE) or "").strip()
+        normalized_species_type = None
+        if species_type:
+            normalized_species_type = spec.normalize_type(species_type)
+            if normalized_species_type is None:
+                validation_warnings.append(f"Species '{sid}' (row {species_row_num}): Invalid Type '{species_type}'. Valid values: {', '.join(spec.TYPES)}")
+        
         sp = Species(
             species_id=sid,
             name=str(rowd.get(spec.SPECIES_NAME) or "").strip() or None,
@@ -202,11 +235,14 @@ def read_spreadsheet_to_model(xlsx_path: str) -> InMemoryModel:
             constant=_to_bool(rowd.get(spec.SPECIES_CONSTANT)),
             initial_level=_to_int(rowd.get(spec.SPECIES_INITIAL_LEVEL)),
             max_level=_to_int(rowd.get(spec.SPECIES_MAX_LEVEL)),
-            annotations=_collect_qualifier_pairs(rowd, spec.SPECIES_RELATION_PREFIX, spec.SPECIES_IDENTIFIER_PREFIX),
+            type=normalized_species_type,
+            annotations=_collect_qualifier_pairs(rowd, spec.SPECIES_RELATION_PREFIX, spec.SPECIES_IDENTIFIER_PREFIX, validation_warnings, f"Species '{sid}' (row {species_row_num})"),
             notes=_collect_repeated_columns(rowd, spec.SPECIES_NOTES_PREFIX),
         )
         species[sid] = sp
-    print(f"{len(species)} species found.")
+        species_row_num += 1
+    
+    validation_warnings.append(f"Found {len(species)} species")
 
     # Transitions sheet
     if spec.SHEET_TRANSITIONS not in sheetnames:
@@ -214,16 +250,23 @@ def read_spreadsheet_to_model(xlsx_path: str) -> InMemoryModel:
     ws_trans = wb[spec.SHEET_TRANSITIONS]
     tr_headers = [_normalize_header(c.value or "") for c in next(ws_trans.iter_rows(min_row=1, max_row=1))[0:ws_trans.max_column]]
     transitions: List[Transition] = []
+    trans_row_num = 2
     for r in ws_trans.iter_rows(min_row=2, values_only=True):
         rowd = _row_to_dict(tr_headers, list(r or ()))
         target = str(rowd.get(spec.TRANSITION_TARGET) or "").strip()
         rule = str(rowd.get(spec.TRANSITION_RULE) or "").strip()
         if not target and not rule:
+            trans_row_num += 1
             continue
         if not target:
-            raise ValueError("Transitions row missing required Target")
+            validation_warnings.append(f"Transition row {trans_row_num}: Missing required Target field")
+            trans_row_num += 1
+            continue
         if not rule:
-            raise ValueError("Transitions row missing required Rule")
+            validation_warnings.append(f"Transition row {trans_row_num} (Target: {target}): Missing required Rule field")
+            trans_row_num += 1
+            continue
+        
         transitions.append(
             Transition(
                 transition_id=str(rowd.get(spec.TRANSITION_ID) or "").strip() or None,
@@ -231,39 +274,57 @@ def read_spreadsheet_to_model(xlsx_path: str) -> InMemoryModel:
                 target=target,
                 level=_to_int(rowd.get(spec.TRANSITION_LEVEL)),
                 rule=rule,
-                annotations=_collect_qualifier_pairs(rowd, spec.TRANSITION_RELATION_PREFIX, spec.TRANSITION_IDENTIFIER_PREFIX),
+                annotations=_collect_qualifier_pairs(rowd, spec.TRANSITION_RELATION_PREFIX, spec.TRANSITION_IDENTIFIER_PREFIX, validation_warnings, f"Transition '{target}' (row {trans_row_num})"),
                 notes=_collect_repeated_columns(rowd, spec.TRANSITION_NOTES_PREFIX),
             )
         )
-    print(f"{len(transitions)} transitions found.")
+        trans_row_num += 1
+    
+    validation_warnings.append(f"Found {len(transitions)} transitions")
 
     # Interactions sheet: optional
     interactions: List[InteractionEvidence] = []
     if spec.SHEET_INTERACTIONS in sheetnames:
         ws_inter = wb[spec.SHEET_INTERACTIONS]
         in_headers = [_normalize_header(c.value or "") for c in next(ws_inter.iter_rows(min_row=1, max_row=1))[0:ws_inter.max_column]]
+        inter_row_num = 2
         for r in ws_inter.iter_rows(min_row=2, values_only=True):
             rowd = _row_to_dict(in_headers, list(r or ()))
             target = str(rowd.get(spec.INTER_TARGET) or "").strip()
             source = str(rowd.get(spec.INTER_SOURCE) or "").strip()
             if not target and not source:
+                inter_row_num += 1
                 continue
             if not target or not source:
-                raise ValueError("Interactions row must have both Target and Source")
+                validation_warnings.append(f"Interaction row {inter_row_num}: Must have both Target and Source")
+                inter_row_num += 1
+                continue
+            
+            # Validate and normalize sign
+            sign = str(rowd.get(spec.INTER_SIGN) or "").strip() or None
+            normalized_sign = None
+            if sign:
+                normalized_sign = spec.normalize_sign(sign)
+                if normalized_sign is None:
+                    validation_warnings.append(f"Interaction '{source}→{target}' (row {inter_row_num}): Invalid Sign '{sign}'. Valid values: {', '.join(spec.SIGN)}")
+            
             interactions.append(
                 InteractionEvidence(
                     target=target,
                     source=source,
-                    sign=str(rowd.get(spec.INTER_SIGN) or "").strip() or None,
-                    annotations=_collect_qualifier_pairs(rowd, spec.INTER_RELATION_PREFIX, spec.INTER_IDENTIFIER_PREFIX),
+                    sign=normalized_sign,
+                    annotations=_collect_qualifier_pairs(rowd, spec.INTER_RELATION_PREFIX, spec.INTER_IDENTIFIER_PREFIX, validation_warnings, f"Interaction '{source}→{target}' (row {inter_row_num})"),
                     notes=_collect_repeated_columns(rowd, spec.INTER_NOTES_PREFIX),
                 )
             )
-        print(f"{len(interactions)} interactions found.")
+            inter_row_num += 1
+        validation_warnings.append(f"Found {len(interactions)} interactions")
     else:
-        print("No interactions sheet found, skipping.")
+        validation_warnings.append("No Interactions sheet found (optional)")
 
-    return InMemoryModel(model=model_info, species=species, transitions=transitions, interactions=interactions)
+    wb.close()
+    
+    return QualModel(model=model_info, species=species, transitions=transitions, interactions=interactions), validation_warnings
 
 
 def _to_bool(v) -> bool | None:
