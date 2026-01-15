@@ -107,10 +107,8 @@ The Transition-Rules column supports boolean and comparison expressions using th
 - `N & !CI:2 & !Cro:3` - N active AND CI below level 2 AND Cro below level 3
 - `(A & B) | (!C & D != 1)` - Complex grouped expression
 
-**Note**: When converting SBML to spreadsheet, rules are exported in **operator format** by default (`A >= 2`, `B < 3`). Use `--colon-format` to export in colon notation (`A:2`, `!B:3`) instead.
-
 ### Notes
 
 - The reader ignores a first README sheet if present, and reads `Model`, `Species`, `Transitions`, and `Interactions`.
 - The SBML to Spreadsheet converter automatically uses `doc/template.xlsx` if available for README and Appendix sheets.
-- TODO: automatically detect Species:Type, Interactions:Target, Source and Sign
+- TODO: automatically detect Species:Type, Interactions:Target, Source and Sign；Validation of annotations.
