@@ -8,8 +8,8 @@ import gc
 def _get_version_info() -> str:
     """Get version information for TabularQual and libSBML"""
     try:
-        import pkg_resources
-        tabularqual_version = pkg_resources.get_distribution("tabularqual").version
+        from . import spec
+        tabularqual_version = spec.VERSION
     except Exception:
         tabularqual_version = "unknown"
     
