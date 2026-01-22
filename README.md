@@ -73,7 +73,7 @@ to-table model.sbml MyOutput --csv
 
 `to-sbml INPUT [OUTPUT]`:
 
-- **INPUT**: input file/path. Supports XLSX, CSV file, directory with CSVs, or CSV prefix
+- **INPUT**: input file/path. Supports XLSX, CSV file, directory with CSVs, or CSV prefix (e.g., `Model` for `Model_Species.csv`, `Model_Transitions.csv`, etc.)
 - **OUTPUT**: output SBML file (optional, defaults to input name with `.sbml` extension)
 - **--inter-anno**: use interaction annotations only (unless `--trans-anno` is also set)
 - **--trans-anno**: use transition annotations only (unless `--inter-anno` is also set)
@@ -83,48 +83,11 @@ to-table model.sbml MyOutput --csv
 
 - **INPUT**: input SBML file
 - **OUTPUT**: output file/prefix (optional, defaults to input name)
-- **--csv**: output as CSV files instead of XLSX
+- **--csv**: output as CSV files (`{prefix}_Model.csv`, `{prefix}_Species.csv`, `{prefix}_Transitions.csv`, `{prefix}_Interactions.csv`)
 - **--template**: specify a template file for README and Appendix sheets (XLSX only)
 - **--colon-format**: use colon notation for transition rules (`:` means `>=`)
 
-Examples:
-
-```bash
-# Convert XLSX to SBML (output: model.sbml)
-to-sbml model.xlsx
-
-# Convert with explicit output name
-to-sbml model.xlsx output.sbml
-
-# From CSV prefix (looks for MyModel_Species.csv, etc.)
-to-sbml MyModel
-
-# Include only interaction annotations
-to-sbml model.xlsx --inter-anno
-
-# Convert SBML to XLSX (output: model.xlsx)
-to-table model.sbml
-
-# Convert to CSV files (output: model_Model.csv, model_Species.csv, etc.)
-to-table model.sbml --csv
-
-# Convert to CSV with custom prefix
-to-table model.sbml CustomName --csv
-
-# Use template and colon notation
-to-table model.sbml output.xlsx --template doc/template.xlsx --colon-format
-```
-
-### CSV Format
-
-When using CSV input/output, the converter works with four separate CSV files:
-
-- `{prefix}_Model.csv` - Model metadata
-- `{prefix}_Species.csv` - Species definitions (**required**)
-- `{prefix}_Transitions.csv` - Transition rules (**required**)
-- `{prefix}_Interactions.csv` - Interaction
-
-### Transition Rules Syntax
+#### Transition Rules Syntax
 
 The Transition-Rules column supports boolean and comparison expressions using the following operators and syntax (space will be ignored):
 
