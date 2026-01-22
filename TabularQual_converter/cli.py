@@ -47,15 +47,38 @@ def _check_input_exists(input_path: str) -> bool:
     return False
 
 
+def _get_output_name(input_path: str, new_extension: str) -> str:
+    """Generate output filename based on input, replacing or adding extension."""
+    p = Path(input_path)
+    # Remove known extensions, keep the base name
+    stem = p.stem
+    # For CSV prefix input (no extension), use the name directly
+    if p.suffix.lower() in ('.xlsx', '.xls', '.sbml', '.xml', '.csv'):
+        return str(p.with_suffix(new_extension))
+    else:
+        # It's a prefix or directory name
+        return str(p) + new_extension
+
+
 @click.command(name="to-sbml")
-@click.option("--input", "input_path", required=True, type=click.Path(), help="Input file: XLSX, CSV file, directory with CSVs, or CSV prefix (e.g., 'Example' for Example_Species.csv)")
-@click.option("--output", "output_sbml", required=True, type=click.Path(dir_okay=False))
+@click.argument("input_path", type=click.Path())
+@click.argument("output_sbml", type=click.Path(), required=False)
 @click.option("--inter-anno", is_flag=True, default=False, help="Use interaction annotations only (unless --trans-anno also set)")
 @click.option("--trans-anno", is_flag=True, default=False, help="Use transition annotations only (unless --inter-anno also set)")
-def to_sbml_entry(input_path: str, output_sbml: str, inter_anno: bool, trans_anno: bool):
+def to_sbml_entry(input_path: str, output_sbml: str | None, inter_anno: bool, trans_anno: bool):
+    """Convert spreadsheet (XLSX or CSV) to SBML.
+    
+    INPUT_PATH: XLSX file, CSV file, directory with CSVs, or CSV prefix
+    
+    OUTPUT_SBML: Output SBML file (optional, defaults to input name with .sbml extension)
+    """
     # Validate input exists
     if not _check_input_exists(input_path):
         raise click.ClickException(f"Input not found: {input_path}")
+    
+    # Default output name if not provided
+    if output_sbml is None:
+        output_sbml = _get_output_name(input_path, '.sbml')
     
     interactions_anno, transitions_anno = _resolve_annotation_flags(inter_anno, trans_anno)
     try:
@@ -71,12 +94,26 @@ def to_sbml_entry(input_path: str, output_sbml: str, inter_anno: bool, trans_ann
 
 
 @click.command(name="to-table")
-@click.option("--input", "input_sbml", required=True, type=click.Path(exists=True, dir_okay=False))
-@click.option("--output", "output_path", required=True, type=click.Path(), help="Output path: XLSX file path or CSV prefix (with --csv flag)")
+@click.argument("input_sbml", type=click.Path(exists=True))
+@click.argument("output_path", type=click.Path(), required=False)
 @click.option("--template", "template_xlsx", type=click.Path(exists=True, dir_okay=False), help="Template file for README and Appendix sheets (XLSX only)")
 @click.option("--colon-format", "colon_format", is_flag=True, default=False, help="Use colon notation for transition rules (A:2 means A>=2). Default uses operators (>=, <, etc.)")
-@click.option("--csv", "output_csv", is_flag=True, default=False, help="Output as CSV files instead of XLSX. Output path becomes a prefix (e.g., 'Example' creates Example_Model.csv, Example_Species.csv, etc.)")
-def to_table_entry(input_sbml: str, output_path: str, template_xlsx: str = None, colon_format: bool = False, output_csv: bool = False):
+@click.option("--csv", "output_csv", is_flag=True, default=False, help="Output as CSV files instead of XLSX")
+def to_table_entry(input_sbml: str, output_path: str | None, template_xlsx: str = None, colon_format: bool = False, output_csv: bool = False):
+    """Convert SBML to spreadsheet (XLSX or CSV).
+    
+    INPUT_SBML: Input SBML file
+    
+    OUTPUT_PATH: Output file/prefix (optional, defaults to input name). For CSV output, this is the prefix for files.
+    """
+    # Default output name if not provided
+    if output_path is None:
+        if output_csv:
+            # For CSV, use the input stem as prefix
+            output_path = Path(input_sbml).stem
+        else:
+            output_path = _get_output_name(input_sbml, '.xlsx')
+    
     # Auto-detect template if not provided (only for XLSX output)
     if template_xlsx is None and not output_csv:
         # Look for template.xlsx in doc/ directory relative to this file

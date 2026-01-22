@@ -40,79 +40,79 @@ pip install -e .
 #### Spreadsheet ➜ SBML
 
 ```bash
-# From XLSX
-to-sbml \
-  --input examples/Faure2006/Faure2006.xlsx \
-  --output examples/Faure2006/Faure2006_out.sbml
+# Simple usage (output defaults to input name with .sbml extension)
+to-sbml model.xlsx
 
-# From CSV files (using prefix - looks for Faure2006_Species.csv, Faure2006_Transitions.csv, etc.)
-to-sbml \
-  --input examples/Faure2006/Faure2006 \
-  --output examples/Faure2006/Faure2006_out.sbml
+# From XLSX with explicit output
+to-sbml model.xlsx model_out.sbml
+
+# From CSV files (using prefix - looks for Model_Species.csv, Model_Transitions.csv, etc.)
+to-sbml Model
 
 # From CSV directory
-to-sbml \
-  --input examples/Faure2006/ \
-  --output examples/Faure2006/Faure2006_out.sbml
+to-sbml examples/Faure2006/
 ```
 
 #### SBML ➜ Spreadsheet
 
 ```bash
-# To XLSX
-to-table \
-  --input examples/Faure2006/Faure2006_out.sbml \
-  --output examples/Faure2006/Faure2006_reconstructed.xlsx
+# Simple usage (output defaults to input name with .xlsx extension)
+to-table model.sbml
 
-# To CSV files (creates Faure2006_Model.csv, Faure2006_Species.csv, etc.)
-to-table \
-  --input examples/Faure2006/Faure2006_out.sbml \
-  --output examples/Faure2006/Faure2006 \
-  --csv
+# To XLSX with explicit output
+to-table model.sbml output.xlsx
+
+# To CSV files (creates Model_Model.csv, Model_Species.csv, etc.)
+to-table model.sbml --csv
+
+# To CSV with custom prefix
+to-table model.sbml MyOutput --csv
 ```
 
 ### Options
 
-`to-sbml`:
+`to-sbml INPUT [OUTPUT]`:
 
-- **--input**: input file path. Supports:
-  - XLSX file path (e.g., `model.xlsx`)
-  - CSV file path (will look for sibling CSV files)
-  - Directory containing CSV files
-  - CSV prefix (e.g., `Example` looks for `Example_Species.csv`, `Example_Transitions.csv`, etc.)
-- **--inter-anno**: use interaction annotations only (unless `--trans-anno` is also set).
-- **--trans-anno**: use transition annotations only (unless `--inter-anno` is also set).
-- If you pass both `--inter-anno` and `--trans-anno` or pass neither, the converter will include **both** interaction and transition annotations.
+- **INPUT**: input file/path. Supports XLSX, CSV file, directory with CSVs, or CSV prefix
+- **OUTPUT**: output SBML file (optional, defaults to input name with `.sbml` extension)
+- **--inter-anno**: use interaction annotations only (unless `--trans-anno` is also set)
+- **--trans-anno**: use transition annotations only (unless `--inter-anno` is also set)
+- If you pass both flags or neither, the converter includes **both** annotation types
 
-`to-table`:
+`to-table INPUT [OUTPUT]`:
 
-* **--csv**: output as CSV files instead of XLSX. The output path becomes a prefix (e.g., `Example` creates `Example_Model.csv`, `Example_Species.csv`, `Example_Transitions.csv`, `Example_Interactions.csv`)
-* **--template**: optionally specify a template file for README and Appendix sheets (XLSX only)
-* **--colon-format**: use colon notation for transition rules (`:` means `>=`). Default uses operators (`>=`, `<`, etc.)
+- **INPUT**: input SBML file
+- **OUTPUT**: output file/prefix (optional, defaults to input name)
+- **--csv**: output as CSV files instead of XLSX
+- **--template**: specify a template file for README and Appendix sheets (XLSX only)
+- **--colon-format**: use colon notation for transition rules (`:` means `>=`)
 
 Examples:
 
 ```bash
-# Interactions only
-to-sbml --input in.xlsx --output out.sbml --inter-anno
+# Convert XLSX to SBML (output: model.sbml)
+to-sbml model.xlsx
 
-# Transitions only
-to-sbml --input in.xlsx --output out.sbml --trans-anno
+# Convert with explicit output name
+to-sbml model.xlsx output.sbml
 
-# Both (default)
-to-sbml --input in.xlsx --output out.sbml
+# From CSV prefix (looks for MyModel_Species.csv, etc.)
+to-sbml MyModel
 
-# From CSV files with prefix
-to-sbml --input MyModel --output out.sbml
+# Include only interaction annotations
+to-sbml model.xlsx --inter-anno
 
-# Use doc/template.xlsx as template for creating tables
-to-table --input in.sbml --output out.xlsx --template doc/template.xlsx
+# Convert SBML to XLSX (output: model.xlsx)
+to-table model.sbml
 
-# Use colon notation for rules (A:2 instead of A >= 2)
-to-table --input in.sbml --output out.xlsx --colon-format
+# Convert to CSV files (output: model_Model.csv, model_Species.csv, etc.)
+to-table model.sbml --csv
 
-# Export to CSV files
-to-table --input in.sbml --output MyModel --csv
+# Convert to CSV with custom prefix
+to-table model.sbml CustomName --csv
+
+# Use template and colon notation
+to-table model.sbml output.xlsx --template doc/template.xlsx --colon-format
 ```
 
 ### CSV Format
