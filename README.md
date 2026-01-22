@@ -37,33 +37,57 @@ pip install -e .
 
 ### Usage
 
-* Spreadsheet ➜ SBML
+#### Spreadsheet ➜ SBML
 
 ```bash
+# From XLSX
 to-sbml \
   --input examples/Faure2006/Faure2006.xlsx \
+  --output examples/Faure2006/Faure2006_out.sbml
+
+# From CSV files (using prefix - looks for Faure2006_Species.csv, Faure2006_Transitions.csv, etc.)
+to-sbml \
+  --input examples/Faure2006/Faure2006 \
+  --output examples/Faure2006/Faure2006_out.sbml
+
+# From CSV directory
+to-sbml \
+  --input examples/Faure2006/ \
   --output examples/Faure2006/Faure2006_out.sbml
 ```
 
 #### SBML ➜ Spreadsheet
 
 ```bash
+# To XLSX
 to-table \
   --input examples/Faure2006/Faure2006_out.sbml \
   --output examples/Faure2006/Faure2006_reconstructed.xlsx
+
+# To CSV files (creates Faure2006_Model.csv, Faure2006_Species.csv, etc.)
+to-table \
+  --input examples/Faure2006/Faure2006_out.sbml \
+  --output examples/Faure2006/Faure2006 \
+  --csv
 ```
 
 ### Options
 
 `to-sbml`:
 
+- **--input**: input file path. Supports:
+  - XLSX file path (e.g., `model.xlsx`)
+  - CSV file path (will look for sibling CSV files)
+  - Directory containing CSV files
+  - CSV prefix (e.g., `Example` looks for `Example_Species.csv`, `Example_Transitions.csv`, etc.)
 - **--inter-anno**: use interaction annotations only (unless `--trans-anno` is also set).
 - **--trans-anno**: use transition annotations only (unless `--inter-anno` is also set).
 - If you pass both `--inter-anno` and `--trans-anno` or pass neither, the converter will include **both** interaction and transition annotations.
 
 `to-table`:
 
-* **--template**: optionally specify a template file for README and Appendix sheets
+* **--csv**: output as CSV files instead of XLSX. The output path becomes a prefix (e.g., `Example` creates `Example_Model.csv`, `Example_Species.csv`, `Example_Transitions.csv`, `Example_Interactions.csv`)
+* **--template**: optionally specify a template file for README and Appendix sheets (XLSX only)
 * **--colon-format**: use colon notation for transition rules (`:` means `>=`). Default uses operators (`>=`, `<`, etc.)
 
 Examples:
@@ -78,12 +102,27 @@ to-sbml --input in.xlsx --output out.sbml --trans-anno
 # Both (default)
 to-sbml --input in.xlsx --output out.sbml
 
+# From CSV files with prefix
+to-sbml --input MyModel --output out.sbml
+
 # Use doc/template.xlsx as template for creating tables
 to-table --input in.sbml --output out.xlsx --template doc/template.xlsx
 
 # Use colon notation for rules (A:2 instead of A >= 2)
 to-table --input in.sbml --output out.xlsx --colon-format
+
+# Export to CSV files
+to-table --input in.sbml --output MyModel --csv
 ```
+
+### CSV Format
+
+When using CSV input/output, the converter works with four separate CSV files:
+
+- `{prefix}_Model.csv` - Model metadata
+- `{prefix}_Species.csv` - Species definitions (**required**)
+- `{prefix}_Transitions.csv` - Transition rules (**required**)
+- `{prefix}_Interactions.csv` - Interaction
 
 ### Transition Rules Syntax
 
@@ -110,5 +149,5 @@ The Transition-Rules column supports boolean and comparison expressions using th
 ### Notes
 
 - The reader ignores a first README sheet if present, and reads `Model`, `Species`, `Transitions`, and `Interactions`.
-- The SBML to Spreadsheet converter automatically uses `doc/template.xlsx` if available for README and Appendix sheets.
+- The SBML to Spreadsheet converter automatically uses `doc/template.xlsx` if available for README and Appendix sheets (XLSX output only).
 - TODO: automatically detect Species:Type, Interactions:Target, Source and Sign；Validation of annotations.

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from .spreadsheet_reader import read_spreadsheet_to_model
+from pathlib import Path
+from .spreadsheet_reader import read_spreadsheet_to_model, detect_csv_input, read_csv_to_model
 from .sbml_writer import write_sbml
 import libsbml
 import gc
@@ -20,13 +21,51 @@ def _get_version_info() -> str:
     
     return f"Created by TabularQual version {tabularqual_version} with libSBML version {libsbml_version}"
 
-def convert_spreadsheet_to_sbml(input_xlsx: str, output_sbml: str, *, interactions_anno: bool = True, transitions_anno: bool = True) -> dict:
-    """Convert spreadsheet to SBML and return statistics and warnings.
+def convert_spreadsheet_to_sbml(input_path: str, output_sbml: str, *, interactions_anno: bool = True, transitions_anno: bool = True) -> dict:
+    """Convert spreadsheet (XLSX or CSV) to SBML and return statistics and warnings.
+    
+    Args:
+        input_path: Path to input file. Can be:
+            - An XLSX file path
+            - A CSV file path (will look for sibling CSV files)
+            - A directory containing CSV files
+            - A prefix for CSV files (e.g., 'Example' for Example_Species.csv, etc.)
+        output_sbml: Path to output SBML file
+        interactions_anno: Whether to include interaction annotations
+        transitions_anno: Whether to include transition annotations
     
     Returns:
         dict: Statistics including 'species', 'transitions', 'interactions' counts, and 'warnings' list
     """
-    im, validation_warnings = read_spreadsheet_to_model(input_xlsx)
+    input_p = Path(input_path)
+    
+    # Check if input is XLSX
+    if input_p.is_file() and input_p.suffix.lower() in ('.xlsx', '.xls'):
+        im, validation_warnings = read_spreadsheet_to_model(input_path)
+    else:
+        # Try CSV detection
+        is_csv, csv_files, csv_warnings = detect_csv_input(input_path)
+        
+        if is_csv:
+            # Print CSV detection warnings
+            for warning in csv_warnings:
+                print(f"Warning: {warning}")
+            
+            # Check for required files
+            if 'Species' not in csv_files or 'Transitions' not in csv_files:
+                missing = []
+                if 'Species' not in csv_files:
+                    missing.append('Species')
+                if 'Transitions' not in csv_files:
+                    missing.append('Transitions')
+                raise ValueError(f"Missing required CSV file(s): {', '.join(missing)}")
+            
+            im, validation_warnings = read_csv_to_model(csv_files)
+            # Prepend CSV detection warnings
+            validation_warnings = csv_warnings + validation_warnings
+        else:
+            # Fallback to XLSX (will raise error if file doesn't exist)
+            im, validation_warnings = read_spreadsheet_to_model(input_path)
     
     # Print warnings to console
     for warning in validation_warnings:

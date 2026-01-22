@@ -3,21 +3,24 @@ from __future__ import annotations
 import warnings
 
 from .sbml_reader import read_sbml
-from .spreadsheet_writer import write_spreadsheet
+from .spreadsheet_writer import write_spreadsheet, write_csv
 
 
-def convert_sbml_to_spreadsheet(sbml_path: str, output_path: str, template_path: str = None, rule_format: str = "operators"):
+def convert_sbml_to_spreadsheet(sbml_path: str, output_path: str, template_path: str = None, rule_format: str = "operators", output_csv: bool = False):
     """
-    Convert an SBML-qual file to SpreadSBML spreadsheet format.
+    Convert an SBML-qual file to SpreadSBML spreadsheet format (XLSX or CSV).
     
     Args:
         sbml_path: Path to input SBML file
-        output_path: Path to output spreadsheet file
-        template_path: Optional path to template.xlsx for README and Appendix sheets
+        output_path: Path to output file. For CSV output, this is the prefix for output files.
+        template_path: Optional path to template.xlsx for README and Appendix sheets (XLSX only)
         rule_format: Format for transition rules - "operators" (default, uses >=, <=, etc.) or "colon" (uses : notation)
+        output_csv: If True, output as CSV files instead of XLSX
     
     Returns:
-        List of messages (info and warnings)
+        Tuple of (message_list, created_files)
+            - message_list: List of messages (info and warnings)
+            - created_files: List of created file paths (for CSV, multiple files; for XLSX, single file)
     """
     # Suppress openpyxl warnings
     warnings.filterwarnings('ignore', category=UserWarning, module='openpyxl')
@@ -49,8 +52,12 @@ def convert_sbml_to_spreadsheet(sbml_path: str, output_path: str, template_path:
     message_list.append(transitions_msg)
     message_list.append(interactions_msg)
     
-    # Write spreadsheet
-    write_spreadsheet(model, output_path, template_path, rule_format)
+    # Write output
+    if output_csv:
+        created_files = write_csv(model, output_path, rule_format)
+    else:
+        actual_path = write_spreadsheet(model, output_path, template_path, rule_format)
+        created_files = [actual_path]
     
-    return message_list
+    return message_list, created_files
 

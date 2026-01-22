@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import List, Dict, Any
+import csv
 import openpyxl
 from openpyxl.styles import Font, PatternFill
 from pathlib import Path
@@ -9,7 +10,7 @@ import shutil
 from .types import QualModel, Person
 from . import spec
 
-def write_spreadsheet(model: QualModel, output_path: str, template_path: str = None, rule_format: str = "operators"):
+def write_spreadsheet(model: QualModel, output_path: str, template_path: str = None, rule_format: str = "operators") -> str:
     """Write QualModel to spreadsheet format
     
     Args:
@@ -17,7 +18,14 @@ def write_spreadsheet(model: QualModel, output_path: str, template_path: str = N
         output_path: Path to output spreadsheet file
         template_path: Optional path to template.xlsx for README and Appendix sheets
         rule_format: Format for transition rules - "operators" (default, uses >=, <=, etc.) or "colon" (uses : notation)
+    
+    Returns:
+        str: The actual output path used (may have .xlsx added)
     """
+    # Ensure output path has .xlsx extension
+    output_p = Path(output_path)
+    if output_p.suffix.lower() not in ('.xlsx', '.xls', '.xlsm'):
+        output_path = str(output_p) + '.xlsx'
     
     # Use template if provided, otherwise create new workbook
     if template_path and Path(template_path).exists():
@@ -47,6 +55,8 @@ def write_spreadsheet(model: QualModel, output_path: str, template_path: str = N
     # Save
     wb.save(output_path)
     wb.close()
+    
+    return output_path
 
 
 def _write_model_sheet(wb: openpyxl.Workbook, model: QualModel, position: int = 0):
@@ -582,3 +592,317 @@ def _convert_rule_to_colon(rule: str) -> str:
     rule = re.sub(r'(\w+)\s*==\s*(\d+)', replace_eqeq, rule)
     
     return rule
+
+
+def write_csv(model: QualModel, output_prefix: str, rule_format: str = "operators"):
+    """Write QualModel to CSV files.
+    
+    Args:
+        model: The in-memory model to write
+        output_prefix: Prefix for output CSV files (e.g., 'Example' creates Example_Model.csv, etc.)
+        rule_format: Format for transition rules - "operators" or "colon"
+    
+    Returns:
+        List of created file paths
+    """
+    output_path = Path(output_prefix)
+    output_dir = output_path.parent if output_path.parent.exists() else Path('.')
+    prefix = output_path.name
+    
+    created_files = []
+    
+    # Write Model CSV
+    model_file = output_dir / f"{prefix}_Model.csv"
+    _write_model_csv(model, str(model_file))
+    created_files.append(str(model_file))
+    
+    # Write Species CSV
+    species_file = output_dir / f"{prefix}_Species.csv"
+    _write_species_csv(model, str(species_file))
+    created_files.append(str(species_file))
+    
+    # Write Transitions CSV
+    transitions_file = output_dir / f"{prefix}_Transitions.csv"
+    _write_transitions_csv(model, str(transitions_file), rule_format)
+    created_files.append(str(transitions_file))
+    
+    # Write Interactions CSV
+    interactions_file = output_dir / f"{prefix}_Interactions.csv"
+    _write_interactions_csv(model, str(interactions_file))
+    created_files.append(str(interactions_file))
+    
+    return created_files
+
+
+def _write_model_csv(model: QualModel, output_path: str):
+    """Write Model sheet to CSV (vertical format: key-value pairs)"""
+    from datetime import datetime, timezone
+    
+    rows = []
+    
+    # Model_source
+    source_val = ", ".join(_url_to_compact_id(url) for url in model.model.source_urls) if model.model.source_urls else ""
+    rows.append(["Model_source", source_val])
+    
+    # Model_ID (required)
+    rows.append(["Model_ID", model.model.model_id])
+    
+    # Name
+    rows.append(["Name", model.model.name or ""])
+    
+    # Publication
+    pub_val = ", ".join(_url_to_compact_id(url) for url in model.model.described_by) if model.model.described_by else ""
+    rows.append(["Publication", pub_val])
+    
+    # Origin_publication & Origin_model (from derived_from)
+    origin_pubs = []
+    origin_models = []
+    if model.model.derived_from:
+        for url in model.model.derived_from:
+            compact_id = _url_to_compact_id(url)
+            if 'biomodels' in compact_id.lower():
+                origin_models.append(compact_id)
+            else:
+                origin_pubs.append(compact_id)
+    
+    rows.append(["Origin_publication", ", ".join(origin_pubs)])
+    rows.append(["Origin_model", ", ".join(origin_models)])
+    
+    # Taxon
+    taxon_val = ", ".join(_url_to_compact_id(taxon) for taxon in model.model.taxons) if model.model.taxons else ""
+    rows.append(["Taxon", taxon_val])
+    
+    # Biological_process
+    bp_val = ", ".join(_url_to_compact_id(process) for process in model.model.biological_processes) if model.model.biological_processes else ""
+    rows.append(["Biological_process", bp_val])
+    
+    # Created
+    created_value = model.model.created_iso or datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    rows.append(["Created", created_value])
+    
+    # Modified
+    rows.append(["Modified", datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")])
+    
+    # Creators
+    max_creators = max(2, len(model.model.creators))
+    for idx in range(1, max_creators + 1):
+        value = _person_to_string(model.model.creators[idx - 1]) if idx <= len(model.model.creators) else ""
+        rows.append([f"Creator{idx}", value])
+    
+    # Contributors
+    max_contributors = max(2, len(model.model.contributors))
+    for idx in range(1, max_contributors + 1):
+        value = _person_to_string(model.model.contributors[idx - 1]) if idx <= len(model.model.contributors) else ""
+        rows.append([f"Contributor{idx}", value])
+    
+    # Version
+    version_str = ""
+    if model.model.versions:
+        version_str = ", ".join(model.model.versions)
+        if len(model.model.versions) > 1 or not version_str.startswith("Version:"):
+            version_str = f"Version: {version_str}"
+    rows.append(["Version", version_str])
+    
+    # Notes
+    max_notes = max(3, len(model.model.notes))
+    for idx in range(1, max_notes + 1):
+        value = model.model.notes[idx - 1] if idx <= len(model.model.notes) else ""
+        rows.append([f"Notes{idx}", value])
+    
+    # Comments
+    rows.append(["Comments", f"Created by TabularQual version {spec.VERSION}"])
+    
+    with open(output_path, 'w', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer.writerows(rows)
+
+
+def _write_species_csv(model: QualModel, output_path: str):
+    """Write Species sheet to CSV"""
+    # Determine max qualifiers and notes
+    max_qualifiers = 0
+    max_notes = 0
+    for species in model.species.values():
+        grouped = {}
+        for qualifier, identifier in species.annotations:
+            if qualifier not in grouped:
+                grouped[qualifier] = []
+            grouped[qualifier].append(identifier)
+        max_qualifiers = max(max_qualifiers, len(grouped))
+        max_notes = max(max_notes, len(species.notes))
+    
+    max_qualifiers = max(max_qualifiers, 2)
+    max_notes = max(max_notes, 1)
+    
+    # Build headers
+    headers = ["Species_ID", "Name"]
+    for i in range(max_qualifiers):
+        headers.extend([f"Relation{i + 1}", f"Identifier{i + 1}"])
+    headers.extend(["Compartment", "Type", "Constant", "InitialLevel", "MaxLevel"])
+    for i in range(max_notes):
+        headers.append(f"Notes{i + 1}")
+    headers.append("Comments")
+    
+    rows = [headers]
+    
+    for species in sorted(model.species.values(), key=lambda s: s.species_id):
+        row = [species.species_id, species.name or ""]
+        
+        # Annotations
+        grouped_annos = {}
+        for qualifier, identifier in species.annotations:
+            if qualifier not in grouped_annos:
+                grouped_annos[qualifier] = []
+            grouped_annos[qualifier].append(_url_to_compact_id(identifier))
+        
+        for i in range(max_qualifiers):
+            if i < len(grouped_annos):
+                qualifier = list(grouped_annos.keys())[i]
+                identifiers = grouped_annos[qualifier]
+                row.extend([qualifier, ", ".join(identifiers)])
+            else:
+                row.extend(["", ""])
+        
+        row.extend([
+            species.compartment or "",
+            species.type or "",
+            str(species.constant) if species.constant is not None else "",
+            species.initial_level if species.initial_level is not None else "",
+            species.max_level if species.max_level is not None else ""
+        ])
+        
+        for i in range(max_notes):
+            row.append(species.notes[i] if i < len(species.notes) else "")
+        
+        row.append("")  # Comments
+        rows.append(row)
+    
+    with open(output_path, 'w', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer.writerows(rows)
+
+
+def _write_transitions_csv(model: QualModel, output_path: str, rule_format: str = "operators"):
+    """Write Transitions sheet to CSV"""
+    # Determine max qualifiers and notes
+    max_qualifiers = 0
+    max_notes = 0
+    for transition in model.transitions:
+        grouped = {}
+        for qualifier, identifier in transition.annotations:
+            if qualifier not in grouped:
+                grouped[qualifier] = []
+            grouped[qualifier].append(identifier)
+        max_qualifiers = max(max_qualifiers, len(grouped))
+        max_notes = max(max_notes, len(transition.notes))
+    
+    max_qualifiers = max(max_qualifiers, 1)
+    max_notes = max(max_notes, 1)
+    
+    # Build headers
+    headers = ["Transitions_ID", "Name", "Target", "Level", "Rule"]
+    for i in range(max_qualifiers):
+        headers.extend([f"Relation{i + 1}", f"Identifier{i + 1}"])
+    for i in range(max_notes):
+        headers.append(f"Notes{i + 1}")
+    headers.append("Comments")
+    
+    rows = [headers]
+    
+    for transition in model.transitions:
+        rule = transition.rule
+        if rule_format == "colon":
+            rule = _convert_rule_to_colon(rule)
+        
+        row = [
+            transition.transition_id or "",
+            transition.name or "",
+            transition.target,
+            transition.level if transition.level is not None else "",
+            rule
+        ]
+        
+        # Annotations
+        grouped_annos = {}
+        for qualifier, identifier in transition.annotations:
+            if qualifier not in grouped_annos:
+                grouped_annos[qualifier] = []
+            grouped_annos[qualifier].append(_url_to_compact_id(identifier))
+        
+        for i in range(max_qualifiers):
+            if i < len(grouped_annos):
+                qualifier = list(grouped_annos.keys())[i]
+                identifiers = grouped_annos[qualifier]
+                row.extend([qualifier, ", ".join(identifiers)])
+            else:
+                row.extend(["", ""])
+        
+        for i in range(max_notes):
+            row.append(transition.notes[i] if i < len(transition.notes) else "")
+        
+        row.append("")  # Comments
+        rows.append(row)
+    
+    with open(output_path, 'w', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer.writerows(rows)
+
+
+def _write_interactions_csv(model: QualModel, output_path: str):
+    """Write Interactions sheet to CSV"""
+    # Determine max qualifiers and notes
+    max_qualifiers = 0
+    max_notes = 0
+    for interaction in model.interactions:
+        grouped = {}
+        for qualifier, identifier in interaction.annotations:
+            if qualifier not in grouped:
+                grouped[qualifier] = []
+            grouped[qualifier].append(identifier)
+        max_qualifiers = max(max_qualifiers, len(grouped))
+        max_notes = max(max_notes, len(interaction.notes))
+    
+    max_qualifiers = max(max_qualifiers, 1)
+    max_notes = max(max_notes, 1)
+    
+    # Build headers
+    headers = ["Target", "Source", "Sign"]
+    for i in range(max_qualifiers):
+        headers.extend([f"Relation{i + 1}", f"Identifier{i + 1}"])
+    for i in range(max_notes):
+        headers.append(f"Notes{i + 1}")
+    headers.append("Comments")
+    
+    rows = [headers]
+    
+    for interaction in model.interactions:
+        row = [
+            interaction.target,
+            interaction.source,
+            interaction.sign or ""
+        ]
+        
+        # Annotations
+        grouped_annos = {}
+        for qualifier, identifier in interaction.annotations:
+            if qualifier not in grouped_annos:
+                grouped_annos[qualifier] = []
+            grouped_annos[qualifier].append(_url_to_compact_id(identifier))
+        
+        for i in range(max_qualifiers):
+            if i < len(grouped_annos):
+                qualifier = list(grouped_annos.keys())[i]
+                identifiers = grouped_annos[qualifier]
+                row.extend([qualifier, ", ".join(identifiers)])
+            else:
+                row.extend(["", ""])
+        
+        for i in range(max_notes):
+            row.append(interaction.notes[i] if i < len(interaction.notes) else "")
+        
+        row.append("")  # Comments
+        rows.append(row)
+    
+    with open(output_path, 'w', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer.writerows(rows)
