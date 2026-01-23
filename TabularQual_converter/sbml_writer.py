@@ -272,7 +272,7 @@ def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_
     del doc
     gc.collect()
     
-    return sbml_string
+    return sbml_string, warnings_list
 
 
 def _set_mathml(ft: libsbml.QualFunctionTerm, mathml: str) -> None:

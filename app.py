@@ -299,7 +299,7 @@ with tab1:
                         
                         # Read and convert
                         model, validation_warnings = read_csv_to_model(csv_files_dict)
-                        sbml_string = write_sbml(model, interactions_anno=inter_anno, transitions_anno=trans_anno)
+                        sbml_string, writer_warnings = write_sbml(model, interactions_anno=inter_anno, transitions_anno=trans_anno)
                         
                         with tempfile.NamedTemporaryFile(suffix='.sbml', delete=False, mode='w', encoding='utf-8') as tmp_out:
                             tmp_out.write(sbml_string)
@@ -310,7 +310,7 @@ with tab1:
                             'species': len(model.species),
                             'transitions': len(model.transitions),
                             'interactions': len(model.interactions),
-                            'warnings': validation_warnings
+                            'warnings': validation_warnings + writer_warnings
                         }
                         
                         # Cleanup temp dir

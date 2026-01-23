@@ -75,14 +75,17 @@ def convert_spreadsheet_to_sbml(input_path: str, output_sbml: str, *, interactio
             print(f"Warning: {warning}")  # Actual warnings
     
     # Collect stats
+    sbml_string, writer_warnings = write_sbml(im, interactions_anno=interactions_anno, transitions_anno=transitions_anno)
+    
+    # Combine all warnings
+    all_warnings = validation_warnings + writer_warnings
+    
     stats = {
         'species': len(im.species),
         'transitions': len(im.transitions),
         'interactions': len(im.interactions),
-        'warnings': validation_warnings
+        'warnings': all_warnings
     }
-    
-    sbml_string = write_sbml(im, interactions_anno=interactions_anno, transitions_anno=transitions_anno)
     
     # Clean up model
     del im
