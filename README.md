@@ -101,6 +101,7 @@ The Transition-Rules column supports boolean and comparison expressions using th
 * **Simple species references**:
   * `A` - Species A is active (level >= 1 for multi-valued, or level = 1 for binary)
   * `!A` - Species A is inactive (level = 0)
+* **Species IDs with special characters**: Species IDs containing characters like `/`, `-`, or `\` (e.g., `PI3K/AKT`, `NF-kB`) are supported as long as they are defined in the Species sheet
 
 **Examples**:
 

@@ -11,7 +11,14 @@ from .types import QualModel, Species as SpeciesT, Transition as TransitionT, In
 from .expr_parser import parse as parse_expr, ast_to_mathml
 
 
-def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_anno: bool = True) -> str:
+def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_anno: bool = True) -> Tuple[str, List[str]]:
+    """
+    Write a QualModel to SBML-qual format.
+    
+    Returns:
+        Tuple of (sbml_string, warnings) where warnings is a list of warning messages.
+    """
+    warnings_list: List[str] = []
     doc = None
     try:
         ns = libsbml.QualPkgNamespaces(3, 1, 1)
@@ -106,6 +113,24 @@ def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_
             transitions_by_target[t.target] = []
         transitions_by_target[t.target].append(t)
 
+    # Get all species IDs for the parser (to handle special characters in IDs)
+    known_species_ids = set(model.species.keys())
+    
+    # Warn about species IDs with special characters (not valid SBML SId)
+    invalid_sid_chars = []
+    for sid in known_species_ids:
+        # SBML SId must start with letter/underscore and contain only letters, digits, underscores
+        if not re.match(r'^[A-Za-z_][A-Za-z0-9_]*$', sid):
+            invalid_sid_chars.append(sid)
+    if invalid_sid_chars:
+        warning_msg = f"Warning: {len(invalid_sid_chars)} species ID(s) contain special characters not valid in SBML SId format: "
+        warning_msg += ", ".join(f"'{sid}'" for sid in invalid_sid_chars[:5])
+        if len(invalid_sid_chars) > 5:
+            warning_msg += f" ... and {len(invalid_sid_chars) - 5} more"
+        warning_msg += ". These IDs will be used in MathML expressions but may cause issues with SBML validators."
+        warnings_list.append(warning_msg)
+        print(warning_msg)  # Also print to console for CLI
+
     # Transitions
     for target, target_transitions in transitions_by_target.items():
         # Create one transition per target species
@@ -143,7 +168,7 @@ def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_
         all_species_ids = set()
         for t in target_transitions:
             # print("target_transition: ", t.transition_id, t.rule)
-            ast = parse_expr(t.rule)
+            ast = parse_expr(t.rule, known_species_ids)
             all_species_ids.update(_collect_ids_from_ast(ast))
         
         # Filter out IDs that don't correspond to actual species (e.g., constants like "1")
@@ -171,7 +196,7 @@ def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_
             ft.setResultLevel(level)
             
             # Parse rule to MathML
-            ast = parse_expr(t.rule)
+            ast = parse_expr(t.rule, known_species_ids)
             mathml_content = ast_to_mathml(ast)
             mathml = f"<math xmlns=\"http://www.w3.org/1998/Math/MathML\">{mathml_content}</math>"
             _set_mathml(ft, mathml)

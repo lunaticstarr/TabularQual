@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List, Tuple
+from typing import List, Tuple, Set, Optional
 
 
 class Token:
@@ -9,12 +9,52 @@ class Token:
         self.value = value
 
 
-def tokenize(expr: str) -> List[Token]:
+def tokenize(expr: str, species_ids: Optional[Set[str]] = None) -> List[Token]:
+    """
+    Tokenize a rule expression.
+    
+    Args:
+        expr: The rule expression string
+        species_ids: Optional set of known species IDs. If provided, species IDs
+                     containing special characters (like '/', '\', '-') will be
+                     recognized as whole tokens.
+    """
     s = expr.replace(" ", "")
     tokens: List[Token] = []
     i = 0
+    
+    # Sort species IDs by length (longest first) for greedy matching
+    sorted_species = sorted(species_ids or [], key=len, reverse=True) if species_ids else []
+    # Also create a space-stripped version for matching
+    species_no_space = [(sp, sp.replace(" ", "")) for sp in sorted_species]
+    
     while i < len(s):
         ch = s[i]
+        
+        # First, try to match a known species ID (longest match first)
+        matched_species = None
+        for original_sp, sp_no_space in species_no_space:
+            if s[i:].startswith(sp_no_space):
+                # Make sure we're not in the middle of a larger identifier
+                end_pos = i + len(sp_no_space)
+                # Check if there's a colon notation after (for thresholds like A:2)
+                if end_pos < len(s) and s[end_pos] == ':':
+                    # Include the colon and following digits
+                    j = end_pos + 1
+                    while j < len(s) and s[j].isdigit():
+                        j += 1
+                    matched_species = s[i:j]
+                    i = j
+                else:
+                    matched_species = sp_no_space
+                    i = end_pos
+                break
+        
+        if matched_species:
+            tokens.append(Token('ID', matched_species))
+            continue
+        
+        # Fall back to character-by-character tokenization
         if ch.isalnum() or ch == '_' or ch == ':':  # allow compact IDs like A:2 (threshold)
             j = i + 1
             while j < len(s) and (s[j].isalnum() or s[j] in ['_', ':']):
@@ -74,7 +114,8 @@ def tokenize(expr: str) -> List[Token]:
                 tokens.append(Token('EQ', '='))
                 i += 1
             continue
-        raise ValueError(f"Unexpected character in rule: {ch}")
+        raise ValueError(f"Unexpected character in rule: '{ch}'. If this is part of a species ID, "
+                        f"ensure the Species sheet contains all species used in transition rules.")
     return tokens
 
 
@@ -83,8 +124,16 @@ def tokenize(expr: str) -> List[Token]:
 # | ('eq', name, threshold) | ('le', name, threshold) | ('ge', name, threshold) | ('gt', name, threshold) | ('lt', name, threshold) | ('neq', name, threshold)
 
 
-def parse(expr: str):
-    tokens = tokenize(expr)
+def parse(expr: str, species_ids: Optional[Set[str]] = None):
+    """
+    Parse a rule expression into an AST.
+    
+    Args:
+        expr: The rule expression string
+        species_ids: Optional set of known species IDs. If provided, species IDs
+                     containing special characters will be recognized properly.
+    """
+    tokens = tokenize(expr, species_ids)
     pos = 0
     paren_stack = []  # Track parentheses for better error messages
 
