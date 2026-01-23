@@ -506,6 +506,19 @@ def _parse_annotations_to_list(anno_str: str) -> List[Tuple[str, str]]:
     annotations = []
     
     try:
+        # libsbml may return annotation strings without namespace declarations
+        # Add them if missing to enable proper XML parsing
+        if '<rdf:RDF>' in anno_str or '<rdf:RDF ' in anno_str:
+            # Check if namespace declarations are missing
+            if 'xmlns:rdf=' not in anno_str:
+                anno_str = anno_str.replace(
+                    '<rdf:RDF',
+                    '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" '
+                    'xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" '
+                    'xmlns:bqmodel="http://biomodels.net/model-qualifiers/" '
+                    'xmlns:dcterms="http://purl.org/dc/terms/"'
+                )
+        
         root = ET.fromstring(anno_str)
         ns = {
             'rdf': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',

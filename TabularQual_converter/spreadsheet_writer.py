@@ -498,13 +498,15 @@ def _write_interactions_sheet(wb: openpyxl.Workbook, model: QualModel, position:
 
 
 def _url_to_compact_id(url: str) -> str:
-    """Convert identifiers.org URL to compact ID
+    """Convert identifiers.org URL or URN to compact ID
     
     Handles:
     - identifiers.org/ncbigene:7132 -> ncbigene:7132
     - identifiers.org/ncbigene/7132 -> ncbigene:7132 (slash to colon)
+    - urn:miriam:ncbigene:596 -> ncbigene:596
     - Other URLs are kept as-is
     """
+    # Handle identifiers.org URLs
     if "identifiers.org/" in url:
         # Extract the part after identifiers.org/
         parts = url.split("identifiers.org/")
@@ -515,6 +517,11 @@ def _url_to_compact_id(url: str) -> str:
             if "/" in compact_id and ":" not in compact_id:
                 compact_id = compact_id.replace("/", ":", 1)
             return compact_id
+    
+    # Handle urn:miriam: format (e.g., urn:miriam:ncbigene:596 -> ncbigene:596)
+    if url.startswith("urn:miriam:"):
+        return url[len("urn:miriam:"):]
+    
     return url
 
 

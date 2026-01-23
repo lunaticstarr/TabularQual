@@ -522,17 +522,19 @@ def _to_identifiers_url(identifier: str) -> str:
     """Convert compact identifier or URL to identifiers.org URL
     
     Handles:
-    - Direct URLs (http://, https://, etc.) - kept as-is
+    - Direct URLs (http://, https://, ftp://) - kept as-is
+    - URN format (urn:miriam:...) - kept as-is for compatibility
     - Compact IDs with colon (ncbigene:7132) -> https://identifiers.org/ncbigene:7132
     - Compact IDs with slash (ncbigene/7132) -> https://identifiers.org/ncbigene:7132
+    - DOI format (doi:10.xxx) -> https://identifiers.org/doi:10.xxx
     - Plain strings -> https://identifiers.org/{string}
     """
     s = identifier.strip()
     if not s:
         return s
     
-    # Check if it's already a URL/URI
-    if s.startswith(("http://", "https://", "ftp://", "urn:", "doi:")):
+    # Check if it's already a full URL (http/https/ftp) or URN - keep as-is
+    if s.startswith(("http://", "https://", "ftp://", "urn:")):
         return s
     
     # Check if it's a compact identifier with slash (e.g., ncbigene/7132)
