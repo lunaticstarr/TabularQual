@@ -81,6 +81,32 @@ def detect_csv_input(input_path: str) -> tuple[bool, dict[str, str], list[str]]:
                     return True
         return False
     
+    # Helper to detect common prefix from CSV files in a directory
+    def _detect_prefix_from_dir(check_dir: Path) -> str:
+        """Detect common prefix from CSV files in directory."""
+        if not check_dir.exists():
+            return ""
+        csv_files = [f for f in check_dir.iterdir() if f.is_file() and f.suffix.lower() == '.csv']
+        if not csv_files:
+            return ""
+        
+        # Try to find common prefix pattern: {prefix}_{sheet}.csv
+        prefixes = set()
+        for f in csv_files:
+            stem = f.stem
+            if '_' in stem:
+                potential_prefix = stem.rsplit('_', 1)[0]
+                # Check if this prefix matches multiple expected sheet names
+                for sheet in ['model', 'species', 'transitions', 'interactions']:
+                    if stem.lower() == f"{potential_prefix.lower()}_{sheet}":
+                        prefixes.add(potential_prefix)
+                        break
+        
+        # If we found a consistent prefix, return it
+        if len(prefixes) == 1:
+            return list(prefixes)[0]
+        return ""
+    
     # Check if it's a single CSV file
     if input_p.is_file() and input_p.suffix.lower() == '.csv':
         # Single CSV file - extract prefix from filename (e.g., Example_Species.csv -> Example)
@@ -99,18 +125,29 @@ def detect_csv_input(input_path: str) -> tuple[bool, dict[str, str], list[str]]:
             parent_dir = Path.cwd() / input_p.parent if str(input_p.parent) != '.' else Path.cwd()
             potential_prefix = input_p.name
         
+        # Check if it's a directory first
+        if input_p.is_dir():
+            # It's a directory - try to detect prefix from CSV files inside
+            base_dir = input_p.resolve()
+            detected_prefix = _detect_prefix_from_dir(base_dir)
+            if detected_prefix:
+                prefix = detected_prefix
+            else:
+                # No prefix detected, look for unprefixed files
+                prefix = ""
         # First, check if prefix-style files exist in the parent directory
-        # This handles the case where "test" could be a directory OR a prefix
-        if _check_prefix_files(parent_dir, potential_prefix):
+        # This handles the case where "test" could be a prefix (not a directory)
+        elif _check_prefix_files(parent_dir, potential_prefix):
             base_dir = parent_dir
             prefix = potential_prefix
-        elif input_p.is_dir():
-            # It's a directory - look for CSV files without prefix inside it
-            base_dir = input_p.resolve()
-            prefix = ""
         elif not input_p.exists():
-            # Path doesn't exist and no prefix files found
-            return False, {}, []
+            # Path doesn't exist - could be a prefix, check parent directory
+            detected_prefix = _detect_prefix_from_dir(parent_dir)
+            if detected_prefix and detected_prefix.lower() == potential_prefix.lower():
+                base_dir = parent_dir
+                prefix = detected_prefix
+            else:
+                return False, {}, []
         else:
             return False, {}, []
     
@@ -479,7 +516,7 @@ def _read_csv_to_rows(csv_path: str) -> tuple[list[str], list[dict[str, object]]
     """
     rows = []
     headers = []
-    with open(csv_path, 'r', newline='', encoding='utf-8') as f:
+    with open(csv_path, 'r', newline='', encoding='utf-8-sig') as f:  # utf-8-sig strips BOM
         reader = csv.reader(f)
         try:
             header_row = next(reader)
@@ -509,7 +546,7 @@ def read_csv_to_model(csv_files: dict[str, str]) -> tuple[QualModel, list[str]]:
     # Model CSV (vertical: headers in first column, values in second)
     if 'Model' in csv_files:
         model_kv: Dict[str, str] = {}
-        with open(csv_files['Model'], 'r', newline='', encoding='utf-8') as f:
+        with open(csv_files['Model'], 'r', newline='', encoding='utf-8-sig') as f:  # utf-8-sig strips BOM
             reader = csv.reader(f)
             for row in reader:
                 if not row:
