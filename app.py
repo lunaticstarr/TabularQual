@@ -73,7 +73,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Header
-st.markdown('<p class="main-header">🔄 TabularQual TabularQual_converter</p>', unsafe_allow_html=True)
+st.markdown('<p class="main-header">🔄 TabularQual</p>', unsafe_allow_html=True)
 st.markdown('<p class="sub-header">Convert between spreadsheets and SBML-qual files for logical models (Boolean and multi-valued). <br>For more about the format, see the <a href="https://docs.google.com/document/d/1RCIN4bOsw4Uq9X2I-gdfBXDydyViYzaVhQK8cpdEWhA/edit?usp=sharing">Spreadsheet specification</a></p>', unsafe_allow_html=True)
 
 # Sidebar with information
@@ -198,7 +198,11 @@ with tab1:
                             # Find the maximum number of columns
                             max_cols = max(len(row) for row in data)
                             # Pad rows with None to make them equal length
-                            padded_data = [list(row) + [None] * (max_cols - len(row)) for row in data]
+                            # Convert all values to strings to avoid pyarrow serialization errors
+                            padded_data = [
+                                [str(v) if v is not None else "" for v in list(row) + [None] * (max_cols - len(row))]
+                                for row in data
+                            ]
                             df = pd.DataFrame(padded_data)
                             st.dataframe(df, use_container_width=True)
                             if idx >= max_preview_rows - 1 and sheet.max_row > max_preview_rows:
@@ -614,7 +618,11 @@ with tab2:
                                 
                                 if data:
                                     max_cols = max(len(row) for row in data)
-                                    padded_data = [list(row) + [None] * (max_cols - len(row)) for row in data]
+                                    # Convert all values to strings to avoid pyarrow serialization errors
+                                    padded_data = [
+                                        [str(v) if v is not None else "" for v in list(row) + [None] * (max_cols - len(row))]
+                                        for row in data
+                                    ]
                                     df = pd.DataFrame(padded_data)
                                     st.dataframe(df, use_container_width=True)
                                     if idx >= max_preview_rows:
