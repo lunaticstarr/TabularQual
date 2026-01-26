@@ -205,8 +205,9 @@ with tab1:
                             ]
                             df = pd.DataFrame(padded_data)
                             st.dataframe(df, use_container_width=True)
-                            if idx >= max_preview_rows - 1 and sheet.max_row > max_preview_rows:
-                                st.info(f"Preview limited to {max_preview_rows} rows (sheet has {sheet.max_row} rows)")
+                            total_rows = sheet.max_row or 0
+                            if idx >= max_preview_rows - 1 and total_rows > max_preview_rows:
+                                st.info(f"Preview limited to {max_preview_rows} rows (sheet has {total_rows} rows)")
                             del df, padded_data, data
                             gc.collect()
                         else:
