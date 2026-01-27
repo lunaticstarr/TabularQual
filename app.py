@@ -20,6 +20,7 @@ from TabularQual_converter.convert_sbml_to_spreadsheet import convert_sbml_to_sp
 from TabularQual_converter.spreadsheet_reader import read_csv_to_model
 from TabularQual_converter.spreadsheet_writer import write_csv
 from TabularQual_converter.sbml_writer import write_sbml
+from TabularQual_converter.tools import validate_sbml_file
 from TabularQual_converter import spec
 import zipfile
 
@@ -155,6 +156,12 @@ with tab1:
             key="trans_anno",
             help="Include annotations from the Transitions tab in the SBML output"
         )
+        validate_annotations = st.checkbox(
+            "Validate Annotations",
+            value=True,
+            key="validate_anno_tab1",
+            help="Validate SBML annotations using sbmlutils (requires sbmlutils with metadata.validator)"
+        )
     
     # Determine if we have valid input (prefer XLSX if both provided)
     has_valid_input = uploaded_xlsx is not None or len(uploaded_csvs) > 0
@@ -204,7 +211,7 @@ with tab1:
                                 for row in data
                             ]
                             df = pd.DataFrame(padded_data)
-                            st.dataframe(df, use_container_width=True)
+                            st.dataframe(df, width='stretch')
                             total_rows = sheet.max_row or 0
                             if idx >= max_preview_rows - 1 and total_rows > max_preview_rows:
                                 st.info(f"Preview limited to {max_preview_rows} rows (sheet has {total_rows} rows)")
@@ -233,7 +240,7 @@ with tab1:
                     st.subheader(f"File: {csv_file.name}")
                     try:
                         df = pd.read_csv(csv_file, nrows=50)
-                        st.dataframe(df, use_container_width=True)
+                        st.dataframe(df, width='stretch')
                         csv_file.seek(0)  # Reset file pointer
                     except Exception as e:
                         st.error(f"Error previewing {csv_file.name}: {str(e)}")
@@ -269,7 +276,9 @@ with tab1:
                             input_path,
                             output_path,
                             interactions_anno=inter_anno,
-                            transitions_anno=trans_anno
+                            transitions_anno=trans_anno,
+                            print_messages=False,  # Display in app instead
+                            validate=validate_annotations
                         )
                     else:
                         # CSV input - save files to temp directory and use read_csv_to_model
@@ -311,11 +320,21 @@ with tab1:
                             output_path = tmp_out.name
                         temp_files_to_cleanup.append(output_path)
                         
+                        # Validate the output SBML (if enabled)
+                        if validate_annotations:
+                            validation_result = validate_sbml_file(output_path, max_errors=None, max_warnings=None, print_messages=False)
+                        else:
+                            validation_result = {'errors': [], 'warnings': [], 'total_errors': 0, 'total_warnings': 0}
+                        
                         stats = {
                             'species': len(model.species),
                             'transitions': len(model.transitions),
                             'interactions': len(model.interactions),
-                            'warnings': validation_warnings + writer_warnings
+                            'warnings': validation_warnings + writer_warnings,
+                            'validation_errors': validation_result.get('errors', []),
+                            'validation_warnings': validation_result.get('warnings', []),
+                            'total_validation_errors': validation_result.get('total_errors', 0),
+                            'total_validation_warnings': validation_result.get('total_warnings', 0)
                         }
                         
                         # Cleanup temp dir
@@ -326,6 +345,10 @@ with tab1:
                     transitions_count = stats['transitions']
                     interactions_count = stats['interactions']
                     all_messages = stats.get('warnings', [])
+                    validation_errors = stats.get('validation_errors', [])
+                    validation_warnings = stats.get('validation_warnings', [])
+                    total_val_errors = stats.get('total_validation_errors', 0)
+                    total_val_warnings = stats.get('total_validation_warnings', 0)
                     
                     # Read output file
                     with open(output_path, 'r', encoding='utf-8') as f:
@@ -333,6 +356,18 @@ with tab1:
                     
                     # Success message
                     st.markdown('<div class="success-box">✅ Conversion successful!</div>', unsafe_allow_html=True)
+                    
+                    # Display validation errors
+                    if validation_errors:
+                        with st.expander(f"❌ Annotation Validation Errors ({total_val_errors} total)", expanded=True):
+                            for error in validation_errors:
+                                st.error(error)
+                    
+                    # Display validation warnings (deprecated URNs, etc.)
+                    if validation_warnings:
+                        with st.expander(f"⚠️ Annotation Validation Warnings ({total_val_warnings} total)", expanded=False):
+                            for warning in validation_warnings:
+                                st.warning(warning)
                     
                     # Display messages
                     if all_messages:
@@ -414,6 +449,13 @@ with tab2:
             value=False,
             key="colon_format",
             help="Use colon notation (A:2) instead of operators (A >= 2)"
+        )
+        
+        validate_annotations_tab2 = st.checkbox(
+            "Validate Annotations",
+            value=True,
+            key="validate_anno_tab2",
+            help="Validate SBML annotations using sbmlutils (requires sbmlutils with metadata.validator)"
         )
         
         # Template options (only for XLSX output)
@@ -501,12 +543,14 @@ with tab2:
                         output_prefix = os.path.join(temp_dir, output_filename or original_name)
                         
                         # Perform conversion
-                        message_list, created_files = convert_sbml_to_spreadsheet(
+                        message_list, created_files, result = convert_sbml_to_spreadsheet(
                             input_path,
                             output_prefix,
                             template_path=None,
                             rule_format=rule_format,
-                            output_csv=True
+                            output_csv=True,
+                            print_messages=False,  # Display in app instead
+                            validate=validate_annotations_tab2
                         )
                         
                         # Create a ZIP file with all CSVs
@@ -519,6 +563,22 @@ with tab2:
                         
                         # Success message
                         st.markdown('<div class="success-box">✅ Conversion successful!</div>', unsafe_allow_html=True)
+                        
+                        # Display validation errors
+                        validation_errors = result.get('validation_errors', [])
+                        validation_warnings = result.get('validation_warnings', [])
+                        total_val_errors = result.get('total_validation_errors', 0)
+                        total_val_warnings = result.get('total_validation_warnings', 0)
+                        
+                        if validation_errors:
+                            with st.expander(f"❌ Annotation Validation Errors ({total_val_errors} total)", expanded=True):
+                                for error in validation_errors:
+                                    st.error(error)
+                        
+                        if validation_warnings:
+                            with st.expander(f"⚠️ Annotation Validation Warnings ({total_val_warnings} total)", expanded=False):
+                                for warning in validation_warnings:
+                                    st.warning(warning)
                         
                         # Display messages
                         if message_list:
@@ -540,7 +600,7 @@ with tab2:
                                 st.subheader(f"File: {os.path.basename(csv_path)}")
                                 try:
                                     df = pd.read_csv(csv_path, nrows=50)
-                                    st.dataframe(df, use_container_width=True)
+                                    st.dataframe(df, width='stretch')
                                 except Exception as e:
                                     st.error(f"Error previewing: {str(e)}")
                         
@@ -564,20 +624,38 @@ with tab2:
                         temp_files_to_cleanup.append(output_path)
                         
                         # Perform conversion
-                        message_list, created_files = convert_sbml_to_spreadsheet(
+                        message_list, created_files, result = convert_sbml_to_spreadsheet(
                             input_path,
                             output_path,
                             template_path=template_path,
                             rule_format=rule_format,
-                            output_csv=False
-                        )
-                        
+                            output_csv=False,
+                            print_messages=False,  # Display in app instead
+                            validate=validate_annotations_tab2
+                    )
+
                         # Read the output file
                         with open(created_files[0], 'rb') as f:
                             xlsx_content = f.read()
                         
                         # Success message
                         st.markdown('<div class="success-box">✅ Conversion successful!</div>', unsafe_allow_html=True)
+                        
+                        # Display validation errors
+                        validation_errors = result.get('validation_errors', [])
+                        validation_warnings = result.get('validation_warnings', [])
+                        total_val_errors = result.get('total_validation_errors', 0)
+                        total_val_warnings = result.get('total_validation_warnings', 0)
+                        
+                        if validation_errors:
+                            with st.expander(f"❌ Annotation Validation Errors ({total_val_errors} total)", expanded=True):
+                                for error in validation_errors:
+                                    st.error(error)
+                        
+                        if validation_warnings:
+                            with st.expander(f"⚠️ Annotation Validation Warnings ({total_val_warnings} total)", expanded=False):
+                                for warning in validation_warnings:
+                                    st.warning(warning)
                         
                         # Display messages
                         if message_list:
@@ -625,7 +703,7 @@ with tab2:
                                         for row in data
                                     ]
                                     df = pd.DataFrame(padded_data)
-                                    st.dataframe(df, use_container_width=True)
+                                    st.dataframe(df, width='stretch')
                                     if idx >= max_preview_rows:
                                         st.info(f"Preview limited to {max_preview_rows} rows")
                                     del df, padded_data, data

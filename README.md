@@ -77,6 +77,7 @@ to-table model.sbml MyOutput --csv
 - **OUTPUT**: output SBML file (optional, defaults to input name with `.sbml` extension)
 - **--inter-anno**: use interaction annotations only (unless `--trans-anno` is also set)
 - **--trans-anno**: use transition annotations only (unless `--inter-anno` is also set)
+- **--no-validate**: skip annotation validation
 - If you pass both flags or neither, the converter includes **both** annotation types
 
 `to-table INPUT [OUTPUT]`:
@@ -86,6 +87,7 @@ to-table model.sbml MyOutput --csv
 - **--csv**: output as CSV files (`{prefix}_Model.csv`, `{prefix}_Species.csv`, `{prefix}_Transitions.csv`, `{prefix}_Interactions.csv`)
 - **--template**: specify a template file for README and Appendix sheets (XLSX only)
 - **--colon-format**: use colon notation for transition rules (`:` means `>=`)
+- **--no-validate**: skip annotation validation
 
 #### Transition Rules Syntax
 
@@ -114,4 +116,5 @@ The Transition-Rules column supports boolean and comparison expressions using th
 
 - The reader ignores a first README sheet if present, and reads `Model`, `Species`, `Transitions`, and `Interactions`.
 - The SBML to Spreadsheet converter automatically uses `doc/template.xlsx` if available for README and Appendix sheets (XLSX output only).
-- TODO: automatically detect Species:Type, Interactions:Target, Source and Sign；Validation of annotations.
+- Annotation validation uses `sbmlutils` . To install: `pip install sbmlutils>=0.9.6`.
+- TODO: automatically detect Species:Type, Interactions:Target, Source and Sign.

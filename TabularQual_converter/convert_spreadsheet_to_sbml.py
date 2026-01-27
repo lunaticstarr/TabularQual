@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from .spreadsheet_reader import read_spreadsheet_to_model, detect_csv_input, read_csv_to_model
 from .sbml_writer import write_sbml
+from .tools import validate_sbml_file
 import libsbml
 import gc
 
@@ -21,7 +22,7 @@ def _get_version_info() -> str:
     
     return f"Created by TabularQual version {tabularqual_version} with libSBML version {libsbml_version}"
 
-def convert_spreadsheet_to_sbml(input_path: str, output_sbml: str, *, interactions_anno: bool = True, transitions_anno: bool = True) -> dict:
+def convert_spreadsheet_to_sbml(input_path: str, output_sbml: str, *, interactions_anno: bool = True, transitions_anno: bool = True, print_messages: bool = True, validate: bool = True) -> dict:
     """Convert spreadsheet (XLSX or CSV) to SBML and return statistics and warnings.
     
     Args:
@@ -33,6 +34,8 @@ def convert_spreadsheet_to_sbml(input_path: str, output_sbml: str, *, interactio
         output_sbml: Path to output SBML file
         interactions_anno: Whether to include interaction annotations
         transitions_anno: Whether to include transition annotations
+        print_messages: Whether to print validation messages to console (set False for app use)
+        validate: Whether to validate SBML annotations using sbmlutils (default True)
     
     Returns:
         dict: Statistics including 'species', 'transitions', 'interactions' counts, and 'warnings' list
@@ -48,8 +51,9 @@ def convert_spreadsheet_to_sbml(input_path: str, output_sbml: str, *, interactio
         
         if is_csv:
             # Print CSV detection warnings
-            for warning in csv_warnings:
-                print(f"Warning: {warning}")
+            if print_messages:
+                for warning in csv_warnings:
+                    print(f"Warning: {warning}")
             
             # Check for required files
             if 'Species' not in csv_files or 'Transitions' not in csv_files:
@@ -68,11 +72,12 @@ def convert_spreadsheet_to_sbml(input_path: str, output_sbml: str, *, interactio
             im, validation_warnings = read_spreadsheet_to_model(input_path)
     
     # Print warnings to console
-    for warning in validation_warnings:
-        if warning.startswith("Found ") or warning.startswith("No "):
-            print(warning)  # Info messages
-        else:
-            print(f"Warning: {warning}")  # Actual warnings
+    if print_messages:
+        for warning in validation_warnings:
+            if warning.startswith("Found ") or warning.startswith("No "):
+                print(warning)  # Info messages
+            else:
+                print(f"Warning: {warning}")  # Actual warnings
     
     # Collect stats
     sbml_string, writer_warnings = write_sbml(im, interactions_anno=interactions_anno, transitions_anno=transitions_anno)
@@ -109,5 +114,18 @@ def convert_spreadsheet_to_sbml(input_path: str, output_sbml: str, *, interactio
     # Write the modified SBML to file
     with open(output_sbml, 'w', encoding='utf-8') as f:
         f.write('\n'.join(lines))
+    
+    # Validate the output SBML annotations (if enabled)
+    if validate:
+        # For CLI (print_messages=True): limit to 10, for app (print_messages=False): get all
+        max_errors = 10 if print_messages else None
+        validation_result = validate_sbml_file(output_sbml, max_errors=max_errors, print_messages=print_messages)
+    else:
+        validation_result = {'errors': [], 'warnings': [], 'total_errors': 0}
+    
+    # Add validation results to stats for app display
+    stats['validation_errors'] = validation_result.get('errors', [])
+    stats['validation_warnings'] = validation_result.get('warnings', [])
+    stats['total_validation_errors'] = validation_result.get('total_errors', 0)
     
     return stats

@@ -320,3 +320,88 @@ def validate_identifier(identifier: str) -> dict:
         'original': identifier,
         'warning': 'No colon found, assuming compact identifier'
     }
+
+
+def validate_sbml_file(sbml_path: str, max_errors: int = 10, print_messages: bool = True) -> dict:
+    """Validate SBML annotations using sbmlutils.
+    
+    Args:
+        sbml_path: Path to SBML file (will be converted to absolute path)
+        max_errors: Maximum number of error messages to return (first N). Use None for all.
+        print_messages: Whether to print our own formatted validation summary to console
+    
+    Returns:
+        dict with keys:
+            - 'warnings': list of warning messages
+            - 'errors': list of error messages (up to max_errors, or all if max_errors is None)
+            - 'total_errors': total number of errors found
+            - 'validation_run': bool indicating if validation was run
+    """
+    from pathlib import Path
+    import sys
+    import os
+    
+    result = {
+        'warnings': [],
+        'errors': [],
+        'total_errors': 0,
+        'validation_run': False
+    }
+    
+    try:
+        from sbmlutils.metadata.validator import validate_sbml_annotations
+        
+        # Convert to absolute path to avoid libsbml path issues
+        abs_path = Path(sbml_path).resolve()
+        if not abs_path.exists():
+            result['errors'].append(f"File not found: {sbml_path}")
+            return result
+        
+        # Always suppress sbmlutils output - may be too long
+        old_stdout = sys.stdout
+        old_stderr = sys.stderr
+        try:
+            with open(os.devnull, 'w') as devnull:
+                sys.stdout = devnull
+                sys.stderr = devnull
+                validation_df = validate_sbml_annotations(abs_path)
+        finally:
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+        
+        result['validation_run'] = True
+        
+        if validation_df is None or (hasattr(validation_df, 'empty') and validation_df.empty):
+            # Empty DataFrame means all annotations are valid
+            if print_messages:
+                print("Annotation validation: All annotations valid.")
+            return result
+        
+        result['total_errors'] = len(validation_df)
+        
+        # Collect error messages (limited or all)
+        rows_to_process = validation_df if max_errors is None else validation_df.head(max_errors)
+        for idx, row in rows_to_process.iterrows():
+            element_id = row.get('id', 'unknown')
+            resource = row.get('resource', 'unknown')
+            msg = f"Invalid annotation for '{element_id}': {resource}"
+            result['errors'].append(msg)
+        
+        # Print our own formatted output
+        if print_messages:
+            print(f"\nAnnotation validation: {result['total_errors']} invalid annotation(s) found.")
+            display_count = len(result['errors'])
+            for i, error in enumerate(result['errors']):
+                print(f"  {i+1}. {error}")
+            if max_errors is not None and result['total_errors'] > max_errors:
+                print(f"  ... and {result['total_errors'] - max_errors} more error(s)")
+        
+    except ImportError:
+        msg = "sbmlutils.metadata.validator not available - annotation validation skipped"
+        result['warnings'].append(msg)
+        if print_messages:
+            print(f"Note: {msg}")
+    except Exception as e:
+        result['errors'].append(f"Validation error: {str(e)}")
+    
+    return result
