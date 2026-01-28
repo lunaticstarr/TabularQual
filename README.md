@@ -2,6 +2,10 @@
 
 Convert between spreadsheets specified in [SpreadSBML specification](.doc/SpreadSBML specification.docx) and SBML-qual for logical models (Boolean and multi-valued).
 
+```
+![Example](.doc/example.jpg)
+```
+
 ### Web App
 
 Use TabularQual directly in your browser - no installation required!
@@ -89,7 +93,9 @@ to-table model.sbml MyOutput --csv
 - **--colon-format**: use colon notation for transition rules (`:` means `>=`)
 - **--no-validate**: skip annotation validation
 
-#### Transition Rules Syntax
+
+
+### Transition Rules Syntax
 
 The Transition-Rules column supports boolean and comparison expressions using the following operators and syntax (space will be ignored):
 
@@ -111,6 +117,8 @@ The Transition-Rules column supports boolean and comparison expressions using th
 - `A:2 | B < 1` - A is at level 2+ OR B is inactive
 - `N & !CI:2 & !Cro:3` - N active AND CI below level 2 AND Cro below level 3
 - `(A & B) | (!C & D != 1)` - Complex grouped expression
+
+
 
 ### Notes
 
