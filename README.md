@@ -2,9 +2,7 @@
 
 Convert between spreadsheets specified in [SpreadSBML specification](.doc/SpreadSBML specification.docx) and SBML-qual for logical models (Boolean and multi-valued).
 
-```
-![Example](.doc/example.jpg)
-```
+![Example](doc/example.png)
 
 ### Web App
 
