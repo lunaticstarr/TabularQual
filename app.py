@@ -332,9 +332,7 @@ with tab1:
                             'interactions': len(model.interactions),
                             'warnings': validation_warnings + writer_warnings,
                             'validation_errors': validation_result.get('errors', []),
-                            'validation_warnings': validation_result.get('warnings', []),
-                            'total_validation_errors': validation_result.get('total_errors', 0),
-                            'total_validation_warnings': validation_result.get('total_warnings', 0)
+                            'total_validation_errors': validation_result.get('total_errors', 0)
                         }
                         
                         # Cleanup temp dir
@@ -346,9 +344,7 @@ with tab1:
                     interactions_count = stats['interactions']
                     all_messages = stats.get('warnings', [])
                     validation_errors = stats.get('validation_errors', [])
-                    validation_warnings = stats.get('validation_warnings', [])
                     total_val_errors = stats.get('total_validation_errors', 0)
-                    total_val_warnings = stats.get('total_validation_warnings', 0)
                     
                     # Read output file
                     with open(output_path, 'r', encoding='utf-8') as f:
@@ -359,15 +355,9 @@ with tab1:
                     
                     # Display validation errors
                     if validation_errors:
-                        with st.expander(f"❌ Annotation Validation Errors ({total_val_errors} total)", expanded=True):
+                        with st.expander(f"⚠️ Annotation Validation Errors ({total_val_errors} total)", expanded=True):
                             for error in validation_errors:
                                 st.error(error)
-                    
-                    # Display validation warnings (deprecated URNs, etc.)
-                    if validation_warnings:
-                        with st.expander(f"⚠️ Annotation Validation Warnings ({total_val_warnings} total)", expanded=False):
-                            for warning in validation_warnings:
-                                st.warning(warning)
                     
                     # Display messages
                     if all_messages:
@@ -566,19 +556,12 @@ with tab2:
                         
                         # Display validation errors
                         validation_errors = result.get('validation_errors', [])
-                        validation_warnings = result.get('validation_warnings', [])
                         total_val_errors = result.get('total_validation_errors', 0)
-                        total_val_warnings = result.get('total_validation_warnings', 0)
                         
                         if validation_errors:
-                            with st.expander(f"❌ Annotation Validation Errors ({total_val_errors} total)", expanded=True):
+                            with st.expander(f"⚠️ Annotation Validation Errors ({total_val_errors} total)", expanded=True):
                                 for error in validation_errors:
                                     st.error(error)
-                        
-                        if validation_warnings:
-                            with st.expander(f"⚠️ Annotation Validation Warnings ({total_val_warnings} total)", expanded=False):
-                                for warning in validation_warnings:
-                                    st.warning(warning)
                         
                         # Display messages
                         if message_list:
@@ -643,19 +626,12 @@ with tab2:
                         
                         # Display validation errors
                         validation_errors = result.get('validation_errors', [])
-                        validation_warnings = result.get('validation_warnings', [])
                         total_val_errors = result.get('total_validation_errors', 0)
-                        total_val_warnings = result.get('total_validation_warnings', 0)
                         
                         if validation_errors:
-                            with st.expander(f"❌ Annotation Validation Errors ({total_val_errors} total)", expanded=True):
+                            with st.expander(f"⚠️ Annotation Validation Errors ({total_val_errors} total)", expanded=True):
                                 for error in validation_errors:
                                     st.error(error)
-                        
-                        if validation_warnings:
-                            with st.expander(f"⚠️ Annotation Validation Warnings ({total_val_warnings} total)", expanded=False):
-                                for warning in validation_warnings:
-                                    st.warning(warning)
                         
                         # Display messages
                         if message_list:

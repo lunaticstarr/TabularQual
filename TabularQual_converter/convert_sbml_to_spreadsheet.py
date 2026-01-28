@@ -38,7 +38,7 @@ def convert_sbml_to_spreadsheet(sbml_path: str, output_path: str, template_path:
         max_errors = 10 if print_messages else None
         validation_result = validate_sbml_file(sbml_path, max_errors=max_errors, print_messages=print_messages)
     else:
-        validation_result = {'errors': [], 'warnings': [], 'total_errors': 0}
+        validation_result = {'errors': [], 'total_errors': 0}
     
     with warnings.catch_warnings(record=True) as w:
         warnings.simplefilter("always")
@@ -79,7 +79,6 @@ def convert_sbml_to_spreadsheet(sbml_path: str, output_path: str, template_path:
         'messages': message_list,
         'created_files': created_files,
         'validation_errors': validation_result.get('errors', []),
-        'validation_warnings': validation_result.get('warnings', []),
         'total_validation_errors': validation_result.get('total_errors', 0)
     }
     
