@@ -1,12 +1,15 @@
 ## TabularQual converter
 
-Convert between spreadsheets specified in [SpreadSBML specification](.doc/SpreadSBML specification.docx) and SBML-qual for logical models (Boolean and multi-valued).
+Convert between spreadsheets and SBML-qual for logical models (Boolean and multi-valued).
 
 ![Example](doc/example.png)
 
+Note: the format is specified [here](doc/specification.docx).
+
+
 ### Web App
 
-Use TabularQual directly in your browser - no installation required!
+Use directly in your browser - no installation required!
 
 🔗 **[Launch Web App](https://tabularqual.streamlit.app/)**
 
