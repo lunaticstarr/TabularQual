@@ -4,8 +4,7 @@ Convert between spreadsheets and SBML-qual for logical models (Boolean and multi
 
 ![Example](doc/example.png)
 
-Note: the format is specified [here](doc/specification.docx).
-
+Note: the format is specified [here](doc/TabularQual_specification_v0.1.1.docx).
 
 ### Web App
 
@@ -94,8 +93,6 @@ to-table model.sbml MyOutput --csv
 - **--colon-format**: use colon notation for transition rules (`:` means `>=`)
 - **--no-validate**: skip annotation validation
 
-
-
 ### Transition Rules Syntax
 
 The Transition-Rules column supports boolean and comparison expressions using the following operators and syntax (space will be ignored):
@@ -110,7 +107,6 @@ The Transition-Rules column supports boolean and comparison expressions using th
 * **Simple species references**:
   * `A` - Species A is active (level >= 1 for multi-valued, or level = 1 for binary)
   * `!A` - Species A is inactive (level = 0)
-* **Species IDs with special characters**: Species IDs containing characters like `/`, `-`, or `\` (e.g., `PI3K/AKT`, `NF-kB`) are supported as long as they are defined in the Species sheet
 
 **Examples**:
 
@@ -119,11 +115,49 @@ The Transition-Rules column supports boolean and comparison expressions using th
 - `N & !CI:2 & !Cro:3` - N active AND CI below level 2 AND Cro below level 3
 - `(A & B) | (!C & D != 1)` - Complex grouped expression
 
+### Validation
 
+TabularQual performs several validations during conversion to ensure data quality and SBML compliance.
+
+#### SId Format Validation
+
+Model_ID, Species_ID, Transitions_ID, and Compartment fields must conform to the SBML SId specification (SBML Level 3 Version 2):
+
+- Must start with a letter (A–Z, a–z) or underscore (`_`)
+- May contain only letters, digits (0–9), and underscores
+- Case-sensitive (equality determined by exact string matching)
+- No spaces, slashes, or other special characters allowed
+- Uses plain ASCII characters only (no Unicode)
+
+**Automatic Cleanup**: If an ID doesn't conform, it is automatically cleaned:
+
+- Special characters (spaces, slashes, dashes, etc.) are replaced with underscores
+- IDs starting with a digit get a leading underscore prepended
+- Non-ASCII characters are removed
+- Multiple consecutive underscores are collapsed
+
+**Example**: `PI3K/AKT-pathway` → `PI3K_AKT_pathway`
+
+#### Field Value Validation
+
+The converter validates controlled vocabulary fields:
+
+- **Species Type**: Must be one of `Input`, `Internal`, or `Output` (case-insensitive)
+- **Interaction Sign**: Must be one of `positive`, `negative`, `dual`, or `unknown` (case-insensitive)
+- **Relation Qualifiers**: Must be one of `is`, `hasVersion`, `isVersionOf`, `isDescribedBy`, `hasPart`, `isPartOf`, `hasProperty`, `isPropertyOf`, `encodes`, `isEncodedBy`, `isHomologTo`, `occursIn`, `hasTaxon` (case-insensitive)
+
+#### Annotation Validation
+
+Annotations in the SBML output can be validated using `sbmlutils`:
+
+- Validates that annotation URIs are correctly formed
+- Checks that identifiers.org resources are valid
+- Enable/disable with `--no-validate` flag or checkbox in web app
+
+To use annotation validation: `pip install sbmlutils>=0.9.6`
 
 ### Notes
 
 - The reader ignores a first README sheet if present, and reads `Model`, `Species`, `Transitions`, and `Interactions`.
 - The SBML to Spreadsheet converter automatically uses `doc/template.xlsx` if available for README and Appendix sheets (XLSX output only).
-- Annotation validation uses `sbmlutils` . To install: `pip install sbmlutils>=0.9.6`.
 - TODO: automatically detect Species:Type, Interactions:Target, Source and Sign.

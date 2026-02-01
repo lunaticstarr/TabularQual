@@ -4,7 +4,147 @@ RDF_TAG_ITEM = ['rdf:RDF',
 
 RDF_TAG = ' '.join(RDF_TAG_ITEM)
 
+import re
 import libsbml
+
+
+# SId validation regex pattern (SBML Level 3 Version 2 specification)
+# Must start with a letter (A–Z, a–z) or underscore (_)
+# May contain only letters, digits (0–9), and underscores
+# Uses plain ASCII characters (no Unicode)
+SID_PATTERN = re.compile(r'^[A-Za-z_][A-Za-z0-9_]*$')
+
+
+def is_valid_sid(identifier: str) -> bool:
+    """
+    Check if identifier conforms to SBML SId definition.
+    
+    An SId has the following properties:
+    - Must start with a letter (A–Z, a–z) or underscore (_)
+    - May contain only letters, digits (0–9), and underscores
+    - Case-sensitive, equality determined by exact string matching
+    - Does not allow spaces, slashes, or other special characters
+    - Uses plain ASCII characters (no Unicode)
+    
+    Args:
+        identifier: The identifier string to validate
+        
+    Returns:
+        True if valid SId, False otherwise
+    """
+    if not identifier or not isinstance(identifier, str):
+        return False
+    return bool(SID_PATTERN.match(identifier))
+
+
+def clean_sid(identifier: str) -> tuple[str, list[str]]:
+    """
+    Clean an identifier to conform to SBML SId definition.
+    
+    Transformation rules:
+    1. Replace spaces, slashes, dashes, and other special characters with underscores
+    2. If starts with a digit, prepend underscore
+    3. Remove any remaining non-alphanumeric, non-underscore characters
+    4. Collapse multiple consecutive underscores to single underscore
+    5. Remove leading/trailing underscores (except if needed for digit start)
+    
+    Args:
+        identifier: The original identifier string
+        
+    Returns:
+        tuple: (cleaned_id, list of transformation messages)
+    """
+    if not identifier or not isinstance(identifier, str):
+        return "", ["Empty or invalid identifier"]
+    
+    original = identifier.strip()
+    if not original:
+        return "", ["Empty identifier after stripping whitespace"]
+    
+    messages = []
+    cleaned = original
+    
+    # Track what changes we make
+    changes = []
+    
+    # Step 1: Replace common special characters with underscores
+    special_chars_pattern = re.compile(r'[\s/\-\\:;.,+*=<>()[\]{}|&^%$#@!~`\'"?]')
+    if special_chars_pattern.search(cleaned):
+        cleaned = special_chars_pattern.sub('_', cleaned)
+        changes.append("replaced special characters with underscores")
+    
+    # Step 2: Remove any remaining non-ASCII or non-alphanumeric/underscore characters
+    non_ascii_pattern = re.compile(r'[^A-Za-z0-9_]')
+    if non_ascii_pattern.search(cleaned):
+        cleaned = non_ascii_pattern.sub('', cleaned)
+        changes.append("removed non-ASCII characters")
+    
+    # Step 3: Collapse multiple consecutive underscores
+    if '__' in cleaned:
+        cleaned = re.sub(r'_+', '_', cleaned)
+        changes.append("collapsed multiple underscores")
+    
+    # Step 4: Handle leading digit by prepending underscore
+    if cleaned and cleaned[0].isdigit():
+        cleaned = '_' + cleaned
+        changes.append("prepended underscore (ID cannot start with digit)")
+    
+    # Step 5: Remove leading/trailing underscores (but keep one leading if needed for digit start)
+    if cleaned:
+        # Trim trailing underscores
+        cleaned = cleaned.rstrip('_')
+        # Trim leading underscores, but keep one if first char after underscores is a digit
+        leading_stripped = cleaned.lstrip('_')
+        if leading_stripped and leading_stripped[0].isdigit():
+            cleaned = '_' + leading_stripped
+        else:
+            cleaned = leading_stripped
+    
+    # If empty after cleaning, generate a fallback
+    if not cleaned:
+        cleaned = "unknown_id"
+        changes.append("generated fallback ID (original was invalid)")
+    
+    # Final validation check
+    if not is_valid_sid(cleaned):
+        # This shouldn't happen with our cleaning logic, but just in case
+        cleaned = "unknown_id"
+        changes.append("generated fallback ID (cleaning failed)")
+    
+    if changes:
+        messages.append(f"'{original}' → '{cleaned}' ({'; '.join(changes)})")
+    
+    return cleaned, messages
+
+
+def validate_and_clean_sid(identifier: str, field_name: str, context: str = "") -> tuple[str, list[str]]:
+    """
+    Validate an SId and clean it if invalid, returning warnings.
+    
+    Args:
+        identifier: The identifier to validate
+        field_name: Name of the field (e.g., "Species_ID", "Transitions_ID", "Compartment")
+        context: Additional context for error messages (e.g., "row 5")
+        
+    Returns:
+        tuple: (final_id, list of warning messages)
+    """
+    warnings = []
+    
+    if not identifier:
+        return identifier, warnings
+    
+    if is_valid_sid(identifier):
+        return identifier, warnings
+    
+    # Invalid SId - clean it
+    cleaned_id, clean_messages = clean_sid(identifier)
+    
+    context_str = f" ({context})" if context else ""
+    for msg in clean_messages:
+        warnings.append(f"{field_name}{context_str}: Invalid SId cleaned: {msg}")
+    
+    return cleaned_id, warnings
 
 def getIndent(num_indents=0):
   """

@@ -9,6 +9,7 @@ from datetime import datetime, timezone
 
 from . import spec
 from .types import QualModel, ModelInfo, Person, Species, Transition, InteractionEvidence
+from .tools import validate_and_clean_sid
 
 # Common misspellings for sheet/file names
 SHEET_NAME_VARIANTS = {
@@ -305,6 +306,11 @@ def read_spreadsheet_to_model(xlsx_path: str) -> tuple[QualModel, list[str]]:
         model_id = (model_kv.get(spec.MODEL_ID) or "").strip()
         if not model_id:
             model_id = os.path.splitext(os.path.basename(xlsx_path))[0]
+        
+        # Validate and clean Model_ID (SId format)
+        model_id, model_id_warnings = validate_and_clean_sid(model_id, "Model_ID", "Model sheet")
+        validation_warnings.extend(model_id_warnings)
+        
         model_info = ModelInfo(
             model_id=model_id,
             name=(model_kv.get(spec.MODEL_NAME) or "").strip() or None,
@@ -358,9 +364,13 @@ def read_spreadsheet_to_model(xlsx_path: str) -> tuple[QualModel, list[str]]:
         model_info.notes = notes_list
     else: # fallback to filename if missing/empty
         validation_warnings.append("No Model sheet found, using filename as model_id")
-        model_info = ModelInfo(
-            model_id=os.path.splitext(os.path.basename(xlsx_path))[0]
-        )
+        model_id = os.path.splitext(os.path.basename(xlsx_path))[0]
+        
+        # Validate and clean Model_ID (SId format)
+        model_id, model_id_warnings = validate_and_clean_sid(model_id, "Model_ID", "from filename")
+        validation_warnings.extend(model_id_warnings)
+        
+        model_info = ModelInfo(model_id=model_id)
         # Set current time if Created field is empty
         if not model_info.created_iso:
             model_info.created_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -379,6 +389,16 @@ def read_spreadsheet_to_model(xlsx_path: str) -> tuple[QualModel, list[str]]:
             species_row_num += 1
             continue
         
+        # Validate and clean Species_ID (SId format)
+        sid, sid_warnings = validate_and_clean_sid(sid, "Species_ID", f"row {species_row_num}")
+        validation_warnings.extend(sid_warnings)
+        
+        # Validate and clean Compartment (SId format) if provided
+        compartment = str(rowd.get(spec.SPECIES_COMPARTMENT) or "").strip() or None
+        if compartment:
+            compartment, comp_warnings = validate_and_clean_sid(compartment, "Compartment", f"Species '{sid}', row {species_row_num}")
+            validation_warnings.extend(comp_warnings)
+        
         # Validate and normalize species type if provided
         species_type = str(rowd.get(spec.SPECIES_TYPE) or "").strip()
         normalized_species_type = None
@@ -390,7 +410,7 @@ def read_spreadsheet_to_model(xlsx_path: str) -> tuple[QualModel, list[str]]:
         sp = Species(
             species_id=sid,
             name=str(rowd.get(spec.SPECIES_NAME) or "").strip() or None,
-            compartment=(str(rowd.get(spec.SPECIES_COMPARTMENT) or "").strip() or None),
+            compartment=compartment,
             constant=_to_bool(rowd.get(spec.SPECIES_CONSTANT)),
             initial_level=_to_int(rowd.get(spec.SPECIES_INITIAL_LEVEL)),
             max_level=_to_int(rowd.get(spec.SPECIES_MAX_LEVEL)),
@@ -426,9 +446,15 @@ def read_spreadsheet_to_model(xlsx_path: str) -> tuple[QualModel, list[str]]:
             trans_row_num += 1
             continue
         
+        # Validate and clean Transitions_ID (SId format) if provided
+        trans_id = str(rowd.get(spec.TRANSITION_ID) or "").strip() or None
+        if trans_id:
+            trans_id, trans_id_warnings = validate_and_clean_sid(trans_id, "Transitions_ID", f"row {trans_row_num}")
+            validation_warnings.extend(trans_id_warnings)
+        
         transitions.append(
             Transition(
-                transition_id=str(rowd.get(spec.TRANSITION_ID) or "").strip() or None,
+                transition_id=trans_id,
                 name=str(rowd.get(spec.TRANSITION_NAME) or "").strip() or None,
                 target=target,
                 level=_to_int(rowd.get(spec.TRANSITION_LEVEL)),
@@ -561,6 +587,11 @@ def read_csv_to_model(csv_files: dict[str, str]) -> tuple[QualModel, list[str]]:
         if not model_id:
             # Fallback to filename
             model_id = Path(csv_files['Model']).stem.replace('_Model', '').replace('_model', '')
+        
+        # Validate and clean Model_ID (SId format)
+        model_id, model_id_warnings = validate_and_clean_sid(model_id, "Model_ID", "Model CSV")
+        validation_warnings.extend(model_id_warnings)
+        
         model_info = ModelInfo(
             model_id=model_id,
             name=(model_kv.get(spec.MODEL_NAME) or "").strip() or None,
@@ -618,6 +649,11 @@ def read_csv_to_model(csv_files: dict[str, str]) -> tuple[QualModel, list[str]]:
         # Try to get model_id from species file name
         species_path = csv_files.get('Species', '')
         model_id = Path(species_path).stem.replace('_Species', '').replace('_species', '') if species_path else 'unknown'
+        
+        # Validate and clean Model_ID (SId format)
+        model_id, model_id_warnings = validate_and_clean_sid(model_id, "Model_ID", "from filename")
+        validation_warnings.extend(model_id_warnings)
+        
         model_info = ModelInfo(model_id=model_id)
         if not model_info.created_iso:
             model_info.created_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -635,6 +671,16 @@ def read_csv_to_model(csv_files: dict[str, str]) -> tuple[QualModel, list[str]]:
             species_row_num += 1
             continue
         
+        # Validate and clean Species_ID (SId format)
+        sid, sid_warnings = validate_and_clean_sid(sid, "Species_ID", f"row {species_row_num}")
+        validation_warnings.extend(sid_warnings)
+        
+        # Validate and clean Compartment (SId format) if provided
+        compartment = str(rowd.get(spec.SPECIES_COMPARTMENT) or "").strip() or None
+        if compartment:
+            compartment, comp_warnings = validate_and_clean_sid(compartment, "Compartment", f"Species '{sid}', row {species_row_num}")
+            validation_warnings.extend(comp_warnings)
+        
         # Validate and normalize species type if provided
         species_type = str(rowd.get(spec.SPECIES_TYPE) or "").strip()
         normalized_species_type = None
@@ -646,7 +692,7 @@ def read_csv_to_model(csv_files: dict[str, str]) -> tuple[QualModel, list[str]]:
         sp = Species(
             species_id=sid,
             name=str(rowd.get(spec.SPECIES_NAME) or "").strip() or None,
-            compartment=(str(rowd.get(spec.SPECIES_COMPARTMENT) or "").strip() or None),
+            compartment=compartment,
             constant=_to_bool(rowd.get(spec.SPECIES_CONSTANT)),
             initial_level=_to_int(rowd.get(spec.SPECIES_INITIAL_LEVEL)),
             max_level=_to_int(rowd.get(spec.SPECIES_MAX_LEVEL)),
@@ -681,9 +727,15 @@ def read_csv_to_model(csv_files: dict[str, str]) -> tuple[QualModel, list[str]]:
             trans_row_num += 1
             continue
         
+        # Validate and clean Transitions_ID (SId format) if provided
+        trans_id = str(rowd.get(spec.TRANSITION_ID) or "").strip() or None
+        if trans_id:
+            trans_id, trans_id_warnings = validate_and_clean_sid(trans_id, "Transitions_ID", f"row {trans_row_num}")
+            validation_warnings.extend(trans_id_warnings)
+        
         transitions.append(
             Transition(
-                transition_id=str(rowd.get(spec.TRANSITION_ID) or "").strip() or None,
+                transition_id=trans_id,
                 name=str(rowd.get(spec.TRANSITION_NAME) or "").strip() or None,
                 target=target,
                 level=_to_int(rowd.get(spec.TRANSITION_LEVEL)),
