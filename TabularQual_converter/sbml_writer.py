@@ -113,23 +113,8 @@ def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_
             transitions_by_target[t.target] = []
         transitions_by_target[t.target].append(t)
 
-    # Get all species IDs for the parser (to handle special characters in IDs)
+    # Get all species IDs
     known_species_ids = set(model.species.keys())
-    
-    # Warn about species IDs with special characters (not valid SBML SId)
-    invalid_sid_chars = []
-    for sid in known_species_ids:
-        # SBML SId must start with letter/underscore and contain only letters, digits, underscores
-        if not re.match(r'^[A-Za-z_][A-Za-z0-9_]*$', sid):
-            invalid_sid_chars.append(sid)
-    if invalid_sid_chars:
-        warning_msg = f"Warning: {len(invalid_sid_chars)} species ID(s) contain special characters not valid in SBML SId format: "
-        warning_msg += ", ".join(f"'{sid}'" for sid in invalid_sid_chars[:5])
-        if len(invalid_sid_chars) > 5:
-            warning_msg += f" ... and {len(invalid_sid_chars) - 5} more"
-        warning_msg += ". These IDs will be used in MathML expressions but may cause issues with SBML validators."
-        warnings_list.append(warning_msg)
-        print(warning_msg)  # Also print to console for CLI
 
     # Transitions
     for target, target_transitions in transitions_by_target.items():
