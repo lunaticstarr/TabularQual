@@ -127,14 +127,13 @@ Model_ID, Species_ID, Transitions_ID, and Compartment fields must conform to the
 - May contain only letters, digits (0–9), and underscores
 - Case-sensitive (equality determined by exact string matching)
 - No spaces, slashes, or other special characters allowed
-- Uses plain ASCII characters only (no Unicode)
+- Unique across their sheets
 
 **Automatic Cleanup**: If an ID doesn't conform, it is automatically cleaned:
 
 - Special characters (spaces, slashes, dashes, etc.) are replaced with underscores
 - IDs starting with a digit get a leading underscore prepended
-- Non-ASCII characters are removed
-- Multiple consecutive underscores are collapsed
+- Duplicate IDs are automatically renamed with suffixes (`_1`, `_2`, etc.)
 
 **Example**: `PI3K/AKT-pathway` → `PI3K_AKT_pathway`
 

@@ -11,6 +11,33 @@ from . import spec
 from .types import QualModel, ModelInfo, Person, Species, Transition, InteractionEvidence
 from .tools import validate_and_clean_sid
 
+
+def _make_unique_id(base_id: str, existing_ids: set, id_type: str, context: str, warnings_list: list) -> str:
+    """Generate a unique ID by adding suffix if needed.
+    
+    Args:
+        base_id: The original ID
+        existing_ids: Set of IDs already used
+        id_type: Type of ID for warning message (e.g., "Species_ID", "Transitions_ID")
+        context: Context for warning message (e.g., "row 5")
+        warnings_list: List to append warnings to
+        
+    Returns:
+        A unique ID (original or with suffix)
+    """
+    if base_id not in existing_ids:
+        return base_id
+    
+    # Find next available suffix
+    suffix = 1
+    new_id = f"{base_id}_{suffix}"
+    while new_id in existing_ids:
+        suffix += 1
+        new_id = f"{base_id}_{suffix}"
+    
+    warnings_list.append(f"{id_type} ({context}): Duplicate ID '{base_id}' renamed to '{new_id}'")
+    return new_id
+
 # Common misspellings for sheet/file names
 SHEET_NAME_VARIANTS = {
     'model': ['model', 'models'],
@@ -381,6 +408,7 @@ def read_spreadsheet_to_model(xlsx_path: str) -> tuple[QualModel, list[str]]:
     ws_species = wb[spec.SHEET_SPECIES]
     sp_headers = [_normalize_header(c.value or "") for c in next(ws_species.iter_rows(min_row=1, max_row=1))[0:ws_species.max_column]]
     species: Dict[str, Species] = {}
+    used_species_ids: set = set()  # Track all species IDs (including renamed ones)
     species_row_num = 2
     for r in ws_species.iter_rows(min_row=2, values_only=True):
         rowd = _row_to_dict(sp_headers, list(r or ()))
@@ -392,6 +420,10 @@ def read_spreadsheet_to_model(xlsx_path: str) -> tuple[QualModel, list[str]]:
         # Validate and clean Species_ID (SId format)
         sid, sid_warnings = validate_and_clean_sid(sid, "Species_ID", f"row {species_row_num}")
         validation_warnings.extend(sid_warnings)
+        
+        # Make unique if duplicate
+        sid = _make_unique_id(sid, used_species_ids, "Species_ID", f"row {species_row_num}", validation_warnings)
+        used_species_ids.add(sid)
         
         # Validate and clean Compartment (SId format) if provided
         compartment = str(rowd.get(spec.SPECIES_COMPARTMENT) or "").strip() or None
@@ -429,6 +461,7 @@ def read_spreadsheet_to_model(xlsx_path: str) -> tuple[QualModel, list[str]]:
     ws_trans = wb[spec.SHEET_TRANSITIONS]
     tr_headers = [_normalize_header(c.value or "") for c in next(ws_trans.iter_rows(min_row=1, max_row=1))[0:ws_trans.max_column]]
     transitions: List[Transition] = []
+    used_trans_ids: set = set()  # Track all transition IDs (including renamed ones)
     trans_row_num = 2
     for r in ws_trans.iter_rows(min_row=2, values_only=True):
         rowd = _row_to_dict(tr_headers, list(r or ()))
@@ -451,6 +484,10 @@ def read_spreadsheet_to_model(xlsx_path: str) -> tuple[QualModel, list[str]]:
         if trans_id:
             trans_id, trans_id_warnings = validate_and_clean_sid(trans_id, "Transitions_ID", f"row {trans_row_num}")
             validation_warnings.extend(trans_id_warnings)
+            
+            # Make unique if duplicate
+            trans_id = _make_unique_id(trans_id, used_trans_ids, "Transitions_ID", f"row {trans_row_num}", validation_warnings)
+            used_trans_ids.add(trans_id)
         
         transitions.append(
             Transition(
@@ -664,6 +701,7 @@ def read_csv_to_model(csv_files: dict[str, str]) -> tuple[QualModel, list[str]]:
     
     _, species_rows = _read_csv_to_rows(csv_files['Species'])
     species: Dict[str, Species] = {}
+    used_species_ids: set = set()  # Track all species IDs (including renamed ones)
     species_row_num = 2
     for rowd in species_rows:
         sid = str(rowd.get(spec.SPECIES_ID) or "").strip()
@@ -674,6 +712,10 @@ def read_csv_to_model(csv_files: dict[str, str]) -> tuple[QualModel, list[str]]:
         # Validate and clean Species_ID (SId format)
         sid, sid_warnings = validate_and_clean_sid(sid, "Species_ID", f"row {species_row_num}")
         validation_warnings.extend(sid_warnings)
+        
+        # Make unique if duplicate
+        sid = _make_unique_id(sid, used_species_ids, "Species_ID", f"row {species_row_num}", validation_warnings)
+        used_species_ids.add(sid)
         
         # Validate and clean Compartment (SId format) if provided
         compartment = str(rowd.get(spec.SPECIES_COMPARTMENT) or "").strip() or None
@@ -711,6 +753,7 @@ def read_csv_to_model(csv_files: dict[str, str]) -> tuple[QualModel, list[str]]:
     
     _, trans_rows = _read_csv_to_rows(csv_files['Transitions'])
     transitions: List[Transition] = []
+    used_trans_ids: set = set()  # Track all transition IDs (including renamed ones)
     trans_row_num = 2
     for rowd in trans_rows:
         target = str(rowd.get(spec.TRANSITION_TARGET) or "").strip()
@@ -732,6 +775,10 @@ def read_csv_to_model(csv_files: dict[str, str]) -> tuple[QualModel, list[str]]:
         if trans_id:
             trans_id, trans_id_warnings = validate_and_clean_sid(trans_id, "Transitions_ID", f"row {trans_row_num}")
             validation_warnings.extend(trans_id_warnings)
+            
+            # Make unique if duplicate
+            trans_id = _make_unique_id(trans_id, used_trans_ids, "Transitions_ID", f"row {trans_row_num}", validation_warnings)
+            used_trans_ids.add(trans_id)
         
         transitions.append(
             Transition(

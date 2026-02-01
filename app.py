@@ -363,7 +363,7 @@ with tab1:
                     if all_messages:
                         # Separate info messages from warnings and SId messages
                         info_msgs = [m for m in all_messages if m.startswith("Found ") or m.startswith("No ")]
-                        sid_msgs = [m for m in all_messages if "Invalid SId" in m]
+                        sid_msgs = [m for m in all_messages if "Invalid SId" in m or "Duplicate ID" in m]
                         warning_msgs = [m for m in all_messages if m not in info_msgs and m not in sid_msgs]
                         
                         # Display SId validation messages in a dedicated expander
