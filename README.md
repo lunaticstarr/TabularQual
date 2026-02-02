@@ -4,7 +4,7 @@ Convert between spreadsheets and SBML-qual for logical models (Boolean and multi
 
 ![Example](doc/example.png)
 
-Note: the format is specified [here](doc/TabularQual_specification_v0.1.1.docx).
+Note: the format is specified [here](doc/TabularQual_specification_v0.1.2.docx).
 
 ### Web App
 
@@ -81,8 +81,8 @@ to-table model.sbml MyOutput --csv
 - **OUTPUT**: output SBML file (optional, defaults to input name with `.sbml` extension)
 - **--inter-anno**: use interaction annotations only (unless `--trans-anno` is also set)
 - **--trans-anno**: use transition annotations only (unless `--inter-anno` is also set)
+- **--use-name**: use Species Name instead of ID in rules and interactions (default: use ID)
 - **--no-validate**: skip annotation validation
-- If you pass both flags or neither, the converter includes **both** annotation types
 
 `to-table INPUT [OUTPUT]`:
 
@@ -91,6 +91,7 @@ to-table model.sbml MyOutput --csv
 - **--csv**: output as CSV files (`{prefix}_Model.csv`, `{prefix}_Species.csv`, `{prefix}_Transitions.csv`, `{prefix}_Interactions.csv`)
 - **--template**: specify a template file for README and Appendix sheets (XLSX only)
 - **--colon-format**: use colon notation for transition rules (`:` means `>=`)
+- **--use-name**: use Species Name instead of ID in rules and interactions (default: use ID)
 - **--no-validate**: skip annotation validation
 
 ### Transition Rules Syntax
@@ -144,6 +145,7 @@ The converter validates controlled vocabulary fields:
 - **Species Type**: Must be one of `Input`, `Internal`, or `Output` (case-insensitive)
 - **Interaction Sign**: Must be one of `positive`, `negative`, `dual`, or `unknown` (case-insensitive)
 - **Relation Qualifiers**: Must be one of `is`, `hasVersion`, `isVersionOf`, `isDescribedBy`, `hasPart`, `isPartOf`, `hasProperty`, `isPropertyOf`, `encodes`, `isEncodedBy`, `isHomologTo`, `occursIn`, `hasTaxon` (case-insensitive)
+- TODO: validate Relation qualifiers in SBML.
 
 #### Annotation Validation
 
@@ -159,4 +161,8 @@ To use annotation validation: `pip install sbmlutils>=0.9.6`
 
 - The reader ignores a first README sheet if present, and reads `Model`, `Species`, `Transitions`, and `Interactions`.
 - The SBML to Spreadsheet converter automatically uses `doc/template.xlsx` if available for README and Appendix sheets (XLSX output only).
+- When `--use-name` is enabled, the converter uses **Species Name** in transition rules and interactions instead of Species_ID.
+  - If a name conforms to SId format and is unique, it's used directly. Otherwise, it's quoted: `"Name"` or gets suffixes for duplicates: `"Name_1"`, `"Name_2"`, etc.
+  - If any species are missing Names when `--use-name` is enabled, a warning is issued and IDs are used instead.
+  - When `--use-name` is enabled, Species_ID becomes optional and is automatically generated from Names if missing.
 - TODO: automatically detect Species:Type, Interactions:Target, Source and Sign.

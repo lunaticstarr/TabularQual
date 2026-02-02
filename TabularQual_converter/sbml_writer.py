@@ -11,7 +11,121 @@ from .types import QualModel, Species as SpeciesT, Transition as TransitionT, In
 from .expr_parser import parse as parse_expr, ast_to_mathml
 
 
-def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_anno: bool = True) -> Tuple[str, List[str]]:
+def _resolve_name_to_id(name_or_id: str, species: Dict[str, SpeciesT]) -> str:
+    """Resolve a name (possibly quoted, or with suffix) or ID to a species ID.
+    
+    Args:
+        name_or_id: Either a species name (possibly quoted, or with suffix) or ID
+        species: Dict of species by ID
+        
+    Returns:
+        The species ID
+    """
+    import re
+    # Remove quotes if present
+    if name_or_id.startswith('"') and name_or_id.endswith('"'):
+        name_or_id = name_or_id[1:-1]
+    
+    # First try as ID
+    if name_or_id in species:
+        return name_or_id
+    
+    # Check if it's a name with suffix (e.g., "GeneA_1")
+    match = re.match(r'^(.+)_(\d+)$', name_or_id)
+    if match:
+        base_name = match.group(1)
+        suffix_num = int(match.group(2))
+        # Find species with this base name and match by occurrence
+        matching_species = [(sid, sp) for sid, sp in species.items() if sp.name == base_name]
+        if matching_species and suffix_num > 0:
+            occurrence_index = suffix_num  # suffix_num 1 → occurrence index 1, suffix_num 2 → occurrence index 2
+            if occurrence_index < len(matching_species):
+                return matching_species[occurrence_index][0]
+    
+    # Try as name without suffix (reverse lookup)
+    for sid, sp in species.items():
+        if sp.name == name_or_id:
+            return sid
+    
+    # Not found, return as-is (will cause error later)
+    return name_or_id
+
+
+def _resolve_rule_names_to_ids(rule: str, species: Dict[str, SpeciesT]) -> str:
+    """Resolve species names (possibly quoted, possibly with suffix) in a rule to IDs.
+    
+    Args:
+        rule: The transition rule string (may contain quoted names or names with suffixes)
+        species: Dict of species by ID
+        
+    Returns:
+        Rule with names replaced by IDs
+    """
+    import re
+    result = rule
+    
+    # Create mappings from name to IDs (handling duplicates)
+    name_to_ids_map = {}  # name -> list of (sid, occurrence)
+    for sid, sp in species.items():
+        if sp.name:
+            if sp.name not in name_to_ids_map:
+                name_to_ids_map[sp.name] = []
+            occurrence = len(name_to_ids_map[sp.name])  # 0 for first, 1 for second, 2 for third, etc.
+            name_to_ids_map[sp.name].append((sid, occurrence))
+    
+    # Replace quoted names (with or without suffix)
+    for name, id_list in name_to_ids_map.items():
+        # Pattern for quoted name: "name" or "name_1" or "name":2 (with colon notation)
+        # First occurrence (no suffix)
+        quoted_pattern = r'"' + re.escape(name) + r'"(?::(\d+))?'
+        def replace_quoted_first(match):
+            colon_part = match.group(1)
+            sid = id_list[0][0] if id_list else name
+            if colon_part:
+                return f"{sid}:{colon_part}"
+            return sid
+        result = re.sub(quoted_pattern, replace_quoted_first, result)
+        
+        # Subsequent occurrences with suffix (e.g., "name_1", "name_2")
+        for idx, (sid, occurrence) in enumerate(id_list):
+            if occurrence > 0:  # Skip first occurrence (no suffix)
+                suffix_num = occurrence  # occurrence 1 → suffix _1, occurrence 2 → suffix _2
+                quoted_suffix_pattern = r'"' + re.escape(f"{name}_{suffix_num}") + r'"(?::(\d+))?'
+                def replace_quoted_suffix(match):
+                    colon_part = match.group(1)
+                    if colon_part:
+                        return f"{sid}:{colon_part}"
+                    return sid
+                result = re.sub(quoted_suffix_pattern, replace_quoted_suffix, result)
+    
+    # Replace unquoted names (with or without suffix)
+    for name, id_list in name_to_ids_map.items():
+        # First occurrence (no suffix)
+        if len(id_list) == 1:
+            # Unique name - replace if not valid SId
+            sid = id_list[0][0]
+            if not re.match(r'^[A-Za-z_][A-Za-z0-9_]*$', name):
+                pattern = r'\b' + re.escape(name) + r'(?=\s|&|\||!|\(|\)|>=|<=|>|<|!=|=|:|$)'
+                result = re.sub(pattern, sid, result)
+        else:
+            # Duplicate names - replace with suffixes
+            for sid, occurrence in id_list:
+                if occurrence == 0:
+                    # First occurrence - only replace if not valid SId
+                    if not re.match(r'^[A-Za-z_][A-Za-z0-9_]*$', name):
+                        pattern = r'\b' + re.escape(name) + r'(?=\s|&|\||!|\(|\)|>=|<=|>|<|!=|=|:|$)'
+                        result = re.sub(pattern, sid, result)
+                else:
+                    # Subsequent occurrences with suffix
+                    suffix_num = occurrence  # occurrence 1 → suffix _1, occurrence 2 → suffix _2
+                    name_with_suffix = f"{name}_{suffix_num}"
+                    pattern = r'\b' + re.escape(name_with_suffix) + r'(?=\s|&|\||!|\(|\)|>=|<=|>|<|!=|=|:|$)'
+                    result = re.sub(pattern, sid, result)
+    
+    return result
+
+
+def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_anno: bool = True, use_name: bool = False) -> Tuple[str, List[str]]:
     """
     Write a QualModel to SBML-qual format.
     
@@ -121,6 +235,9 @@ def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_
         # Create one transition per target species
         qt = qual_model.createTransition()
         
+        # Resolve target name to ID if use_name=True
+        target_id = _resolve_name_to_id(target, model.species) if use_name else target
+        
         # Use the first transition's ID or generate one
         # Strip level suffix from transition ID (e.g., tr_Cro_2 -> tr_Cro)
         first_transition = target_transitions[0]
@@ -133,7 +250,7 @@ def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_
                 base_id = match.group(1)
             qt.setId(base_id)
         else:
-            qt.setId(f"tr_{target}")
+            qt.setId(f"tr_{target_id}")
             
         if not qt.isSetMetaId():
             qt.setMetaId(next_metaid())
@@ -142,7 +259,7 @@ def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_
             
         # Outputs
         out = qt.createOutput()
-        out.setQualitativeSpecies(target)
+        out.setQualitativeSpecies(target_id)
         out.setTransitionEffect(_qual_enum("QUAL_TRANSITION_EFFECT_ASSIGNMENT_LEVEL", 1))
 
         # Function terms - one for each level
@@ -152,8 +269,10 @@ def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_
         # Collect all unique species IDs from all rules for this target
         all_species_ids = set()
         for t in target_transitions:
-            # print("target_transition: ", t.transition_id, t.rule)
-            ast = parse_expr(t.rule, known_species_ids)
+            # Resolve rule names to IDs if use_name=True
+            rule = _resolve_rule_names_to_ids(t.rule, model.species) if use_name else t.rule
+            # print("target_transition: ", t.transition_id, rule)
+            ast = parse_expr(rule, known_species_ids)
             all_species_ids.update(_collect_ids_from_ast(ast))
         
         # Filter out IDs that don't correspond to actual species (e.g., constants like "1")
@@ -180,8 +299,10 @@ def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_
             level = int(t.level) if t.level is not None else 1
             ft.setResultLevel(level)
             
+            # Resolve rule names to IDs if use_name=True
+            rule = _resolve_rule_names_to_ids(t.rule, model.species) if use_name else t.rule
             # Parse rule to MathML
-            ast = parse_expr(t.rule, known_species_ids)
+            ast = parse_expr(rule, known_species_ids)
             mathml_content = ast_to_mathml(ast)
             mathml = f"<math xmlns=\"http://www.w3.org/1998/Math/MathML\">{mathml_content}</math>"
             _set_mathml(ft, mathml)
@@ -199,27 +320,31 @@ def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_
     # Interactions (optional): add to corresponding transition inputs
     if interactions_anno and model.interactions:
         for inter in model.interactions:
+            # Resolve target and source names to IDs if use_name=True
+            target_id = _resolve_name_to_id(inter.target, model.species) if use_name else inter.target
+            source_id = _resolve_name_to_id(inter.source, model.species) if use_name else inter.source
+            
             # Find transition whose output species equals interaction target
             for i in range(qual_model.getNumTransitions()):
                 tr = qual_model.getTransition(i)
                 out_species = None
                 if tr.getNumOutputs() > 0:
                     out_species = tr.getOutput(0).getQualitativeSpecies()
-                if out_species == inter.target:
+                if out_species == target_id:
                     # Find matching input by species
                     found_input = None
                     try:
                         for j in range(tr.getNumInputs()):
                             candidate = tr.getInput(j)
-                            if candidate.getQualitativeSpecies() == inter.source:
+                            if candidate.getQualitativeSpecies() == source_id:
                                 found_input = candidate
                                 break
                     except Exception:
                         found_input = None
                     if found_input is None:
-                        print(f"No input found for {inter.source} in {tr.getId()}, creating one.")
+                        print(f"No input found for {source_id} in {tr.getId()}, creating one.")
                         found_input = tr.createInput()
-                        found_input.setQualitativeSpecies(inter.source)
+                        found_input.setQualitativeSpecies(source_id)
                         if not found_input.isSetMetaId():
                             found_input.setMetaId(next_metaid())
                         found_input.setTransitionEffect(_qual_enum("QUAL_TRANSITION_EFFECT_NONE", 0))

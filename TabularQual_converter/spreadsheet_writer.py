@@ -9,8 +9,123 @@ import shutil
 
 from .types import QualModel, Person
 from . import spec
+from .tools import is_valid_sid
 
-def write_spreadsheet(model: QualModel, output_path: str, template_path: str = None, rule_format: str = "operators") -> str:
+
+def _build_name_deduplication_map(species: Dict[str, Any]) -> Dict[str, str]:
+    """Build a map from (species_id, original_name) to deduplicated name with suffix.
+    
+    Returns:
+        Dict mapping (species_id, original_name) to suffixed name (e.g., "Name_1", "Name_2")
+    """
+    name_counts = {}
+    name_occurrence_map = {}
+    name_current_count = {}
+    
+    # First pass: count name occurrences
+    for sp in species.values():
+        if sp.name:
+            name = sp.name.strip()  # Strip leading/trailing spaces
+            name_counts[name] = name_counts.get(name, 0) + 1
+    
+    # Second pass: build occurrence map
+    for sp in sorted(species.values(), key=lambda s: s.species_id):
+        if sp.name:
+            name = sp.name.strip()
+            if name_counts[name] > 1:
+                # Duplicate name - need suffix
+                occurrence = name_current_count.get(name, 0)
+                name_current_count[name] = occurrence + 1
+                # First occurrence (0-indexed) gets no suffix, subsequent get _1, _2, etc.
+                if occurrence == 0:
+                    name_occurrence_map[sp.species_id] = name
+                else:
+                    name_occurrence_map[sp.species_id] = f"{name}_{occurrence}"
+            else:
+                # Unique name - no suffix needed
+                name_occurrence_map[sp.species_id] = name
+    
+    return name_occurrence_map
+
+
+def _resolve_id_to_name_for_output(sid: str, species: Dict[str, Any], use_name: bool, 
+                                   name_dedup_map: Dict[str, str] = None) -> str:
+    """Resolve a species ID to Name for output when use_name=True.
+    
+    Args:
+        sid: Species ID
+        species: Dict of species by ID
+        use_name: If True, return Name (with quotes if needed). If False, return ID.
+        name_dedup_map: Optional map from species_id to deduplicated name (with suffix if needed)
+        
+    Returns:
+        Name (possibly quoted) if use_name=True, or ID if use_name=False
+    """
+    if not use_name:
+        return sid
+    
+    if sid not in species:
+        return sid  # Not found, return as-is
+    
+    sp = species[sid]
+    if not sp.name:
+        return sid  # No name, use ID
+    
+    # Use deduplicated name if map is provided
+    if name_dedup_map and sid in name_dedup_map:
+        name = name_dedup_map[sid]
+    else:
+        name = sp.name.strip()
+    
+    # Check if name is valid SId
+    is_valid = is_valid_sid(name)
+    
+    if is_valid:
+        return name
+    # Need quotes if not valid SId
+    return f'"{name}"'
+
+
+def _resolve_rule_ids_to_names(rule: str, species: Dict[str, Any], use_name: bool,
+                               name_dedup_map: Dict[str, str] = None) -> str:
+    """Resolve species IDs in a rule to Names when use_name=True.
+    
+    Args:
+        rule: Transition rule string
+        species: Dict of species by ID
+        use_name: If True, replace IDs with Names. If False, return rule as-is.
+        name_dedup_map: Optional map from species_id to deduplicated name (with suffix if needed)
+        
+    Returns:
+        Rule with IDs replaced by Names (quoted if needed) when use_name=True
+    """
+    if not use_name:
+        return rule
+    
+    import re
+    result = rule
+    
+    # Replace each species ID with its name
+    for sid, sp in species.items():
+        if not sp.name:
+            continue
+        
+        # Use deduplicated name if map is provided
+        if name_dedup_map and sid in name_dedup_map:
+            name = name_dedup_map[sid]
+        else:
+            name = sp.name.strip()
+        
+        is_valid = is_valid_sid(name)
+        replacement = name if is_valid else f'"{name}"'
+        
+        # Use word boundary pattern to match ID as whole token
+        pattern = r'\b' + re.escape(sid) + r'(?=\s|&|\||!|\(|\)|>=|<=|>|<|!=|=|:|$)'
+        result = re.sub(pattern, replacement, result)
+    
+    return result
+
+def write_spreadsheet(model: QualModel, output_path: str, template_path: str = None, rule_format: str = "operators", use_name: bool = False) -> str:
     """Write QualModel to spreadsheet format
     
     Args:
@@ -46,11 +161,16 @@ def write_spreadsheet(model: QualModel, output_path: str, template_path: str = N
     # Determine insertion position (after README if it exists)
     insert_pos = 1 if 'README' in wb.sheetnames else 0
     
+    # Build name deduplication map when use_name=True (used across all sheets)
+    name_dedup_map = {}
+    if use_name:
+        name_dedup_map = _build_name_deduplication_map(model.species)
+    
     # Create sheets in order: README, Model, Species, Interactions, Transitions, Appendix
     _write_model_sheet(wb, model, insert_pos)
-    _write_species_sheet(wb, model, insert_pos + 1)
-    _write_interactions_sheet(wb, model, insert_pos + 2)
-    _write_transitions_sheet(wb, model, insert_pos + 3, rule_format)
+    _write_species_sheet(wb, model, insert_pos + 1, use_name=use_name, name_dedup_map=name_dedup_map)
+    _write_interactions_sheet(wb, model, insert_pos + 2, use_name=use_name, name_dedup_map=name_dedup_map)
+    _write_transitions_sheet(wb, model, insert_pos + 3, rule_format, use_name=use_name, name_dedup_map=name_dedup_map)
     
     # Save
     wb.save(output_path)
@@ -186,8 +306,14 @@ def _write_model_sheet(wb: openpyxl.Workbook, model: QualModel, position: int = 
     ws.column_dimensions['B'].width = 80
 
 
-def _write_species_sheet(wb: openpyxl.Workbook, model: QualModel, position: int = 0):
-    """Write Species sheet"""
+def _write_species_sheet(wb: openpyxl.Workbook, model: QualModel, position: int = 0, 
+                         use_name: bool = False, name_dedup_map: Dict[str, str] = None):
+    """Write Species sheet
+    
+    Args:
+        use_name: If True, deduplicate names by adding suffixes when writing
+        name_dedup_map: Map from species_id to deduplicated name (with suffix if needed)
+    """
     ws = wb.create_sheet("Species", position)
     
     # Header style
@@ -244,8 +370,12 @@ def _write_species_sheet(wb: openpyxl.Workbook, model: QualModel, position: int 
         ws.cell(row=row_idx, column=col, value=species.species_id)
         col += 1
         
-        # Name
-        ws.cell(row=row_idx, column=col, value=species.name)
+        # Name - use deduplicated version if use_name=True
+        if use_name and species.name:
+            name_value = name_dedup_map.get(species.species_id, species.name.strip())
+        else:
+            name_value = species.name.strip() if species.name else None
+        ws.cell(row=row_idx, column=col, value=name_value)
         col += 1
         
         # Annotations - group by qualifier and combine identifiers
@@ -300,7 +430,9 @@ def _write_species_sheet(wb: openpyxl.Workbook, model: QualModel, position: int 
     ws.column_dimensions['B'].width = 30
 
 
-def _write_transitions_sheet(wb: openpyxl.Workbook, model: QualModel, position: int = 0, rule_format: str = "operators"):
+def _write_transitions_sheet(wb: openpyxl.Workbook, model: QualModel, position: int = 0, 
+                            rule_format: str = "operators", use_name: bool = False, 
+                            name_dedup_map: Dict[str, str] = None):
     """Write Transitions sheet"""
     ws = wb.create_sheet("Transitions", position)
     
@@ -360,8 +492,9 @@ def _write_transitions_sheet(wb: openpyxl.Workbook, model: QualModel, position: 
         ws.cell(row=row_idx, column=col, value=transition.name)
         col += 1
         
-        # Target
-        ws.cell(row=row_idx, column=col, value=transition.target)
+        # Target - use Name if use_name=False
+        target_value = _resolve_id_to_name_for_output(transition.target, model.species, use_name, name_dedup_map)
+        ws.cell(row=row_idx, column=col, value=target_value)
         col += 1
         
         # Level
@@ -369,8 +502,10 @@ def _write_transitions_sheet(wb: openpyxl.Workbook, model: QualModel, position: 
             ws.cell(row=row_idx, column=col, value=transition.level)
         col += 1
         
-        # Rule - convert format if needed
+        # Rule - convert format if needed, and resolve IDs to Names if use_name=False
         rule = transition.rule
+        if use_name:
+            rule = _resolve_rule_ids_to_names(rule, model.species, use_name, name_dedup_map)
         if rule_format == "colon":
             rule = _convert_rule_to_colon(rule)
         ws.cell(row=row_idx, column=col, value=rule)
@@ -406,7 +541,8 @@ def _write_transitions_sheet(wb: openpyxl.Workbook, model: QualModel, position: 
     ws.column_dimensions['E'].width = 40
 
 
-def _write_interactions_sheet(wb: openpyxl.Workbook, model: QualModel, position: int = 0):
+def _write_interactions_sheet(wb: openpyxl.Workbook, model: QualModel, position: int = 0, 
+                              use_name: bool = False, name_dedup_map: Dict[str, str] = None):
     """Write Interactions sheet"""
     # Always create the sheet, even if no interactions
     ws = wb.create_sheet("Interactions", position)
@@ -456,12 +592,14 @@ def _write_interactions_sheet(wb: openpyxl.Workbook, model: QualModel, position:
     for row_idx, interaction in enumerate(model.interactions, 2):
         col = 1
         
-        # Target
-        ws.cell(row=row_idx, column=col, value=interaction.target)
+        # Target - use Name if use_name=False
+        target_value = _resolve_id_to_name_for_output(interaction.target, model.species, use_name, name_dedup_map)
+        ws.cell(row=row_idx, column=col, value=target_value)
         col += 1
         
-        # Source
-        ws.cell(row=row_idx, column=col, value=interaction.source)
+        # Source - use Name if use_name=False
+        source_value = _resolve_id_to_name_for_output(interaction.source, model.species, use_name, name_dedup_map)
+        ws.cell(row=row_idx, column=col, value=source_value)
         col += 1
         
         # Sign
@@ -601,7 +739,11 @@ def _convert_rule_to_colon(rule: str) -> str:
     return rule
 
 
-def write_csv(model: QualModel, output_prefix: str, rule_format: str = "operators"):
+def write_csv(model: QualModel, output_prefix: str, rule_format: str = "operators", use_name: bool = False):
+    # Build name deduplication map when use_name=True (used across all CSV files)
+    name_dedup_map = {}
+    if use_name:
+        name_dedup_map = _build_name_deduplication_map(model.species)
     """Write QualModel to CSV files.
     
     Args:
@@ -625,17 +767,17 @@ def write_csv(model: QualModel, output_prefix: str, rule_format: str = "operator
     
     # Write Species CSV
     species_file = output_dir / f"{prefix}_Species.csv"
-    _write_species_csv(model, str(species_file))
+    _write_species_csv(model, str(species_file), use_name=use_name, name_dedup_map=name_dedup_map)
     created_files.append(str(species_file))
     
     # Write Transitions CSV
     transitions_file = output_dir / f"{prefix}_Transitions.csv"
-    _write_transitions_csv(model, str(transitions_file), rule_format)
+    _write_transitions_csv(model, str(transitions_file), rule_format, use_name=use_name)
     created_files.append(str(transitions_file))
     
     # Write Interactions CSV
     interactions_file = output_dir / f"{prefix}_Interactions.csv"
-    _write_interactions_csv(model, str(interactions_file))
+    _write_interactions_csv(model, str(interactions_file), use_name=use_name)
     created_files.append(str(interactions_file))
     
     return created_files
@@ -724,7 +866,7 @@ def _write_model_csv(model: QualModel, output_path: str):
         writer.writerows(rows)
 
 
-def _write_species_csv(model: QualModel, output_path: str):
+def _write_species_csv(model: QualModel, output_path: str, use_name: bool = False, name_dedup_map: Dict[str, str] = None):
     """Write Species sheet to CSV"""
     # Determine max qualifiers and notes
     max_qualifiers = 0
@@ -753,7 +895,12 @@ def _write_species_csv(model: QualModel, output_path: str):
     rows = [headers]
     
     for species in sorted(model.species.values(), key=lambda s: s.species_id):
-        row = [species.species_id, species.name or ""]
+        # Name - use deduplicated version if use_name=True
+        if use_name and species.name:
+            name_value = name_dedup_map.get(species.species_id, species.name.strip()) if name_dedup_map else species.name.strip()
+        else:
+            name_value = species.name.strip() if species.name else ""
+        row = [species.species_id, name_value]
         
         # Annotations
         grouped_annos = {}
@@ -789,7 +936,8 @@ def _write_species_csv(model: QualModel, output_path: str):
         writer.writerows(rows)
 
 
-def _write_transitions_csv(model: QualModel, output_path: str, rule_format: str = "operators"):
+def _write_transitions_csv(model: QualModel, output_path: str, rule_format: str = "operators", 
+                          use_name: bool = False, name_dedup_map: Dict[str, str] = None):
     """Write Transitions sheet to CSV"""
     # Determine max qualifiers and notes
     max_qualifiers = 0
@@ -817,14 +965,20 @@ def _write_transitions_csv(model: QualModel, output_path: str, rule_format: str 
     rows = [headers]
     
     for transition in model.transitions:
+        # Target - use Name if use_name=False
+        target_value = _resolve_id_to_name_for_output(transition.target, model.species, use_name, name_dedup_map)
+        
+        # Rule - convert format if needed, and resolve IDs to Names if use_name=False
         rule = transition.rule
+        if use_name:
+            rule = _resolve_rule_ids_to_names(rule, model.species, use_name, name_dedup_map)
         if rule_format == "colon":
             rule = _convert_rule_to_colon(rule)
         
         row = [
             transition.transition_id or "",
             transition.name or "",
-            transition.target,
+            target_value,
             transition.level if transition.level is not None else "",
             rule
         ]
@@ -855,7 +1009,8 @@ def _write_transitions_csv(model: QualModel, output_path: str, rule_format: str 
         writer.writerows(rows)
 
 
-def _write_interactions_csv(model: QualModel, output_path: str):
+def _write_interactions_csv(model: QualModel, output_path: str, use_name: bool = False, 
+                           name_dedup_map: Dict[str, str] = None):
     """Write Interactions sheet to CSV"""
     # Determine max qualifiers and notes
     max_qualifiers = 0
@@ -883,9 +1038,13 @@ def _write_interactions_csv(model: QualModel, output_path: str):
     rows = [headers]
     
     for interaction in model.interactions:
+        # Resolve target and source to Names if use_name=False
+        target_value = _resolve_id_to_name_for_output(interaction.target, model.species, use_name, name_dedup_map)
+        source_value = _resolve_id_to_name_for_output(interaction.source, model.species, use_name, name_dedup_map)
+        
         row = [
-            interaction.target,
-            interaction.source,
+            target_value,
+            source_value,
             interaction.sign or ""
         ]
         

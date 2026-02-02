@@ -66,7 +66,8 @@ def _get_output_name(input_path: str, new_extension: str) -> str:
 @click.option("--inter-anno", is_flag=True, default=False, help="Use interaction annotations only (unless --trans-anno also set)")
 @click.option("--trans-anno", is_flag=True, default=False, help="Use transition annotations only (unless --inter-anno also set)")
 @click.option("--no-validate", is_flag=True, default=False, help="Skip SBML annotation validation")
-def to_sbml_entry(input_path: str, output_sbml: str | None, inter_anno: bool, trans_anno: bool, no_validate: bool):
+@click.option("--use-name", "use_name", is_flag=True, default=False, help="Use Species Name instead of ID in rules and interactions. Default: use ID.")
+def to_sbml_entry(input_path: str, output_sbml: str | None, inter_anno: bool, trans_anno: bool, no_validate: bool, use_name: bool):
     """Convert spreadsheet (XLSX or CSV) to SBML.
     
     INPUT_PATH: XLSX file, CSV file, directory with CSVs, or CSV prefix
@@ -89,6 +90,7 @@ def to_sbml_entry(input_path: str, output_sbml: str | None, inter_anno: bool, tr
             interactions_anno=interactions_anno,
             transitions_anno=transitions_anno,
             validate=not no_validate,
+            use_name=use_name,
         )
     except ValueError as e:
         raise click.ClickException(str(e))
@@ -102,7 +104,8 @@ def to_sbml_entry(input_path: str, output_sbml: str | None, inter_anno: bool, tr
 @click.option("--colon-format", "colon_format", is_flag=True, default=False, help="Use colon notation for transition rules (A:2 means A>=2). Default uses operators (>=, <, etc.)")
 @click.option("--csv", "output_csv", is_flag=True, default=False, help="Output as CSV files instead of XLSX")
 @click.option("--no-validate", is_flag=True, default=False, help="Skip SBML annotation validation")
-def to_table_entry(input_sbml: str, output_path: str | None, template_xlsx: str = None, colon_format: bool = False, output_csv: bool = False, no_validate: bool = False):
+@click.option("--use-name", "use_name", is_flag=True, default=False, help="Use Species Name instead of ID in rules and interactions. Default: use ID.")
+def to_table_entry(input_sbml: str, output_path: str | None, template_xlsx: str = None, colon_format: bool = False, output_csv: bool = False, no_validate: bool = False, use_name: bool = False):
     """Convert SBML to spreadsheet (XLSX or CSV).
     
     INPUT_SBML: Input SBML file
@@ -126,7 +129,7 @@ def to_table_entry(input_sbml: str, output_path: str | None, template_xlsx: str 
             template_xlsx = str(template_path)
     
     rule_format = "colon" if colon_format else "operators"
-    message_list, created_files, result = convert_sbml_to_spreadsheet(input_sbml, output_path, template_xlsx, rule_format, output_csv, validate=not no_validate)
+    message_list, created_files, result = convert_sbml_to_spreadsheet(input_sbml, output_path, template_xlsx, rule_format, output_csv, validate=not no_validate, use_name=use_name)
     
     if output_csv:
         click.echo(f"Wrote CSV files:")

@@ -162,6 +162,12 @@ with tab1:
             key="validate_anno_tab1",
             help="Validate SBML annotations using sbmlutils (requires sbmlutils with metadata.validator)"
         )
+        use_name = st.checkbox(
+            "Use Species Name",
+            value=False,
+            key="use_name_tab1",
+            help="Use Species Name in rules and interactions. If unchecked (default), uses Species_ID."
+        )
     
     # Determine if we have valid input (prefer XLSX if both provided)
     has_valid_input = uploaded_xlsx is not None or len(uploaded_csvs) > 0
@@ -278,7 +284,8 @@ with tab1:
                             interactions_anno=inter_anno,
                             transitions_anno=trans_anno,
                             print_messages=False,  # Display in app instead
-                            validate=validate_annotations
+                            validate=validate_annotations,
+                            use_name=use_name
                         )
                     else:
                         # CSV input - save files to temp directory and use read_csv_to_model
@@ -312,8 +319,8 @@ with tab1:
                             raise ValueError(f"Missing required CSV file(s): {', '.join(missing)}. Make sure filenames contain 'Species' or 'Transitions'.")
                         
                         # Read and convert
-                        model, validation_warnings = read_csv_to_model(csv_files_dict)
-                        sbml_string, writer_warnings = write_sbml(model, interactions_anno=inter_anno, transitions_anno=trans_anno)
+                        model, validation_warnings = read_csv_to_model(csv_files_dict, use_name=use_name)
+                        sbml_string, writer_warnings = write_sbml(model, interactions_anno=inter_anno, transitions_anno=trans_anno, use_name=use_name)
                         
                         with tempfile.NamedTemporaryFile(suffix='.sbml', delete=False, mode='w', encoding='utf-8') as tmp_out:
                             tmp_out.write(sbml_string)
@@ -345,7 +352,7 @@ with tab1:
                     all_messages = stats.get('warnings', [])
                     validation_errors = stats.get('validation_errors', [])
                     total_val_errors = stats.get('total_validation_errors', 0)
-                    
+
                     # Read output file
                     with open(output_path, 'r', encoding='utf-8') as f:
                         sbml_content = f.read()
@@ -355,16 +362,17 @@ with tab1:
                     
                     # Display validation errors
                     if validation_errors:
-                        with st.expander(f"⚠️ Annotation Validation Errors ({total_val_errors} total)", expanded=True):
+                        with st.expander(f"❗️ Annotation Validation Errors ({total_val_errors} total)", expanded=True):
                             for error in validation_errors:
                                 st.error(error)
-                    
+
                     # Display messages
                     if all_messages:
                         # Separate info messages from warnings and SId messages
                         info_msgs = [m for m in all_messages if m.startswith("Found ") or m.startswith("No ")]
-                        sid_msgs = [m for m in all_messages if "Invalid SId" in m or "Duplicate ID" in m]
-                        warning_msgs = [m for m in all_messages if m not in info_msgs and m not in sid_msgs]
+                        sid_msgs = [m for m in all_messages if "Invalid SId" in m or "Duplicate ID" in m or "Invalid reference" in m]
+                        use_name_msgs = [m for m in all_messages if "--use-name" in m or "Using ID mode" in m or "Using Name mode" in m]
+                        warning_msgs = [m for m in all_messages if m not in info_msgs and m not in sid_msgs and m not in use_name_msgs]
                         
                         # Display SId validation messages in a dedicated expander
                         if sid_msgs:
@@ -372,9 +380,16 @@ with tab1:
                                 for msg in sid_msgs:
                                     st.info(msg)
                         
+                        # Display --use-name related messages in an expander
+                        if use_name_msgs:
+                            with st.expander(f"ℹ️ --use-name Flag Messages ({len(use_name_msgs)} total)", expanded=False):
+                                for msg in use_name_msgs:
+                                    st.info(msg)
+                                                
                         if warning_msgs:
-                            for msg in warning_msgs:
-                                st.warning(f"{msg}")
+                            with st.expander(f"⚠️ Warnings ({len(warning_msgs)} total)", expanded=True):
+                                for msg in warning_msgs:
+                                    st.info(f"{msg}")
                     
                     # Display statistics
                     col1, col2, col3 = st.columns(3)
@@ -453,6 +468,12 @@ with tab2:
             value=True,
             key="validate_anno_tab2",
             help="Validate SBML annotations using sbmlutils (requires sbmlutils with metadata.validator)"
+        )
+        use_name_tab2 = st.checkbox(
+            "Use Species Name",
+            value=False,
+            key="use_name_tab2",
+            help="Use Species Name in rules and interactions. If unchecked (default), uses Species_ID."
         )
         
         # Template options (only for XLSX output)
@@ -547,7 +568,8 @@ with tab2:
                             rule_format=rule_format,
                             output_csv=True,
                             print_messages=False,  # Display in app instead
-                            validate=validate_annotations_tab2
+                            validate=validate_annotations_tab2,
+                            use_name=use_name_tab2
                         )
                         
                         # Create a ZIP file with all CSVs
@@ -566,17 +588,27 @@ with tab2:
                         total_val_errors = result.get('total_validation_errors', 0)
                         
                         if validation_errors:
-                            with st.expander(f"⚠️ Annotation Validation Errors ({total_val_errors} total)", expanded=True):
+                            with st.expander(f"❗️ Annotation Validation Errors ({total_val_errors} total)", expanded=True):
                                 for error in validation_errors:
                                     st.error(error)
+                        
                         
                         # Display messages
                         if message_list:
                             info_msgs = [m for m in message_list if m.startswith("Found ")]
-                            warning_msgs = [m for m in message_list if m not in info_msgs]
+                            use_name_msgs = [m for m in message_list if "--use-name" in m or "Using ID mode" in m or "Using Name mode" in m]
+                            warning_msgs = [m for m in message_list if m not in info_msgs and m not in use_name_msgs]
+                            
+                            # Display --use-name related messages in an expander
+                            if use_name_msgs:
+                                with st.expander(f"ℹ️ --use-name Flag Messages ({len(use_name_msgs)} total)", expanded=False):
+                                    for msg in use_name_msgs:
+                                        st.info(msg)
+                            
                             if warning_msgs:
-                                for msg in warning_msgs:
-                                    st.warning(f"{msg}")
+                                with st.expander(f"⚠️ Warnings ({len(warning_msgs)} total)", expanded=False):
+                                    for msg in warning_msgs:
+                                        st.info(f"{msg}")
                         
                         # Display statistics
                         col1, col2, col3 = st.columns(3)
@@ -621,7 +653,8 @@ with tab2:
                             rule_format=rule_format,
                             output_csv=False,
                             print_messages=False,  # Display in app instead
-                            validate=validate_annotations_tab2
+                            validate=validate_annotations_tab2,
+                            use_name=use_name_tab2
                     )
 
                         # Read the output file
@@ -634,19 +667,27 @@ with tab2:
                         # Display validation errors
                         validation_errors = result.get('validation_errors', [])
                         total_val_errors = result.get('total_validation_errors', 0)
-                        
                         if validation_errors:
-                            with st.expander(f"⚠️ Annotation Validation Errors ({total_val_errors} total)", expanded=True):
+                            with st.expander(f"❗️ Annotation Validation Errors ({total_val_errors} total)", expanded=True):
                                 for error in validation_errors:
                                     st.error(error)
                         
                         # Display messages
                         if message_list:
                             info_msgs = [m for m in message_list if m.startswith("Found ")]
-                            warning_msgs = [m for m in message_list if m not in info_msgs]
+                            use_name_msgs = [m for m in message_list if "--use-name" in m or "Using ID mode" in m or "Using Name mode" in m or "enable --use-name" in m or "disable --use-name" in m]
+                            warning_msgs = [m for m in message_list if m not in info_msgs and m not in use_name_msgs]
+                            
+                            # Display --use-name related messages in an expander
+                            if use_name_msgs:
+                                with st.expander(f"ℹ️ --use-name Flag Messages ({len(use_name_msgs)} total)", expanded=False):
+                                    for msg in use_name_msgs:
+                                        st.info(msg)
+                            
                             if warning_msgs:
-                                for msg in warning_msgs:
-                                    st.warning(f"{msg}")
+                                with st.expander(f"⚠️ Warnings ({len(warning_msgs)} total)", expanded=False):
+                                    for msg in warning_msgs:
+                                        st.info(f"{msg}")
                         
                         # Display statistics
                         wb = load_workbook(BytesIO(xlsx_content), read_only=True, data_only=True)

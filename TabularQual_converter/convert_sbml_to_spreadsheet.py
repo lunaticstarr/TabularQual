@@ -7,7 +7,7 @@ from .spreadsheet_writer import write_spreadsheet, write_csv
 from .tools import validate_sbml_file
 
 
-def convert_sbml_to_spreadsheet(sbml_path: str, output_path: str, template_path: str = None, rule_format: str = "operators", output_csv: bool = False, print_messages: bool = True, validate: bool = True):
+def convert_sbml_to_spreadsheet(sbml_path: str, output_path: str, template_path: str = None, rule_format: str = "operators", output_csv: bool = False, print_messages: bool = True, validate: bool = True, use_name: bool = False):
     """
     Convert an SBML-qual file to SpreadSBML spreadsheet format (XLSX or CSV).
     
@@ -38,7 +38,7 @@ def convert_sbml_to_spreadsheet(sbml_path: str, output_path: str, template_path:
         max_errors = 10 if print_messages else None
         validation_result = validate_sbml_file(sbml_path, max_errors=max_errors, print_messages=print_messages)
     else:
-        validation_result = {'errors': [], 'total_errors': 0}
+        validation_result = {'errors': [], 'total_errors': 0, 'warnings': [], 'total_warnings': 0}
     
     with warnings.catch_warnings(record=True) as w:
         warnings.simplefilter("always")
@@ -69,9 +69,9 @@ def convert_sbml_to_spreadsheet(sbml_path: str, output_path: str, template_path:
     
     # Write output
     if output_csv:
-        created_files = write_csv(model, output_path, rule_format)
+        created_files = write_csv(model, output_path, rule_format, use_name=use_name)
     else:
-        actual_path = write_spreadsheet(model, output_path, template_path, rule_format)
+        actual_path = write_spreadsheet(model, output_path, template_path, rule_format, use_name=use_name)
         created_files = [actual_path]
     
     # Create result dict with validation info
@@ -79,7 +79,9 @@ def convert_sbml_to_spreadsheet(sbml_path: str, output_path: str, template_path:
         'messages': message_list,
         'created_files': created_files,
         'validation_errors': validation_result.get('errors', []),
-        'total_validation_errors': validation_result.get('total_errors', 0)
+        'total_validation_errors': validation_result.get('total_errors', 0),
+        'validation_warnings': validation_result.get('warnings', []),
+        'total_validation_warnings': validation_result.get('total_warnings', 0)
     }
     
     return message_list, created_files, result

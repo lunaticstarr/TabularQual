@@ -31,6 +31,22 @@ def tokenize(expr: str, species_ids: Optional[Set[str]] = None) -> List[Token]:
     while i < len(s):
         ch = s[i]
         
+        # Handle quoted names (for use_id=False mode)
+        if ch == '"':
+            # Find the closing quote
+            j = i + 1
+            while j < len(s) and s[j] != '"':
+                j += 1
+            if j < len(s):
+                # Extract the name between quotes
+                quoted_name = s[i+1:j]
+                tokens.append(Token('ID', quoted_name))
+                i = j + 1
+                continue
+            else:
+                # Unclosed quote - treat as error or continue
+                raise ValueError(f"Unclosed quote in rule: {expr}")
+        
         # First, try to match a known species ID (longest match first)
         matched_species = None
         for original_sp, sp_no_space in species_no_space:
@@ -46,9 +62,15 @@ def tokenize(expr: str, species_ids: Optional[Set[str]] = None) -> List[Token]:
                     matched_species = s[i:j]
                     i = j
                 else:
-                    matched_species = sp_no_space
-                    i = end_pos
-                break
+                    # Check word boundary
+                    if end_pos >= len(s) or not (s[end_pos].isalnum() or s[end_pos] == '_'):
+                        matched_species = sp_no_space
+                        i = end_pos
+                    else:
+                        # substring match, skip
+                        continue
+                if matched_species:
+                    break
         
         if matched_species:
             tokens.append(Token('ID', matched_species))
@@ -265,7 +287,7 @@ def parse(expr: str, species_ids: Optional[Set[str]] = None):
 
     ast = parse_expr()
     if peek() is not None:
-        raise ValueError("Unexpected trailing tokens")
+        raise ValueError(f"Unexpected trailing tokens: {peek().kind} for expression: {expr}")
     return ast
 
 
