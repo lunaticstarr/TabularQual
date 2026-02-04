@@ -39,7 +39,7 @@ st.set_page_config(
 st.markdown("""
     <style>
     .main-header {
-        /* font-size: 3rem; */
+        font-size: 3.5rem;
         font-weight: bold;
         color: #1f77b4;
         margin-bottom: 0.5rem;
@@ -48,6 +48,9 @@ st.markdown("""
         /* font-size: 2.5rem; */
         color: #666;
         margin-bottom: 2rem;
+    }
+    h2 {
+        font-size: 1rem;
     }
     .stDownloadButton button {
         background-color: #28a745;
@@ -112,7 +115,8 @@ tab1, tab2 = st.tabs(["📊 Spreadsheet → SBML", "📋 SBML → Spreadsheet"])
 
 # Tab 1: Spreadsheet to SBML
 with tab1:
-    st.header("Convert Spreadsheet to SBML")
+    # st.header("Convert Spreadsheet to SBML")
+    st.markdown('<h2 style="font-size:27px;">Convert Spreadsheet to SBML</h2>', unsafe_allow_html=True)
     
     col1, col2 = st.columns([2, 1])
     
@@ -166,7 +170,7 @@ with tab1:
             "Use Species Name",
             value=False,
             key="use_name_tab1",
-            help="Use Species Name in rules and interactions. If unchecked (default), uses Species_ID."
+            help="Species Name has been used in rules and interactions. If unchecked (default), Species_ID."
         )
     
     # Determine if we have valid input (prefer XLSX if both provided)
@@ -362,9 +366,9 @@ with tab1:
                     
                     # Display validation errors
                     if validation_errors:
-                        with st.expander(f"❗️ Annotation Validation Errors ({total_val_errors} total)", expanded=True):
+                        with st.expander(f"❗️ Annotation Validation Warnings ({total_val_errors} total)", expanded=True):
                             for error in validation_errors:
-                                st.error(error)
+                                st.warning(error)
 
                     # Display messages
                     if all_messages:
@@ -433,7 +437,8 @@ with tab1:
 
 # Tab 2: SBML to Spreadsheet
 with tab2:
-    st.header("Convert SBML to Spreadsheet")
+    # st.header("Convert SBML to Spreadsheet")
+    st.markdown('<h2 style="font-size:27px;">Convert SBML to Spreadsheet</h2>', unsafe_allow_html=True)
     
     col1, col2 = st.columns([2, 1])
     
@@ -476,26 +481,26 @@ with tab2:
             help="Use Species Name in rules and interactions. If unchecked (default), uses Species_ID."
         )
         
-        # Template options (only for XLSX output)
-        if not output_csv:
-            use_default_template = st.checkbox(
-                "Use Default Template",
-                value=True,
-                key="use_default_template",
-                help="Include README and Appendix sheets from default template"
-            )
+        # # Template options (only for XLSX output)
+        # if not output_csv:
+        #     use_default_template = st.checkbox(
+        #         "Use Default Template",
+        #         value=True,
+        #         key="use_default_template",
+        #         help="Include README and Appendix sheets from default template"
+        #     )
             
-            # Custom template upload
-            st.markdown("**Or upload custom template:**")
-            custom_template = st.file_uploader(
-                "Custom Template (.xlsx)",
-                type=["xlsx"],
-                key="custom_template_upload",
-                help="Upload a custom template file for README and Appendix sheets"
-            )
-        else:
-            use_default_template = False
-            custom_template = None
+        #     # Custom template upload
+        #     st.markdown("**Or upload custom template:**")
+        #     custom_template = st.file_uploader(
+        #         "Custom Template (.xlsx)",
+        #         type=["xlsx"],
+        #         key="custom_template_upload",
+        #         help="Upload a custom template file for README and Appendix sheets"
+        #     )
+        # else:
+        #     use_default_template = False
+        #     custom_template = None
     
     if uploaded_sbml is not None:
         # Store file content
@@ -536,21 +541,13 @@ with tab2:
                         input_path = tmp_in.name
                     temp_files_to_cleanup.append(input_path)
                     
-                    # Determine template path (only for XLSX)
+                    # Determine template path (only for XLSX) - always use default template
                     template_path = None
                     
                     if not output_csv:
-                        if custom_template is not None:
-                            with tempfile.NamedTemporaryFile(suffix='.xlsx', delete=False) as tmp_template:
-                                tmp_template.write(custom_template.getvalue())
-                                template_path = tmp_template.name
-                            temp_files_to_cleanup.append(template_path)
-                            st.info("✅ Using custom template")
-                        elif use_default_template:
-                            template_file = Path(__file__).parent / "doc" / "template.xlsx"
-                            if template_file.exists():
-                                template_path = str(template_file)
-                                st.info("✅ Using default template")
+                        template_file = Path(__file__).parent / "doc" / "template.xlsx"
+                        if template_file.exists():
+                            template_path = str(template_file)
                     
                     # Determine rule format
                     rule_format = "colon" if colon_format else "operators"
@@ -588,9 +585,9 @@ with tab2:
                         total_val_errors = result.get('total_validation_errors', 0)
                         
                         if validation_errors:
-                            with st.expander(f"❗️ Annotation Validation Errors ({total_val_errors} total)", expanded=True):
+                            with st.expander(f"❗️ Annotation Validation Warnings ({total_val_errors} total)", expanded=True):
                                 for error in validation_errors:
-                                    st.error(error)
+                                    st.warning(error)
                         
                         
                         # Display messages
@@ -611,10 +608,16 @@ with tab2:
                                         st.info(f"{msg}")
                         
                         # Display statistics
+                        species_count = result.get('species', 0)
+                        transitions_count = result.get('transitions', 0)
+                        interactions_count = result.get('interactions', 0)
+                        
                         col1, col2, col3 = st.columns(3)
-                        col1.metric("CSV Files", len(created_files))
-                        col2.metric("ZIP Size", f"{len(zip_content)} bytes")
-                        col3.metric("Format", "Colon" if colon_format else "Operators")
+                        col1.metric("Species", species_count)
+                        col2.metric("Transitions", transitions_count)
+                        col3.metric("Interactions", interactions_count)
+                        
+                        st.caption(f"CSV Files: {len(created_files)} | ZIP Size: {len(zip_content)} bytes")
                         
                         # Preview CSV files
                         with st.expander("📊 Preview CSV Output", expanded=False):
@@ -668,9 +671,9 @@ with tab2:
                         validation_errors = result.get('validation_errors', [])
                         total_val_errors = result.get('total_validation_errors', 0)
                         if validation_errors:
-                            with st.expander(f"❗️ Annotation Validation Errors ({total_val_errors} total)", expanded=True):
+                            with st.expander(f"❗️ Annotation Validation Warnings ({total_val_errors} total)", expanded=True):
                                 for error in validation_errors:
-                                    st.error(error)
+                                    st.warning(error)
                         
                         # Display messages
                         if message_list:
@@ -690,11 +693,17 @@ with tab2:
                                         st.info(f"{msg}")
                         
                         # Display statistics
+                        species_count = result.get('species', 0)
+                        transitions_count = result.get('transitions', 0)
+                        interactions_count = result.get('interactions', 0)
+                        
                         wb = load_workbook(BytesIO(xlsx_content), read_only=True, data_only=True)
                         col1, col2, col3 = st.columns(3)
-                        col1.metric("Sheets", len(wb.sheetnames))
-                        col2.metric("File Size", f"{len(xlsx_content)} bytes")
-                        col3.metric("Format", "Colon" if colon_format else "Operators")
+                        col1.metric("Species", species_count)
+                        col2.metric("Transitions", transitions_count)
+                        col3.metric("Interactions", interactions_count)
+                        
+                        st.caption(f"Format: {'Colon' if colon_format else 'Operators'} | File Size: {len(xlsx_content)} bytes")
                         
                         # LIMITED Preview
                         with st.expander("📊 Preview Spreadsheet Output", expanded=False):

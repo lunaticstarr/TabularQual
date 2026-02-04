@@ -45,32 +45,23 @@ pip install -e .
 
 ```bash
 # Simple usage (output defaults to input name with .sbml extension)
-to-sbml model.xlsx
+to-sbml examples/ToyExample.xlsx
 
-# From XLSX with explicit output
-to-sbml model.xlsx model_out.sbml
+# From CSV directory
+to-sbml examples/ToyExample_csv/
 
 # From CSV files (using prefix - looks for Model_Species.csv, Model_Transitions.csv, etc.)
 to-sbml Model
-
-# From CSV directory
-to-sbml examples/Faure2006/
 ```
 
 #### SBML ➜ Spreadsheet
 
 ```bash
 # Simple usage (output defaults to input name with .xlsx extension)
-to-table model.sbml
-
-# To XLSX with explicit output
-to-table model.sbml output.xlsx
+to-table examples/ToyExample.sbml
 
 # To CSV files (creates Model_Model.csv, Model_Species.csv, etc.)
-to-table model.sbml --csv
-
-# To CSV with custom prefix
-to-table model.sbml MyOutput --csv
+to-table examples/ToyExample.sbml --csv
 ```
 
 ### Options

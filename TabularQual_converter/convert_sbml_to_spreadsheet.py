@@ -74,10 +74,13 @@ def convert_sbml_to_spreadsheet(sbml_path: str, output_path: str, template_path:
         actual_path = write_spreadsheet(model, output_path, template_path, rule_format, use_name=use_name)
         created_files = [actual_path]
     
-    # Create result dict with validation info
+    # Create result dict with validation info and statistics
     result = {
         'messages': message_list,
         'created_files': created_files,
+        'species': len(model.species),
+        'transitions': len(model.transitions),
+        'interactions': len(model.interactions),
         'validation_errors': validation_result.get('errors', []),
         'total_validation_errors': validation_result.get('total_errors', 0),
         'validation_warnings': validation_result.get('warnings', []),
