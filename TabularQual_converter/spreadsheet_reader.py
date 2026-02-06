@@ -744,6 +744,7 @@ def read_spreadsheet_to_model(xlsx_path: str, use_name: bool = False) -> tuple[Q
             model_kv[key] = value
         model_id = (model_kv.get(spec.MODEL_ID) or "").strip()
         if not model_id:
+            validation_warnings.append("No Model ID found, using filename as model_id")
             model_id = os.path.splitext(os.path.basename(xlsx_path))[0]
         
         # Validate and clean Model_ID (SId format)

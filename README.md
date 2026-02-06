@@ -2,7 +2,7 @@
 
 Convert between spreadsheets and SBML-qual for logical models (Boolean and multi-valued).
 
-![Example](doc/example.png)
+![TabularQual](doc/tabularqual.png "Example TabularQual spreadsheet representation of a Boolean model")
 
 Note: the format is specified [here](doc/TabularQual_specification_v0.1.2.docx).
 
@@ -156,4 +156,4 @@ To use annotation validation: `pip install sbmlutils>=0.9.6`
   - If a name conforms to SId format and is unique, it's used directly. Otherwise, it's quoted: `"Name"` or gets suffixes for duplicates: `"Name_1"`, `"Name_2"`, etc.
   - If any species are missing Names when `--use-name` is enabled, a warning is issued and IDs are used instead.
   - When `--use-name` is enabled, Species_ID becomes optional and is automatically generated from Names if missing.
-- TODO: automatically detect Species:Type, Interactions:Target, Source and Sign.
+- TODO: automatically detect Species:Type
