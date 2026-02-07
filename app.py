@@ -14,14 +14,14 @@ from io import BytesIO
 import sys
 import gc
 
-# Import TabularQual_converter functions
-from TabularQual_converter.convert_spreadsheet_to_sbml import convert_spreadsheet_to_sbml
-from TabularQual_converter.convert_sbml_to_spreadsheet import convert_sbml_to_spreadsheet
-from TabularQual_converter.spreadsheet_reader import read_csv_to_model
-from TabularQual_converter.spreadsheet_writer import write_csv
-from TabularQual_converter.sbml_writer import write_sbml
-from TabularQual_converter.tools import validate_sbml_file
-from TabularQual_converter import spec
+# Import tabularqual functions
+from tabularqual.convert_spreadsheet_to_sbml import convert_spreadsheet_to_sbml
+from tabularqual.convert_sbml_to_spreadsheet import convert_sbml_to_spreadsheet
+from tabularqual.spreadsheet_reader import read_csv_to_model
+from tabularqual.spreadsheet_writer import write_csv
+from tabularqual.sbml_writer import write_sbml
+from tabularqual.tools import validate_sbml_file
+from tabularqual import spec
 import zipfile
 
 # Suppress openpyxl warnings

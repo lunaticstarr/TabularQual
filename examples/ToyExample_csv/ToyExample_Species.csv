@@ -1,0 +1,6 @@
+Species_ID,Name,Relation1,Identifier1,Relation2,Identifier2,Compartment,Type,Constant,InitialLevel,MaxLevel,Notes1,Comments
+A,RELA,is,uniprot:P06539,encodes,ncbigene:5970,cytosol,Internal,False,0,1,p65 subunit of the NF-κB complex,
+B,NFKB1,is,uniprot:P19838,encodes,ncbigene:4790,cytosol,Internal,False,0,1,p50 subunit of the NF-κB complex,
+C,NFκB_complex,hasPart,"uniprot:P06539, uniprot:P19838",,,cytosol,Internal,False,0,1,RELA:p50 heterodimer,
+D,IKK,is,uniprot:O14920,encodes,ncbigene:1147,cytosol,Input,False,1,1,IKBKB,
+E,Inflammatory response,is,GO:0006954,isVersionOf,GO:0005125,extracellular,Output,False,0,1,inflammatory response,

@@ -1,0 +1,21 @@
+Model_source,link.to.the.model.com
+Model_ID,ToyExample_boolean
+Name,Example Boolean model of NF-κB signaling pathway
+Publication,"pubmed:35671510, DOI:10.1093/bib/bbac212"
+Origin_publication,"pubmed:38272919, DOI:10.1038/s41540-024-00337-5"
+Origin_model,biomodels.db:MODEL2307180001
+Taxon,taxonomy:9606
+Biological_process,GO:0007249
+Created,2025-04-04T17:08:28Z
+Modified,2026-02-07T23:27:16Z
+Creator1,"Li, Luna, ""Center for Reproducible Biomedical Modeling, University of Washington"", lixy@uw.edu"
+Creator2,"Niarakis, Anna, ""Laboratoire Européen de Recherche Pour La Polyarthrite Rhumatoïde, University Paris-Saclay, University Evry"", anna.niarakis@inria.fr"
+Creator3,"Gennari, John, ""Center for Reproducible Biomedical Modeling, University of Washington"", gennari@uw.edu"
+Contributor1,
+Contributor2,
+Version,Version: ToyExample_multivalue.xlsx
+Notes1,"This is a toy example to demonstrate the standardized spreadsheet format for logical models.
+This Boolean model represents a core regulatory motif in the NF-κB signaling pathway, focusing on the formation and activation of the NF-κB transcriptional complex (C) driven by external stimuli (D) and its effect on downstream cytokine expression (E)."
+Notes2,Another example of a multi-valued version of the model is provided as ToyExample_multivalue.xlsx.
+Notes3,
+Comments,Created by TabularQual version 0.1.2

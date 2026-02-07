@@ -1,0 +1,9 @@
+Target,Source,Sign,Relation1,Identifier1,Notes1,Comments
+A,A,positive,isDescribedBy,pubmed:9660950,"RELA (p65) is known to exhibit positive autoregulation, sustaining its own expression once active.",
+A,C,negative,,,The condition prevents re-triggering when the active complex is already formed.,
+A,D,positive,isDescribedBy,"pubmed:20300203, ECO:0007392",IKK complex activates RELA by phosphorylating IκBα.The activation of RELA by IKK has been supported by immunohistochemistry evidence.,
+B,A,positive,isDescribedBy,"pubmed:9417120, ECO:0001568","RELA can transcriptionally activate NFKB1, which encodes the p105 precursor of p50. The induction of NFKB1 expression by RELA has been supported by RT-PCR experiments.",
+C,A,positive,isDescribedBy,"pubmed:9450761, ECO:0001034","The NF-κB complex, particularly the RELA:p50 heterodimer, forms when both subunits are present in the nucleus. This interaction is well-characterized structurally and functionally.The complex formation is supported by crystal structure evidence.",
+C,B,positive,isDescribedBy,"pubmed:9450761, ECO:0001034","The NF-κB complex, particularly the RELA:p50 heterodimer, forms when both subunits are present in the nucleus. This interaction is well-characterized structurally and functionally. The complex formation is supported by crystal structure evidence.",
+D,D,positive,,,"In this simplified model, the IKK complex is considered an external input or persistently active in response to stimuli like TNF-α or LPS.",
+E,C,positive,isDescribedBy,pubmed:2183031,"IL6 expression is induced by the active NF-κB complex, which serves as an inflammatory cytokine.",

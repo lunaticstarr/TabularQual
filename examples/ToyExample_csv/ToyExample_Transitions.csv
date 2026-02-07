@@ -1,0 +1,6 @@
+Transitions_ID,Name,Target,Level,Rule,Relation1,Identifier1,Notes1,Comments
+tr_A,RELA activation,A,1,A | (D & !C),isDescribedBy,"pubmed:9660950, pubmed:20300203, ECO:0007392",RELA can be self-sustaining or activated by the IKK complex when the NF-κB complex is not formed.,
+tr_B,NFKB1 expression,B,1,A,isDescribedBy,"pubmed:9417120, ECO:0001568",NFKB1 expression is induced by RELA. The activation of RELA by IKK has been supported by immunohistochemistry evidence.,
+tr_C,NF-κB complex formation,C,1,A & B,isDescribedBy,"pubmed:9450761, ECO:0001034",The NF-κB complex forms when both RELA and NFKB1 are present. The complex formation is supported by crystal structure evidence.,
+tr_D,IKK input,D,1,D,isDescribedBy,pubmed:20300203,The IKK complex is considered an external or constant input in this model.,
+tr_E,IL6 expression,E,1,C,isDescribedBy,pubmed:2183031,"IL6 expression is induced by the active NF-κB complex, which serves as an inflammatory cytokine.",

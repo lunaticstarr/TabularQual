@@ -1,6 +1,6 @@
 ## TabularQual converter
 
-Convert between spreadsheets and SBML-qual for logical models (Boolean and multi-valued).
+Convert between spreadsheets (XLSX, CSV) and SBML-qual for logical models (Boolean and multi-valued).
 
 ![TabularQual](doc/tabularqual.png "Example TabularQual spreadsheet representation of a Boolean model")
 
@@ -18,26 +18,22 @@ Note: there are currently resource limits on Streamlit cloud, please run it loca
 
 ### Install
 
-#### Option 1: Run Web App Locally
+TabularQual can be installed directly from PyPI:
 
 ```bash
+pip install tabularqual
+```
 
-# 1) Install dependencies
-pip install -r requirements.txt
+Then use the command line tool.
 
-# 2) Launch the web app
+...or, if you prefer an interface:
+
+```
+# Launch web app
 streamlit run app.py
 ```
 
 The app will open in your browser at `http://localhost:8501`
-
-#### Option 2: Command-Line Tools
-
-```bash
-# Install dependencies and console script
-pip install -r requirements.txt
-pip install -e .
-```
 
 ### Usage
 
