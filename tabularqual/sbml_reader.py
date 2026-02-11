@@ -87,6 +87,7 @@ def _read_model_info(model: libsbml.Model, sbml_path: str) -> ModelInfo:
     derived_from = []
     biological_processes = []
     taxons = []
+    other_annotations = []
     created_iso = None
     modified_iso = None
     creators = []
@@ -113,6 +114,21 @@ def _read_model_info(model: libsbml.Model, sbml_path: str) -> ModelInfo:
             creators = anno_dict['dcterms:creator']
         if 'dcterms:contributor' in anno_dict:
             contributors = anno_dict['dcterms:contributor']
+        
+        # Collect other qualifiers not handled above
+        known_keys = {
+            'bqmodel:is', 'bqmodel:isDescribedBy', 'bqmodel:isDerivedFrom',
+            'bqbiol:isVersionOf', 'bqbiol:hasTaxon',
+            'dcterms:created', 'dcterms:modified', 'dcterms:creator', 'dcterms:contributor'
+        }
+        for key, values in anno_dict.items():
+            if key not in known_keys and (key.startswith('bqmodel:') or key.startswith('bqbiol:')):
+                # Store as (qualifier_name, url) tuples
+                qualifier_name = key.split(':', 1)[1] if ':' in key else key
+                # Print warning for unknown qualifier
+                warnings.warn(f"Model annotation: Found unknown/invalid qualifier '{qualifier_name}' in SBML file. This will be stored in Model Notes.")
+                for url in values:
+                    other_annotations.append((qualifier_name, url))
     
     # Set current time if Created field is empty
     if not created_iso:
@@ -131,7 +147,8 @@ def _read_model_info(model: libsbml.Model, sbml_path: str) -> ModelInfo:
         creators=creators,
         contributors=contributors,
         versions=versions,
-        notes=notes
+        notes=notes,
+        other_annotations=other_annotations
     )
 
 
@@ -170,6 +187,11 @@ def _read_species(qual_model) -> Dict[str, Species]:
         if qs.isSetAnnotation():
             anno_str = qs.getAnnotationString()
             annotations = _parse_annotations_to_list(anno_str)
+            # Check for unknown qualifiers and warn
+            from . import spec
+            for qualifier, identifier in annotations:
+                if qualifier not in spec.RELATIONS:
+                    warnings.warn(f"Species '{species_id}': Found unknown/invalid qualifier '{qualifier}' in SBML file.")
         
         species_dict[species_id] = Species(
             species_id=species_id,
@@ -237,6 +259,11 @@ def _read_transitions(qual_model) -> Tuple[List[Transition], List[InteractionEvi
             if inp.isSetAnnotation():
                 anno_str = inp.getAnnotationString()
                 inter_annotations = _parse_annotations_to_list(anno_str)
+                # Check for unknown qualifiers and warn
+                from . import spec
+                for qualifier, identifier in inter_annotations:
+                    if qualifier not in spec.RELATIONS:
+                        warnings.warn(f"Interaction (target='{target}', source='{source}'): Found unknown/invalid qualifier '{qualifier}' in SBML file.")
             
             if sign_str or inter_annotations or inter_notes:
                 interactions.append(InteractionEvidence(
@@ -258,6 +285,12 @@ def _read_transitions(qual_model) -> Tuple[List[Transition], List[InteractionEvi
         if tr.isSetAnnotation():
             anno_str = tr.getAnnotationString()
             annotations = _parse_annotations_to_list(anno_str)
+            # Check for unknown qualifiers and warn
+            from . import spec
+            for qualifier, identifier in annotations:
+                if qualifier not in spec.RELATIONS:
+                    transition_name = transition_id if transition_id else f"target={target}"
+                    warnings.warn(f"Transition '{transition_name}': Found unknown/invalid qualifier '{qualifier}' in SBML file.")
         
         # Get function terms and create separate transitions for each level
         # Collect all non-default function terms

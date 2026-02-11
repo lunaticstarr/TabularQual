@@ -475,6 +475,13 @@ def _add_model_annotations(m: libsbml.Model, im: QualModel) -> None:
     for tax in im.model.taxons:
         uri = _to_identifiers_url(tax)
         _add_cvterm(m, False, getattr(libsbml, "BQB_HAS_TAXON", 0), uri)
+    
+    # Add other annotations (unknown qualifiers)
+    if im.model.other_annotations:
+        for qualifier, identifier in im.model.other_annotations:
+            use_model = True  # Default to model qualifier
+            _add_annotations(m, [(qualifier, identifier)], use_model)
+    
     # TODO: hasProperty for MAMO terms based on species max_level
     # Model history: creators, contributors, created/modified using dc terms
     _add_model_history(m, im)
@@ -570,9 +577,33 @@ def _add_model_history(m: libsbml.Model, im: QualModel) -> None:
 
 
 def _add_annotations(node: libsbml.SBase, pairs: List[Tuple[str, str]], use_model: bool) -> None:
+    """Add annotations to a node.
+    
+    Args:
+        node: The SBML node to add annotations to
+        pairs: List of (qualifier, identifier) tuples
+        use_model: True for model qualifiers, False for biological qualifiers
+    """
+    from . import spec
+    
     # For each (relation, identifiers_str) create one CVTerm with multiple resources if comma-separated
     for rel, ident in pairs:
+        # Check if the qualifier is valid and print warning if not
+        is_valid = False
+        if use_model:
+            # Check against model qualifiers
+            valid_model_qualifiers = ["is", "isDerivedFrom", "isDescribedBy", "isInstanceOf", "hasInstance"]
+            is_valid = rel in valid_model_qualifiers
+        else:
+            # Check against biological qualifiers (from spec.RELATIONS)
+            is_valid = rel in spec.RELATIONS
+        
         predicate = _relation_to_predicate(rel, use_model)
+        
+        if not is_valid:
+            # Determine what the qualifier will be converted to
+            converted_to = "bqmodel:is" if use_model else "bqbiol:is"
+            print(f"Warning: Qualifier '{rel}' is not a valid {'model' if use_model else 'biological'} qualifier. Converting '{rel}' -> '{converted_to}'.")
         cv = libsbml.CVTerm(libsbml.MODEL_QUALIFIER if use_model else libsbml.BIOLOGICAL_QUALIFIER)
         cv.setQualifierType(libsbml.MODEL_QUALIFIER if use_model else libsbml.BIOLOGICAL_QUALIFIER)
         if use_model:

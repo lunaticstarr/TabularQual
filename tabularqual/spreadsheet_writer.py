@@ -289,11 +289,20 @@ def _write_model_sheet(wb: openpyxl.Workbook, model: QualModel, position: int = 
     row += 1
     
     # Notes
-    max_notes = max(3, len(model.model.notes))
+    # Combine regular notes with other annotations formatted as "qualifier: identifier"
+    all_notes = list(model.model.notes)
+    
+    # Add other annotations (unknown qualifiers) to notes
+    if model.model.other_annotations:
+        for qualifier, identifier in model.model.other_annotations:
+            compact_id = _url_to_compact_id(identifier)
+            all_notes.append(f"{qualifier}: {compact_id}")
+    
+    max_notes = max(3, len(all_notes))
     for idx in range(1, max_notes + 1):
         ws.cell(row=row, column=1, value=f"Notes{idx}")
-        if idx <= len(model.model.notes):
-            ws.cell(row=row, column=2, value=model.model.notes[idx - 1])
+        if idx <= len(all_notes):
+            ws.cell(row=row, column=2, value=all_notes[idx - 1])
         row += 1
     
     # Comments - add TabularQual version

@@ -675,7 +675,7 @@ def _collect_qualifier_pairs(row: Dict[str, object], relation_prefix: str, ident
         # Normalize relation to correct case
         normalized_rel = spec.normalize_relation(rel)
         if normalized_rel is None and validation_warnings is not None:
-            validation_warnings.append(f"{context}: Invalid Relation '{rel}'. Valid values: {', '.join(spec.RELATIONS)}")
+            validation_warnings.append(f"{context}: Invalid Relation '{rel}'. Valid values: {', '.join(spec.RELATIONS)}. This will be converted to 'bqbiol:is'.")
             normalized_rel = rel  # Keep original if invalid for error tracking
         else:
             normalized_rel = normalized_rel or rel
@@ -799,9 +799,32 @@ def read_spreadsheet_to_model(xlsx_path: str, use_name: bool = False) -> tuple[Q
                 ))
             if spec.is_repeated_column(k, spec.MODEL_NOTES_PREFIX) and v:
                 notes_list.append(str(v))
+        
+        # Parse notes to extract any embedded qualifiers (from other_annotations)
+        # Format: "qualifier: identifier"
+        other_annotations = []
+        remaining_notes = []
+        for note in notes_list:
+            note_str = str(note).strip()
+            # Check if note matches pattern "qualifier: identifier"
+            if ':' in note_str:
+                parts = note_str.split(':', 1)
+                if len(parts) == 2:
+                    potential_qualifier = parts[0].strip()
+                    potential_identifier = parts[1].strip()
+                    # Check if it looks like a qualifier (single word, no spaces, starts with lowercase)
+                    if potential_qualifier and ' ' not in potential_qualifier and potential_identifier:
+                        # This looks like a qualifier annotation
+                        validation_warnings.append(f"Model Notes: Found qualifier annotation '{potential_qualifier}: {potential_identifier}'. This will be converted to an annotation.")
+                        other_annotations.append((potential_qualifier, potential_identifier))
+                        continue
+            # Not a qualifier, keep as regular note
+            remaining_notes.append(note_str)
+        
         model_info.creators = creators
         model_info.contributors = contributors
-        model_info.notes = notes_list
+        model_info.notes = remaining_notes
+        model_info.other_annotations = other_annotations
     else: # fallback to filename if missing/empty
         validation_warnings.append("No Model sheet found, using filename as model_id")
         model_id = os.path.splitext(os.path.basename(xlsx_path))[0]
@@ -1158,9 +1181,32 @@ def read_csv_to_model(csv_files: dict[str, str], use_name: bool = False) -> tupl
                 ))
             if spec.is_repeated_column(k, spec.MODEL_NOTES_PREFIX) and v:
                 notes_list.append(str(v))
+        
+        # Parse notes to extract any embedded qualifiers (from other_annotations)
+        # Format: "qualifier: identifier"
+        other_annotations = []
+        remaining_notes = []
+        for note in notes_list:
+            note_str = str(note).strip()
+            # Check if note matches pattern "qualifier: identifier"
+            if ':' in note_str:
+                parts = note_str.split(':', 1)
+                if len(parts) == 2:
+                    potential_qualifier = parts[0].strip()
+                    potential_identifier = parts[1].strip()
+                    # Check if it looks like a qualifier (single word, no spaces, starts with lowercase)
+                    if potential_qualifier and ' ' not in potential_qualifier and potential_identifier:
+                        # This looks like a qualifier annotation
+                        validation_warnings.append(f"Model Notes: Found qualifier annotation '{potential_qualifier}: {potential_identifier}'. This will be converted to an annotation.")
+                        other_annotations.append((potential_qualifier, potential_identifier))
+                        continue
+            # Not a qualifier, keep as regular note
+            remaining_notes.append(note_str)
+        
         model_info.creators = creators
         model_info.contributors = contributors
-        model_info.notes = notes_list
+        model_info.notes = remaining_notes
+        model_info.other_annotations = other_annotations
     else:
         validation_warnings.append("No Model CSV found, using default model_id")
         # Try to get model_id from species file name

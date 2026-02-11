@@ -27,6 +27,8 @@ class ModelInfo:
     contributors: List[Person] = field(default_factory=list)
     versions: List[str] = field(default_factory=list)
     notes: List[str] = field(default_factory=list)
+    # list of (qualifier, identifier) for other qualifiers
+    other_annotations: List[Tuple[str, str]] = field(default_factory=list)
 
 
 @dataclass
