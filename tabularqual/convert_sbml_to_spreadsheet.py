@@ -1,13 +1,24 @@
 from __future__ import annotations
 
 import warnings
+from pathlib import Path
 
 from .sbml_reader import read_sbml
 from .spreadsheet_writer import write_spreadsheet, write_csv
 from .tools import validate_sbml_file
 
 
-def convert_sbml_to_spreadsheet(sbml_path: str, output_path: str, template_path: str = None, rule_format: str = "operators", output_csv: bool = False, print_messages: bool = True, validate: bool = True, use_name: bool = False):
+def get_default_template_path() -> str | None:
+    """Find the default template.xlsx in the doc/ directory.
+    
+    Returns:
+        Path to template.xlsx if it exists, otherwise None.
+    """
+    template = Path(__file__).parent.parent / "doc" / "template.xlsx"
+    return str(template) if template.exists() else None
+
+
+def convert_sbml_to_spreadsheet(sbml_path: str, output_path: str, template_path: str = None, rule_format: str = "operators", output_csv: bool = False, print_messages: bool = True, validate: bool = True, use_name: bool = False) -> dict:
     """
     Convert an SBML-qual file to SpreadSBML spreadsheet format (XLSX or CSV).
     
@@ -21,16 +32,14 @@ def convert_sbml_to_spreadsheet(sbml_path: str, output_path: str, template_path:
         validate: Whether to validate SBML annotations using sbmlutils (default True)
     
     Returns:
-        Tuple of (message_list, created_files, result)
-            - message_list: List of messages (info and warnings)
-            - created_files: List of created file paths (for CSV, multiple files; for XLSX, single file)
-            - result: Dict with validation info
+        dict: Statistics including 'species', 'transitions', 'interactions' counts,
+              'warnings' list, 'created_files' list, and validation results
     """
     # Suppress openpyxl warnings
     warnings.filterwarnings('ignore', category=UserWarning, module='openpyxl')
     
     # Capture warnings during SBML reading
-    message_list = []
+    all_warnings = []
     
     # Validate input SBML annotations first (if enabled)
     if validate:
@@ -38,7 +47,7 @@ def convert_sbml_to_spreadsheet(sbml_path: str, output_path: str, template_path:
         max_errors = 10 if print_messages else None
         validation_result = validate_sbml_file(sbml_path, max_errors=max_errors, print_messages=print_messages)
     else:
-        validation_result = {'errors': [], 'total_errors': 0, 'warnings': [], 'total_warnings': 0}
+        validation_result = {'errors': [], 'total_errors': 0}
     
     with warnings.catch_warnings(record=True) as w:
         warnings.simplefilter("always")
@@ -49,7 +58,7 @@ def convert_sbml_to_spreadsheet(sbml_path: str, output_path: str, template_path:
         # Capture any warnings
         for warning in w:
             warning_msg = str(warning.message)
-            message_list.append(warning_msg)
+            all_warnings.append(warning_msg)
             if print_messages:
                 print(warning_msg)
     
@@ -63,9 +72,9 @@ def convert_sbml_to_spreadsheet(sbml_path: str, output_path: str, template_path:
         print(transitions_msg)
         print(interactions_msg)
     
-    message_list.append(species_msg)
-    message_list.append(transitions_msg)
-    message_list.append(interactions_msg)
+    all_warnings.append(species_msg)
+    all_warnings.append(transitions_msg)
+    all_warnings.append(interactions_msg)
     
     # Write output
     if output_csv:
@@ -74,18 +83,13 @@ def convert_sbml_to_spreadsheet(sbml_path: str, output_path: str, template_path:
         actual_path = write_spreadsheet(model, output_path, template_path, rule_format, use_name=use_name)
         created_files = [actual_path]
     
-    # Create result dict with validation info and statistics
-    result = {
-        'messages': message_list,
-        'created_files': created_files,
+    return {
         'species': len(model.species),
         'transitions': len(model.transitions),
         'interactions': len(model.interactions),
+        'warnings': all_warnings,
+        'created_files': created_files,
         'validation_errors': validation_result.get('errors', []),
         'total_validation_errors': validation_result.get('total_errors', 0),
-        'validation_warnings': validation_result.get('warnings', []),
-        'total_validation_warnings': validation_result.get('total_warnings', 0)
     }
-    
-    return message_list, created_files, result
 

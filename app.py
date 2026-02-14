@@ -11,16 +11,11 @@ import pandas as pd
 from openpyxl import load_workbook
 import warnings
 from io import BytesIO
-import sys
 import gc
 
 # Import tabularqual functions
 from tabularqual.convert_spreadsheet_to_sbml import convert_spreadsheet_to_sbml
-from tabularqual.convert_sbml_to_spreadsheet import convert_sbml_to_spreadsheet
-from tabularqual.spreadsheet_reader import read_csv_to_model
-from tabularqual.spreadsheet_writer import write_csv
-from tabularqual.sbml_writer import write_sbml
-from tabularqual.tools import validate_sbml_file
+from tabularqual.convert_sbml_to_spreadsheet import convert_sbml_to_spreadsheet, get_default_template_path
 from tabularqual import spec
 import zipfile
 
@@ -276,77 +271,31 @@ with tab1:
                             tmp_in.write(file_content)
                             input_path = tmp_in.name
                         temp_files_to_cleanup.append(input_path)
-                        
-                        with tempfile.NamedTemporaryFile(suffix='.sbml', delete=False) as tmp_out:
-                            output_path = tmp_out.name
-                        temp_files_to_cleanup.append(output_path)
-                        
-                        # conversion
-                        stats = convert_spreadsheet_to_sbml(
-                            input_path,
-                            output_path,
-                            interactions_anno=inter_anno,
-                            transitions_anno=trans_anno,
-                            print_messages=False,  # Display in app instead
-                            validate=validate_annotations,
-                            use_name=use_name
-                        )
                     else:
-                        # CSV input - save files to temp directory and use read_csv_to_model
+                        # CSV input - save files to temp directory
                         temp_dir = tempfile.mkdtemp()
-                        csv_files_dict = {}
-                        
                         for csv_file in uploaded_csvs:
-                            # Determine which sheet this file represents
-                            name_lower = csv_file.name.lower().rsplit('.', 1)[0]
-                            sheet_type = None
-                            for sheet in ['model', 'species', 'transitions', 'interactions']:
-                                if sheet in name_lower:
-                                    sheet_type = sheet.capitalize()
-                                    break
-                            
-                            if sheet_type:
-                                file_path = os.path.join(temp_dir, csv_file.name)
-                                with open(file_path, 'wb') as f:
-                                    f.write(csv_file.getvalue())
-                                csv_files_dict[sheet_type] = file_path
-                                temp_files_to_cleanup.append(file_path)
-                        
-                        # Check required files
-                        missing = []
-                        if 'Species' not in csv_files_dict:
-                            missing.append('Species')
-                        if 'Transitions' not in csv_files_dict:
-                            missing.append('Transitions')
-                        
-                        if missing:
-                            raise ValueError(f"Missing required CSV file(s): {', '.join(missing)}. Make sure filenames contain 'Species' or 'Transitions'.")
-                        
-                        # Read and convert
-                        model, validation_warnings = read_csv_to_model(csv_files_dict, use_name=use_name)
-                        sbml_string, writer_warnings = write_sbml(model, interactions_anno=inter_anno, transitions_anno=trans_anno, use_name=use_name)
-                        
-                        with tempfile.NamedTemporaryFile(suffix='.sbml', delete=False, mode='w', encoding='utf-8') as tmp_out:
-                            tmp_out.write(sbml_string)
-                            output_path = tmp_out.name
-                        temp_files_to_cleanup.append(output_path)
-                        
-                        # Validate the output SBML (if enabled)
-                        if validate_annotations:
-                            validation_result = validate_sbml_file(output_path, max_errors=None, max_warnings=None, print_messages=False)
-                        else:
-                            validation_result = {'errors': [], 'warnings': [], 'total_errors': 0, 'total_warnings': 0}
-                        
-                        stats = {
-                            'species': len(model.species),
-                            'transitions': len(model.transitions),
-                            'interactions': len(model.interactions),
-                            'warnings': validation_warnings + writer_warnings,
-                            'validation_errors': validation_result.get('errors', []),
-                            'total_validation_errors': validation_result.get('total_errors', 0)
-                        }
-                        
-                        # Cleanup temp dir
+                            file_path = os.path.join(temp_dir, csv_file.name)
+                            with open(file_path, 'wb') as f:
+                                f.write(csv_file.getvalue())
+                        input_path = temp_dir
+                    
+                    with tempfile.NamedTemporaryFile(suffix='.sbml', delete=False) as tmp_out:
+                        output_path = tmp_out.name
+                    temp_files_to_cleanup.append(output_path)
+                    
+                    stats = convert_spreadsheet_to_sbml(
+                        input_path,
+                        output_path,
+                        interactions_anno=inter_anno,
+                        transitions_anno=trans_anno,
+                        print_messages=False,  # Display in app instead
+                        validate=validate_annotations,
+                        use_name=use_name
+                    )
+                    
+                    # Cleanup CSV temp dir if created
+                    if uploaded_xlsx is None:
                         import shutil
                         shutil.rmtree(temp_dir, ignore_errors=True)
                     
@@ -542,12 +491,7 @@ with tab2:
                     temp_files_to_cleanup.append(input_path)
                     
                     # Determine template path (only for XLSX) - always use default template
-                    template_path = None
-                    
-                    if not output_csv:
-                        template_file = Path(__file__).parent / "doc" / "template.xlsx"
-                        if template_file.exists():
-                            template_path = str(template_file)
+                    template_path = get_default_template_path() if not output_csv else None
                     
                     # Determine rule format
                     rule_format = "colon" if colon_format else "operators"
@@ -558,7 +502,7 @@ with tab2:
                         output_prefix = os.path.join(temp_dir, output_filename or original_name)
                         
                         # Perform conversion
-                        message_list, created_files, result = convert_sbml_to_spreadsheet(
+                        result = convert_sbml_to_spreadsheet(
                             input_path,
                             output_prefix,
                             template_path=None,
@@ -568,6 +512,8 @@ with tab2:
                             validate=validate_annotations_tab2,
                             use_name=use_name_tab2
                         )
+                        
+                        created_files = result['created_files']
                         
                         # Create a ZIP file with all CSVs
                         zip_buffer = BytesIO()
@@ -591,10 +537,11 @@ with tab2:
                         
                         
                         # Display messages
-                        if message_list:
-                            info_msgs = [m for m in message_list if m.startswith("Found ")]
-                            use_name_msgs = [m for m in message_list if "--use-name" in m or "Using ID mode" in m or "Using Name mode" in m]
-                            warning_msgs = [m for m in message_list if m not in info_msgs and m not in use_name_msgs]
+                        all_messages = result.get('warnings', [])
+                        if all_messages:
+                            info_msgs = [m for m in all_messages if m.startswith("Found ")]
+                            use_name_msgs = [m for m in all_messages if "--use-name" in m or "Using ID mode" in m or "Using Name mode" in m]
+                            warning_msgs = [m for m in all_messages if m not in info_msgs and m not in use_name_msgs]
                             
                             # Display --use-name related messages in an expander
                             if use_name_msgs:
@@ -649,7 +596,7 @@ with tab2:
                         temp_files_to_cleanup.append(output_path)
                         
                         # Perform conversion
-                        message_list, created_files, result = convert_sbml_to_spreadsheet(
+                        result = convert_sbml_to_spreadsheet(
                             input_path,
                             output_path,
                             template_path=template_path,
@@ -658,7 +605,9 @@ with tab2:
                             print_messages=False,  # Display in app instead
                             validate=validate_annotations_tab2,
                             use_name=use_name_tab2
-                    )
+                        )
+
+                        created_files = result['created_files']
 
                         # Read the output file
                         with open(created_files[0], 'rb') as f:
@@ -676,10 +625,11 @@ with tab2:
                                     st.warning(error)
                         
                         # Display messages
-                        if message_list:
-                            info_msgs = [m for m in message_list if m.startswith("Found ")]
-                            use_name_msgs = [m for m in message_list if "--use-name" in m or "Using ID mode" in m or "Using Name mode" in m or "enable --use-name" in m or "disable --use-name" in m]
-                            warning_msgs = [m for m in message_list if m not in info_msgs and m not in use_name_msgs]
+                        all_messages = result.get('warnings', [])
+                        if all_messages:
+                            info_msgs = [m for m in all_messages if m.startswith("Found ")]
+                            use_name_msgs = [m for m in all_messages if "--use-name" in m or "Using ID mode" in m or "Using Name mode" in m or "enable --use-name" in m or "disable --use-name" in m]
+                            warning_msgs = [m for m in all_messages if m not in info_msgs and m not in use_name_msgs]
                             
                             # Display --use-name related messages in an expander
                             if use_name_msgs:

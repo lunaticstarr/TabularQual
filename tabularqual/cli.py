@@ -3,7 +3,7 @@ from __future__ import annotations
 import click
 from pathlib import Path
 from .convert_spreadsheet_to_sbml import convert_spreadsheet_to_sbml
-from .convert_sbml_to_spreadsheet import convert_sbml_to_spreadsheet
+from .convert_sbml_to_spreadsheet import convert_sbml_to_spreadsheet, get_default_template_path
 
 
 @click.group()
@@ -122,15 +122,12 @@ def to_table_entry(input_sbml: str, output_path: str | None, template_xlsx: str 
     
     # Auto-detect template if not provided (only for XLSX output)
     if template_xlsx is None and not output_csv:
-        # Look for template.xlsx in doc/ directory relative to this file
-        doc_dir = Path(__file__).parent.parent / "doc"
-        template_path = doc_dir / "template.xlsx"
-        if template_path.exists():
-            template_xlsx = str(template_path)
+        template_xlsx = get_default_template_path()
     
     rule_format = "colon" if colon_format else "operators"
-    message_list, created_files, result = convert_sbml_to_spreadsheet(input_sbml, output_path, template_xlsx, rule_format, output_csv, validate=not no_validate, use_name=use_name)
+    result = convert_sbml_to_spreadsheet(input_sbml, output_path, template_xlsx, rule_format, output_csv, validate=not no_validate, use_name=use_name)
     
+    created_files = result['created_files']
     if output_csv:
         click.echo(f"Wrote CSV files:")
         for f in created_files:

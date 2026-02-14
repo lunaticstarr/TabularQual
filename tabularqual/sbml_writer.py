@@ -21,7 +21,6 @@ def _resolve_name_to_id(name_or_id: str, species: Dict[str, SpeciesT]) -> str:
     Returns:
         The species ID
     """
-    import re
     # Remove quotes if present
     if name_or_id.startswith('"') and name_or_id.endswith('"'):
         name_or_id = name_or_id[1:-1]
@@ -61,7 +60,6 @@ def _resolve_rule_names_to_ids(rule: str, species: Dict[str, SpeciesT]) -> str:
     Returns:
         Rule with names replaced by IDs
     """
-    import re
     result = rule
     
     # Create mappings from name to IDs (handling duplicates)

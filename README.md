@@ -68,7 +68,7 @@ to-table examples/ToyExample.sbml --csv
 - **OUTPUT**: output SBML file (optional, defaults to input name with `.sbml` extension)
 - **--inter-anno**: use interaction annotations only (unless `--trans-anno` is also set)
 - **--trans-anno**: use transition annotations only (unless `--inter-anno` is also set)
-- **--use-name**: use Species Name instead of ID in rules and interactions (default: use ID)
+- **--use-name**: when referring to species, names have been used in the spreadsheet instead of IDs (default: use ID)
 - **--no-validate**: skip annotation validation
 
 `to-table INPUT [OUTPUT]`:
@@ -78,7 +78,7 @@ to-table examples/ToyExample.sbml --csv
 - **--csv**: output as CSV files (`{prefix}_Model.csv`, `{prefix}_Species.csv`, `{prefix}_Transitions.csv`, `{prefix}_Interactions.csv`)
 - **--template**: specify a template file for README and Appendix sheets (XLSX only)
 - **--colon-format**: use colon notation for transition rules (`:` means `>=`)
-- **--use-name**: use Species Name instead of ID in rules and interactions (default: use ID)
+- **--use-name**: use Species Name instead of ID in rules and interactions for better readability (default: use ID)
 - **--no-validate**: skip annotation validation
 
 ### Transition Rules Syntax
