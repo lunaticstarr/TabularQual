@@ -279,6 +279,19 @@ def _resolve_rule_with_fallback(rule: str, species: Dict[str, Species], name_to_
     result = rule
     warned_once = False  # Only warn once about mode switch
     
+    # Check if the rule is a constant value (TRUE/FALSE or an integer)
+    # If so, return it as-is without any resolution
+    rule_stripped = rule.strip()
+    rule_upper = rule_stripped.upper()
+    if rule_upper in ('TRUE', 'FALSE'):
+        return rule, actual_use_name
+    # Check if it's an integer constant
+    try:
+        int(rule_stripped)
+        return rule, actual_use_name
+    except ValueError:
+        pass
+    
     # Find all potential species references in the rule
     quoted_pattern = r'"([^"]+)"'
     # Valid SId pattern
@@ -324,6 +337,9 @@ def _resolve_rule_with_fallback(rule: str, species: Dict[str, Species], name_to_
     for start, end, ref, is_quoted in matches:
         # Skip operators and keywords
         if ref.lower() in ['and', 'or', 'not']:
+            continue
+        # Skip constant values (TRUE/FALSE as keywords)
+        if ref.upper() in ['TRUE', 'FALSE']:
             continue
         
         # Try to resolve the reference (including cleaning if needed)
@@ -375,6 +391,9 @@ def _resolve_rule_with_fallback(rule: str, species: Dict[str, Species], name_to_
     for start, end, ref, is_quoted in matches:
         # Skip operators and keywords
         if ref.lower() in ['and', 'or', 'not']:
+            continue
+        # Skip constant values (TRUE/FALSE as keywords)
+        if ref.upper() in ['TRUE', 'FALSE']:
             continue
         
         # Resolve this reference
