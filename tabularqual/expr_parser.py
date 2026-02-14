@@ -81,7 +81,12 @@ def tokenize(expr: str, species_ids: Optional[Set[str]] = None) -> List[Token]:
             j = i + 1
             while j < len(s) and (s[j].isalnum() or s[j] in ['_', ':']):
                 j += 1
-            tokens.append(Token('ID', s[i:j]))
+            token_value = s[i:j]
+            # Check if it's a boolean constant keyword
+            if token_value.upper() in ('TRUE', 'FALSE'):
+                tokens.append(Token('CONST', token_value.upper()))
+            else:
+                tokens.append(Token('ID', token_value))
             i = j
             continue
         if ch == '&':
@@ -194,6 +199,12 @@ def parse(expr: str, species_ids: Optional[Set[str]] = None):
         if t is None:
             raise ValueError("Unexpected end")
         
+        # Handle boolean constants (TRUE/FALSE)
+        if t.kind == 'CONST':
+            const_value = consume('CONST').value
+            # Return as a special constant ID
+            return ('const', const_value)
+        
         if t.kind == 'ID':
             species_name = consume('ID').value
             # Look for comparison operator
@@ -292,6 +303,13 @@ def parse(expr: str, species_ids: Optional[Set[str]] = None):
 
 
 def ast_to_mathml(ast) -> str:
+    if ast[0] == 'const':
+        # Handle TRUE/FALSE constants
+        const_value = ast[1]
+        if const_value == 'FALSE':
+            return "<false/>"
+        else:  # TRUE
+            return "<true/>"
     if ast[0] == 'id':
         name = ast[1]
         # Check if it's a numeric constant (e.g., "1", "0", "2")

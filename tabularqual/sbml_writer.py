@@ -21,7 +21,6 @@ def _resolve_name_to_id(name_or_id: str, species: Dict[str, SpeciesT]) -> str:
     Returns:
         The species ID
     """
-    import re
     # Remove quotes if present
     if name_or_id.startswith('"') and name_or_id.endswith('"'):
         name_or_id = name_or_id[1:-1]
@@ -61,7 +60,6 @@ def _resolve_rule_names_to_ids(rule: str, species: Dict[str, SpeciesT]) -> str:
     Returns:
         Rule with names replaced by IDs
     """
-    import re
     result = rule
     
     # Create mappings from name to IDs (handling duplicates)
@@ -262,54 +260,110 @@ def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_
         out.setQualitativeSpecies(target_id)
         out.setTransitionEffect(_qual_enum("QUAL_TRANSITION_EFFECT_ASSIGNMENT_LEVEL", 1))
 
-        # Function terms - one for each level
-        ft_default = qt.createDefaultTerm()
-        ft_default.setResultLevel(0)
+        # Helper function to check if a rule is a constant (integer or TRUE/FALSE)
+        def is_constant_rule(rule_str: str) -> tuple[bool, int]:
+            """Check if rule is a constant. Returns (is_constant, level_value)."""
+            rule_stripped = rule_str.strip()
+            if rule_stripped.upper() == 'FALSE':
+                return True, 0
+            elif rule_stripped.upper() == 'TRUE':
+                return True, 1
+            else:
+                try:
+                    level = int(rule_stripped)
+                    return True, level
+                except ValueError:
+                    return False, 0
         
-        # Collect all unique species IDs from all rules for this target
-        all_species_ids = set()
+        # Check if ALL transitions for this target are constants
+        all_constant = True
+        highest_const_level = 0
         for t in target_transitions:
-            # Resolve rule names to IDs if use_name=True
-            rule = _resolve_rule_names_to_ids(t.rule, model.species) if use_name else t.rule
-            # print("target_transition: ", t.transition_id, rule)
-            ast = parse_expr(rule, known_species_ids)
-            all_species_ids.update(_collect_ids_from_ast(ast))
+            is_const, const_level = is_constant_rule(t.rule)
+            if not is_const:
+                all_constant = False
+                break
+            # Track highest level for multi-level constants
+            if is_const:
+                highest_const_level = max(highest_const_level, const_level)
         
-        # Filter out IDs that don't correspond to actual species (e.g., constants like "1")
-        valid_species_ids = [sid for sid in all_species_ids if sid in model.species]
-        
-        # Create inputs only for valid species references
-        # If no valid species (e.g., rule is just "1"), listOfInputs will be omitted
-        for sid in sorted(valid_species_ids):
-            inp = qt.createInput()
-            inp.setQualitativeSpecies(sid)
-            if not inp.isSetMetaId():
-                inp.setMetaId(next_metaid())
-            inp.setTransitionEffect(_qual_enum("QUAL_TRANSITION_EFFECT_NONE", 0))
-
-        # Collect all rules for this transition to add as notes
-        rules_list = []
-        for t in target_transitions:
-            level = t.level if t.level is not None else 1
-            rules_list.append(f"Level {level}: {t.rule}")
-        
-        # Create function terms for each level
-        for t in target_transitions:
-            ft = qt.createFunctionTerm()
-            level = int(t.level) if t.level is not None else 1
-            ft.setResultLevel(level)
+        # If all transitions are constant, emit only defaultTerm at highest level
+        # This applies to both single-level and multi-level cases
+        if all_constant:
+            # Create only defaultTerm with the highest constant level
+            ft_default = qt.createDefaultTerm()
+            ft_default.setResultLevel(highest_const_level)
+            # No inputs, no function terms, no rule notes
+            # Skip to annotations/notes section
+        else:
+            # Normal case: create function terms for each level (mixed or all non-constant)
+            # Create defaultTerm (typically level 0)
+            ft_default = qt.createDefaultTerm()
+            ft_default.setResultLevel(0)
             
-            # Resolve rule names to IDs if use_name=True
-            rule = _resolve_rule_names_to_ids(t.rule, model.species) if use_name else t.rule
-            # Parse rule to MathML
-            ast = parse_expr(rule, known_species_ids)
-            mathml_content = ast_to_mathml(ast)
-            mathml = f"<math xmlns=\"http://www.w3.org/1998/Math/MathML\">{mathml_content}</math>"
-            _set_mathml(ft, mathml)
+            # Collect all unique species IDs from all rules for this target
+            all_species_ids = set()
+            for t in target_transitions:
+                # Skip constant rules
+                is_const, _ = is_constant_rule(t.rule)
+                if is_const:
+                    continue
+                    
+                # Resolve rule names to IDs if use_name=True
+                rule = _resolve_rule_names_to_ids(t.rule, model.species) if use_name else t.rule
+                ast = parse_expr(rule, known_species_ids)
+                all_species_ids.update(_collect_ids_from_ast(ast))
+            
+            # Filter out IDs that don't correspond to actual species
+            valid_species_ids = [sid for sid in all_species_ids if sid in model.species]
+            
+            # Create inputs only for valid species references
+            for sid in sorted(valid_species_ids):
+                inp = qt.createInput()
+                inp.setQualitativeSpecies(sid)
+                if not inp.isSetMetaId():
+                    inp.setMetaId(next_metaid())
+                inp.setTransitionEffect(_qual_enum("QUAL_TRANSITION_EFFECT_NONE", 0))
 
-        # Add rules as notes to the transition
-        if rules_list:
-            _append_notes(qt, rules_list)
+            # Collect all rules for this transition to add as notes
+            rules_list = []
+            for t in target_transitions:
+                level = t.level if t.level is not None else 1
+                rules_list.append(f"Level {level}: {t.rule}")
+            
+            # Create function terms for each level
+            for t in target_transitions:
+                level = int(t.level) if t.level is not None else 1
+                
+                # Check if this transition is a constant
+                is_const, const_level = is_constant_rule(t.rule)
+                
+                if is_const:
+                    # For constant rules in multi-level models, still create a functionTerm
+                    # but use <true/> or <false/> in MathML
+                    ft = qt.createFunctionTerm()
+                    ft.setResultLevel(level)
+                    if const_level == 0:
+                        mathml = f"<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><false/></math>"
+                    else:
+                        mathml = f"<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><true/></math>"
+                    _set_mathml(ft, mathml)
+                else:
+                    # Normal rule - parse and convert to MathML
+                    ft = qt.createFunctionTerm()
+                    ft.setResultLevel(level)
+                    
+                    # Resolve rule names to IDs if use_name=True
+                    rule = _resolve_rule_names_to_ids(t.rule, model.species) if use_name else t.rule
+                    # Parse rule to MathML
+                    ast = parse_expr(rule, known_species_ids)
+                    mathml_content = ast_to_mathml(ast)
+                    mathml = f"<math xmlns=\"http://www.w3.org/1998/Math/MathML\">{mathml_content}</math>"
+                    _set_mathml(ft, mathml)
+            
+            # Add rules as notes to the transition
+            if rules_list:
+                _append_notes(qt, rules_list)
         
         # Notes and annotations from the first transition
         if first_transition.notes:
@@ -318,7 +372,8 @@ def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_
             _add_annotations(qt, first_transition.annotations, use_model=False)
 
     # Interactions (optional): add to corresponding transition inputs
-    if interactions_anno and model.interactions:
+    # Always set signs from Interactions sheet, but only add annotations/notes if interactions_anno=True
+    if model.interactions:
         for inter in model.interactions:
             # Resolve target and source names to IDs if use_name=True
             target_id = _resolve_name_to_id(inter.target, model.species) if use_name else inter.target
@@ -348,7 +403,7 @@ def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_
                         if not found_input.isSetMetaId():
                             found_input.setMetaId(next_metaid())
                         found_input.setTransitionEffect(_qual_enum("QUAL_TRANSITION_EFFECT_NONE", 0))
-                    # sign
+                    # Always set sign from Interactions sheet
                     if inter.sign:
                         s = (inter.sign or "").strip().lower()
                         try:
@@ -365,11 +420,12 @@ def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_
                         except Exception:
                             print(f"Invalid sign: {inter.sign} for {inter.source} in {tr.getId()}, adding to notes.")
                             _append_notes(found_input, [f"Sign: {inter.sign}"])
-                    # annotations and notes
-                    if inter.annotations:
-                        _add_annotations(found_input, inter.annotations, use_model=False)
-                    if inter.notes:
-                        _append_notes(found_input, inter.notes)
+                    # Only add annotations and notes if interactions_anno=True
+                    if interactions_anno:
+                        if inter.annotations:
+                            _add_annotations(found_input, inter.annotations, use_model=False)
+                        if inter.notes:
+                            _append_notes(found_input, inter.notes)
                     break
 
     sbml_string = doc.toSBML()

@@ -68,7 +68,7 @@ to-table examples/ToyExample.sbml --csv
 - **OUTPUT**: output SBML file (optional, defaults to input name with `.sbml` extension)
 - **--inter-anno**: use interaction annotations only (unless `--trans-anno` is also set)
 - **--trans-anno**: use transition annotations only (unless `--inter-anno` is also set)
-- **--use-name**: use Species Name instead of ID in rules and interactions (default: use ID)
+- **--use-name**: when referring to species, names have been used in the spreadsheet instead of IDs (default: use ID)
 - **--no-validate**: skip annotation validation
 
 `to-table INPUT [OUTPUT]`:
@@ -78,7 +78,7 @@ to-table examples/ToyExample.sbml --csv
 - **--csv**: output as CSV files (`{prefix}_Model.csv`, `{prefix}_Species.csv`, `{prefix}_Transitions.csv`, `{prefix}_Interactions.csv`)
 - **--template**: specify a template file for README and Appendix sheets (XLSX only)
 - **--colon-format**: use colon notation for transition rules (`:` means `>=`)
-- **--use-name**: use Species Name instead of ID in rules and interactions (default: use ID)
+- **--use-name**: use Species Name instead of ID in rules and interactions for better readability (default: use ID)
 - **--no-validate**: skip annotation validation
 
 ### Transition Rules Syntax
@@ -87,14 +87,14 @@ The Transition-Rules column supports boolean and comparison expressions using th
 
 * **Logical operators**: `&` (AND), `|` (OR), `!` (NOT)
 * **Parentheses**: `(` and `)` for grouping expressions
-* **For multi-value model**: threshold-based activation:
+* **For multi-value model**: threshold-based activation
   * **Colon notation**: `A:2` means "A is at level 2 or higher" (`A >= 2`)
   * **Negated colon**: `!A:2` means "A is below level 2" (`A < 2`)
   * **Explicit comparisons**: `A >= 2`, `B <= 1`, `C != 0` for precise control
   * **Equivalent expressions**: `!CI:2 & !Cro:3` is the same as `CI < 2 & Cro < 3` or `CI <= 1 & Cro <= 2`
-* **Simple species references**:
-  * `A` - Species A is active (level >= 1 for multi-valued, or level = 1 for binary)
-  * `!A` - Species A is inactive (level = 0)
+* **Constant rules**:
+  * **Boolean values**: `TRUE` / `FALSE` means the target will be fixed at level 1 / 0
+  * **Integers**: target will be fixed at the level (for multi-valued models, this can be `2`, `3`, ...)
 
 **Examples**:
 

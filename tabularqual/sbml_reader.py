@@ -293,6 +293,20 @@ def _read_transitions(qual_model) -> Tuple[List[Transition], List[InteractionEvi
                     warnings.warn(f"Transition '{transition_name}': Found unknown/invalid qualifier '{qualifier}' in SBML file.")
         
         # Get function terms and create separate transitions for each level
+        # Detect constant rules: no function terms and default term exists
+        # Note: We don't require getNumInputs() == 0 because some SBML encoders
+        # might include inputs even for constant rules (inputs are irrelevant without functionTerms)
+        is_constant_rule = False
+        default_level = 0
+        
+        if tr.getNumFunctionTerms() == 0:
+            # Get default term (might exist even if getNumFunctionTerms() returns 0)
+            if hasattr(tr, 'getDefaultTerm'):
+                dt = tr.getDefaultTerm()
+                if dt and dt.isSetResultLevel():
+                    default_level = dt.getResultLevel()
+                    is_constant_rule = True
+        
         # Collect all non-default function terms
         function_terms = []
         for j in range(tr.getNumFunctionTerms()):
@@ -319,24 +333,23 @@ def _read_transitions(qual_model) -> Tuple[List[Transition], List[InteractionEvi
         if not function_terms:
             rule = None
             level = None
-            # Check if there's any function term at all
-            for j in range(tr.getNumFunctionTerms()):
-                ft = tr.getFunctionTerm(j)
-                if ft.isSetMath():
-                    math_ast = ft.getMath()
-                    rule = _mathml_to_rule(math_ast, inputs_with_signs)
-                    if ft.isSetResultLevel():
-                        level = ft.getResultLevel()
-                    break
             
-            if rule is None and inputs_with_signs:
+            # Check if this is a constant rule
+            if is_constant_rule:
+                # Use FALSE for 0, numeric string for other levels (preserves multi-valued)
+                if default_level == 0:
+                    rule = "FALSE"
+                elif default_level == 1:
+                    rule = "TRUE"
+                else:
+                    rule = str(default_level)
+            elif rule is None and inputs_with_signs:
                 rule = " & ".join([src for src, _, _ in inputs_with_signs])
             
-            # Warn about blank or empty rules
-            if not rule or rule.strip() == "" or rule.strip() == "()":
-                warnings.warn(f"Warning: Transition for target '{target}' has blank or empty rule. Setting to 1 (default level).")
-                rule = "1"
-            # TODO: set the species to Constant=True if the rule is blank?
+            # Warn about blank or empty rules (but not for constant rules)
+            if not rule or (rule.strip() == "" or rule.strip() == "()"):
+                warnings.warn(f"Warning: Transition for target '{target}' has blank or empty rule. Setting to FALSE.")
+                rule = "FALSE"
 
             transitions.append(Transition(
                 transition_id=transition_id,
@@ -434,6 +447,13 @@ def _mathml_to_rule(math_ast, inputs_with_signs) -> str:
             if right == "1" or right == "1.0":
                 return left
             return f"{left} >= {right}"
+        
+        # Boolean constants
+        elif node_type == libsbml.AST_CONSTANT_TRUE:
+            return "TRUE"
+        
+        elif node_type == libsbml.AST_CONSTANT_FALSE:
+            return "FALSE"
         
         # Variables and constants
         elif node_type == libsbml.AST_NAME:

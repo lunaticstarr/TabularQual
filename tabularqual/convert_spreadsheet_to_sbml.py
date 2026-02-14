@@ -4,8 +4,7 @@ from pathlib import Path
 from .spreadsheet_reader import read_spreadsheet_to_model, detect_csv_input, read_csv_to_model
 from .sbml_writer import write_sbml
 from .tools import validate_sbml_file
-import libsbml
-import gc
+
 
 def _get_version_info() -> str:
     """Get version information for TabularQual and libSBML"""
@@ -16,6 +15,7 @@ def _get_version_info() -> str:
         tabularqual_version = "unknown"
     
     try:
+        import libsbml
         libsbml_version = libsbml.getLibSBMLDottedVersion()
     except Exception:
         libsbml_version = "unknown"
@@ -92,24 +92,10 @@ def convert_spreadsheet_to_sbml(input_path: str, output_sbml: str, *, interactio
         'warnings': all_warnings
     }
     
-    # Clean up model
-    del im
-    gc.collect()
-    
-    # Get version info
+    # Insert version comment
     version_comment = f"<!-- {_get_version_info()} -->\n"
-
     lines = sbml_string.split('\n')
-    
-    # Check if XML declaration is present
-    if lines and lines[0].startswith('<?xml'):
-        # XML declaration exists, insert comment after it
-        lines.insert(1, version_comment)
-    else:
-        # No XML declaration, add it as first line, then version comment
-        xml_declaration = '<?xml version="1.0" encoding="UTF-8"?>'
-        lines.insert(0, xml_declaration)
-        lines.insert(1, version_comment)
+    lines.insert(1, version_comment)
     
     # Write the modified SBML to file
     with open(output_sbml, 'w', encoding='utf-8') as f:
