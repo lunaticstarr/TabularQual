@@ -105,7 +105,7 @@ async def api_to_table(
                 if os.path.exists(doc_template):
                     template_path = doc_template
 
-            _, created_files, result = convert_sbml_to_spreadsheet(
+            stats = convert_sbml_to_spreadsheet(
                 temp_in, temp_out, 
                 template_path=template_path,
                 rule_format=rule_format, 
@@ -114,13 +114,13 @@ async def api_to_table(
                 use_name=use_name,
                 print_messages=False
             )
-            files_to_delete = [temp_in] + created_files
+            files_to_delete = [temp_in] + stats['created_files']
 
             # If CSV, zip the multiple created files
             if output_csv:
                 zip_path = f"{temp_out}_archive.zip"
                 with zipfile.ZipFile(zip_path, 'w') as zipf:
-                    for f in created_files:
+                    for f in stats['created_files']:
                         original_name = os.path.basename(f)
                         # Clean name: remove 'out_uuid_' prefix
                         parts = original_name.split('_')
@@ -135,11 +135,11 @@ async def api_to_table(
                 zip_path if output_csv else created_files[0], 
                 filename="model.xlsx" if not output_csv else "model_csv.zip",
                 headers={
-                    "X-Stats-Species": str(result['species']),
-                    "X-Stats-Transitions": str(result['transitions']),
-                    "X-Stats-Interactions": str(result['interactions']),
-                    "X-Warnings": json.dumps(result['validation_warnings']), 
-                    "X-Validation-Errors": json.dumps(result['validation_errors'])
+                    "X-Stats-Species": str(stats['species']),
+                    "X-Stats-Transitions": str(stats['transitions']),
+                    "X-Stats-Interactions": str(stats['interactions']),
+                    "X-Warnings": json.dumps(stats['warnings']), 
+                    "X-Validation-Errors": json.dumps(stats['validation_errors'])
                 }
             )
 

@@ -26,7 +26,7 @@ def test_to_sbml(input_path):
     try:
         response = requests.post(url, files=files_to_send, data=data)
         if response.status_code == 200:
-            output = f"result_{os.path.basename(input_path).split('.')[0]}.sbml"
+            output = "demo_output.sbml"
             with open(output, "wb") as f:
                 f.write(response.content)
                 print(f"Successfully saved to: {output}")
