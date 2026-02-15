@@ -94,8 +94,10 @@ with st.sidebar:
     **Transition Rules Syntax:**
     - Logical: `&` (AND), `|` (OR), `!` (NOT)
     - Comparisons: `>=`, `<=`, `<`, `>`, `!=`
-    - Colon notation: `A:2` means `A >= 2`
+    - Colon symbol: `A:2` means `A >= 2`
     - Negated: `!A:2` means `A < 2`
+    - Constant rules: `FALSE` / `TRUE`/ `N` (integer) means the target will be fixed at level 0 / 1 / N
+
     """)
     
     st.header("🔗 Links")

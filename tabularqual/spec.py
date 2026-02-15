@@ -1,6 +1,6 @@
 from __future__ import annotations
 # version
-VERSION = "0.1.2"
+VERSION = "0.1.3"
 
 # sheet names
 SHEET_MODEL = "Model"

@@ -4,7 +4,7 @@ Convert between spreadsheets (XLSX, CSV) and SBML-qual for logical models (Boole
 
 ![TabularQual](doc/tabularqual.png "Example TabularQual spreadsheet representation of a Boolean model")
 
-Note: the format is specified [here](doc/TabularQual_specification_v0.1.2.docx).
+Note: the format is specified [here](doc/TabularQual_specification_v0.1.3.docx).
 
 ### Web App
 
@@ -68,7 +68,7 @@ to-table examples/ToyExample.sbml --csv
 - **OUTPUT**: output SBML file (optional, defaults to input name with `.sbml` extension)
 - **--inter-anno**: use interaction annotations only (unless `--trans-anno` is also set)
 - **--trans-anno**: use transition annotations only (unless `--inter-anno` is also set)
-- **--use-name**: when referring to species, names have been used in the spreadsheet instead of IDs (default: use ID)
+- **--use-name**: when referring to species, names have been used in the spreadsheet (default: use ID)
 - **--no-validate**: skip annotation validation
 
 `to-table INPUT [OUTPUT]`:
