@@ -80,8 +80,6 @@ This means: A reaches level 2 when B >= 2 and C is active; A reaches level 1 whe
 
 Multiple rows for the **same target** with **different Level values** together define the multi-valued update function. During conversion to SBML-qual, these become separate `<functionTerm>` elements within a single `<transition>`, each with its own `resultLevel`.
 
-### Boolean models (Level column empty)
-
 When the Level column is empty (or absent), the model is treated as Boolean. Each target has a single rule that determines whether it is active (level 1) or inactive (level 0, the default).
 
 ### How the tool converts
@@ -116,28 +114,24 @@ When importing SBML-qual files, TabularQual follows the SBML Level 3 Qualitative
 
 > The thresholdLevel, when specified, indicates the level at which the species participates in the transition. Any reference to the Input id attribute in a `<ci>` element within a functionTerm of the transition refers to the value of this thresholdLevel.
 
-### What the tool does
+In TabularQual converter:
 
-1. **Collects threshold mappings**: For each input in a transition, the tool maps the input's `id` attribute to its `thresholdLevel` value (e.g., `theta_t9_ex` → `1`).
+1. **Collects threshold mappings**: For each input in a transition, the tool maps the input's `id` attribute to its `thresholdLevel` value (e.g., `theta_t9_ex` → `1` from the example below).
 2. **Substitutes in MathML**: When converting the MathML expression, any `<ci>` referencing an input `id` (rather than a species) is replaced with the numeric threshold value.
-3. **Simplifies for Boolean**: Comparisons against 0 or 1 are simplified:
+3. **Simplifies for Boolean**: Comparisons against 0 or 1 are simplified sincel Boolean models can only take 0 or 1:
 
-| Expression | Simplified | Reasoning               |
-| ---------- | ---------- | ----------------------- |
-| `A >= 1` | `A`      | active means level >= 1 |
-| `A < 1`  | `!A`     | below 1 means inactive  |
-| `A > 0`  | `A`      | equivalent to >= 1      |
-| `A <= 0` | `!A`     | equivalent to level 0   |
-| `A == 1` | `A`      | active                  |
-| `A == 0` | `!A`     | inactive                |
-| `A != 0` | `A`      | not inactive = active   |
-| `A != 1` | `!A`     | not active = inactive   |
+| Expression              | Simplified | Reasoning                 |
+| ----------------------- | ---------- | ------------------------- |
+| `A > 0`, `A >= 1`  | `A`      | level > 0 means active   |
+| `A < 1`, `A <= 0`  | `!A`     | level > 1 means inactive |
+| `A == 1`, `A != 0` | `A`      | active                    |
+| `A == 0`, `A != 1` | `!A`     | inactive                  |
 
 Comparisons against other threshold values (e.g., `A >= 2`) are kept as-is.
 
 ### Example
 
-Given the SBML-qual input for transition `t9` (target: `ikb`):
+Given the SBML-qual input for transition `t9` (target: `ikb`) from [BIOMD0000000562](../test/BIOMD0000000562_url.xml):
 
 ```xml
 <qual:input qual:id="theta_t9_ikk" qual:qualitativeSpecies="ikk"
@@ -151,4 +145,4 @@ The MathML expression `ex >= theta_t9_ex | ikk < theta_t9_ikk` is processed as:
 1. Substitute: `ex >= 1 | ikk < 1`
 2. Simplify: `ex | !ikk`
 
-This behavior is consistent with [BoolNet](https://cran.r-project.org/package=BoolNet) `loadSBML`.
+This behavior is consistent with [BoolNet](https://cran.r-project.org/package=BoolNet) `loadSBML` function.
