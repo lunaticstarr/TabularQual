@@ -532,10 +532,11 @@ def _add_model_annotations(m: libsbml.Model, im: QualModel) -> None:
         uri = _to_identifiers_url(tax)
         _add_cvterm(m, False, getattr(libsbml, "BQB_HAS_TAXON", 0), uri)
     
-    # Add other annotations (unknown qualifiers)
+    # Add other annotations (from notes or unknown qualifiers)
     if im.model.other_annotations:
+        model_qualifiers = set(spec.RELATIONS_BQMODEL)
         for qualifier, identifier in im.model.other_annotations:
-            use_model = True  # Default to model qualifier
+            use_model = qualifier in model_qualifiers
             _add_annotations(m, [(qualifier, identifier)], use_model)
     
     # TODO: hasProperty for MAMO terms based on species max_level
@@ -651,8 +652,8 @@ def _add_annotations(node: libsbml.SBase, pairs: List[Tuple[str, str]], use_mode
             valid_model_qualifiers = ["is", "isDerivedFrom", "isDescribedBy", "isInstanceOf", "hasInstance"]
             is_valid = rel in valid_model_qualifiers
         else:
-            # Check against biological qualifiers (from spec.RELATIONS)
-            is_valid = rel in spec.RELATIONS
+            # Check against biological qualifiers (from spec.RELATIONS_BQBIOL)
+            is_valid = rel in spec.RELATIONS_BQBIOL
         
         predicate = _relation_to_predicate(rel, use_model)
         

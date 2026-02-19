@@ -7,3 +7,5 @@ tabularqual.egg-info/
 PLAN.md
 Notes/
 dist/
+test/maboss/
+ref/

@@ -692,9 +692,9 @@ def _collect_qualifier_pairs(row: Dict[str, object], relation_prefix: str, ident
     for i in range(max_len):
         rel = relations[i][1] if i < len(relations) else default_rel
         # Normalize relation to correct case
-        normalized_rel = spec.normalize_relation(rel)
+        normalized_rel = spec.normalize_relation_bqbiol(rel)
         if normalized_rel is None and validation_warnings is not None:
-            validation_warnings.append(f"{context}: Invalid Relation '{rel}'. Valid values: {', '.join(spec.RELATIONS)}. This will be converted to 'bqbiol:is'.")
+            validation_warnings.append(f"{context}: Invalid Relation '{rel}'. Valid values: {', '.join(spec.RELATIONS_BQBIOL)}. This will be converted to 'bqbiol:is'.")
             normalized_rel = rel  # Keep original if invalid for error tracking
         else:
             normalized_rel = normalized_rel or rel
@@ -707,6 +707,38 @@ def _collect_qualifier_pairs(row: Dict[str, object], relation_prefix: str, ident
                 if id_part:
                     pairs.append((normalized_rel, id_part))
     return pairs
+
+# Known qualifiers that can be extracted from notes
+_VALID_NOTE_QUALIFIERS = set(spec.RELATIONS_BQMODEL) | set(spec.RELATIONS_BQBIOL)
+
+def _extract_annotations_from_notes(notes_list: List[str], validation_warnings: List[str]) -> tuple[list, list]:
+    """Extract valid qualifier annotations from notes, leaving the rest as regular notes.
+    
+    Only notes matching known bqmodel/bqbiol qualifiers (e.g. 'hasProperty: mamo:MAMO_0000030')
+    are treated as annotations. Everything else is kept as plain notes.
+    
+    Returns:
+        (other_annotations, remaining_notes)
+    """
+    other_annotations = []
+    remaining_notes = []
+    for note in notes_list:
+        note_str = str(note).strip()
+        if ':' in note_str:
+            parts = note_str.split(':', 1)
+            if len(parts) == 2:
+                potential_qualifier = parts[0].strip()
+                potential_identifier = parts[1].strip()
+                if potential_qualifier in _VALID_NOTE_QUALIFIERS and potential_identifier:
+                    validation_warnings.append(
+                        f"Model Notes: Found annotation '{potential_qualifier}: {potential_identifier}'. "
+                        f"This will be converted to a model annotation."
+                    )
+                    other_annotations.append((potential_qualifier, potential_identifier))
+                    continue
+        remaining_notes.append(note_str)
+    return other_annotations, remaining_notes
+
 
 def _parse_person_string(person_str: str) -> List[str]:
     """Parse person string in format: family_name, given_name, "organization", email"""
@@ -819,26 +851,7 @@ def read_spreadsheet_to_model(xlsx_path: str, use_name: bool = False) -> tuple[Q
             if spec.is_repeated_column(k, spec.MODEL_NOTES_PREFIX) and v:
                 notes_list.append(str(v))
         
-        # Parse notes to extract any embedded qualifiers (from other_annotations)
-        # Format: "qualifier: identifier"
-        other_annotations = []
-        remaining_notes = []
-        for note in notes_list:
-            note_str = str(note).strip()
-            # Check if note matches pattern "qualifier: identifier"
-            if ':' in note_str:
-                parts = note_str.split(':', 1)
-                if len(parts) == 2:
-                    potential_qualifier = parts[0].strip()
-                    potential_identifier = parts[1].strip()
-                    # Check if it looks like a qualifier (single word, no spaces, starts with lowercase)
-                    if potential_qualifier and ' ' not in potential_qualifier and potential_identifier:
-                        # This looks like a qualifier annotation
-                        validation_warnings.append(f"Model Notes: Found qualifier annotation '{potential_qualifier}: {potential_identifier}'. This will be converted to an annotation.")
-                        other_annotations.append((potential_qualifier, potential_identifier))
-                        continue
-            # Not a qualifier, keep as regular note
-            remaining_notes.append(note_str)
+        other_annotations, remaining_notes = _extract_annotations_from_notes(notes_list, validation_warnings)
         
         model_info.creators = creators
         model_info.contributors = contributors
@@ -1201,26 +1214,7 @@ def read_csv_to_model(csv_files: dict[str, str], use_name: bool = False) -> tupl
             if spec.is_repeated_column(k, spec.MODEL_NOTES_PREFIX) and v:
                 notes_list.append(str(v))
         
-        # Parse notes to extract any embedded qualifiers (from other_annotations)
-        # Format: "qualifier: identifier"
-        other_annotations = []
-        remaining_notes = []
-        for note in notes_list:
-            note_str = str(note).strip()
-            # Check if note matches pattern "qualifier: identifier"
-            if ':' in note_str:
-                parts = note_str.split(':', 1)
-                if len(parts) == 2:
-                    potential_qualifier = parts[0].strip()
-                    potential_identifier = parts[1].strip()
-                    # Check if it looks like a qualifier (single word, no spaces, starts with lowercase)
-                    if potential_qualifier and ' ' not in potential_qualifier and potential_identifier:
-                        # This looks like a qualifier annotation
-                        validation_warnings.append(f"Model Notes: Found qualifier annotation '{potential_qualifier}: {potential_identifier}'. This will be converted to an annotation.")
-                        other_annotations.append((potential_qualifier, potential_identifier))
-                        continue
-            # Not a qualifier, keep as regular note
-            remaining_notes.append(note_str)
+        other_annotations, remaining_notes = _extract_annotations_from_notes(notes_list, validation_warnings)
         
         model_info.creators = creators
         model_info.contributors = contributors

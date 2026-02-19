@@ -97,6 +97,10 @@ def tokenize(expr: str, species_ids: Optional[Set[str]] = None) -> List[Token]:
             tokens.append(Token('OR', ch))
             i += 1
             continue
+        if ch == '^':
+            tokens.append(Token('XOR', ch))
+            i += 1
+            continue
         if ch == '!':
             # Check for != first
             if i + 1 < len(s) and s[i + 1] == '=':
@@ -147,7 +151,7 @@ def tokenize(expr: str, species_ids: Optional[Set[str]] = None) -> List[Token]:
 
 
 # A minimal AST represented as nested tuples for simplicity
-# ('or', left, right) | ('and', left, right) | ('not', node) | ('id', name) 
+# ('or', left, right) | ('xor', left, right) | ('and', left, right) | ('not', node) | ('id', name) 
 # | ('eq', name, threshold) | ('le', name, threshold) | ('ge', name, threshold) | ('gt', name, threshold) | ('lt', name, threshold) | ('neq', name, threshold)
 
 
@@ -284,13 +288,25 @@ def parse(expr: str, species_ids: Optional[Set[str]] = None):
                 break
         return node
 
-    def parse_expr():
+    def parse_xor_expr():
         node = parse_term()
+        while True:
+            t = peek()
+            if t and t.kind == 'XOR':
+                consume('XOR')
+                rhs = parse_term()
+                node = ('xor', node, rhs)
+            else:
+                break
+        return node
+
+    def parse_expr():
+        node = parse_xor_expr()
         while True:
             t = peek()
             if t and t.kind == 'OR':
                 consume('OR')
-                rhs = parse_term()
+                rhs = parse_xor_expr()
                 node = ('or', node, rhs)
             else:
                 break
@@ -353,6 +369,8 @@ def ast_to_mathml(ast) -> str:
         return f"<apply><not/>{ast_to_mathml(ast[1])}</apply>"
     if ast[0] == 'and':
         return f"<apply><and/>{ast_to_mathml(ast[1])}{ast_to_mathml(ast[2])}</apply>"
+    if ast[0] == 'xor':
+        return f"<apply><xor/>{ast_to_mathml(ast[1])}{ast_to_mathml(ast[2])}</apply>"
     if ast[0] == 'or':
         return f"<apply><or/>{ast_to_mathml(ast[1])}{ast_to_mathml(ast[2])}</apply>"
     raise ValueError(f"Unknown AST node {ast[0]}")

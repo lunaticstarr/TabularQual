@@ -68,24 +68,27 @@ SYMBOL_GT = ">"
 SYMBOL_LT = "<"
 SYMBOL_EQ = "="
 SYMBOL_NEQ = "!="
+SYMBOL_XOR = "^"
 SYMBOL_COLON = ":"
 
 # valid values
-SYMBOLS = [SYMBOL_AND, SYMBOL_OR, SYMBOL_NOT, SYMBOL_GE, SYMBOL_LE, SYMBOL_GT, SYMBOL_LT, SYMBOL_EQ, SYMBOL_NEQ, SYMBOL_COLON]
-RELATIONS = ["is", "hasVersion", "isVersionOf", "isDescribedBy", "hasPart", "isPartOf", "hasProperty", "isPropertyOf", "encodes", "isEncodedBy", "isHomologTo", "occursIn", "hasTaxon"]
+SYMBOLS = [SYMBOL_AND, SYMBOL_OR, SYMBOL_NOT, SYMBOL_XOR, SYMBOL_GE, SYMBOL_LE, SYMBOL_GT, SYMBOL_LT, SYMBOL_EQ, SYMBOL_NEQ, SYMBOL_COLON]
+RELATIONS_BQBIOL = ["is", "hasVersion", "isVersionOf", "isDescribedBy", "hasPart", "isPartOf", "hasProperty", "isPropertyOf", "encodes", "isEncodedBy", "isHomologTo", "occursIn", "hasTaxon"]
+RELATIONS_BQMODEL = ["is", "isDerivedFrom", "isDescribedBy", "isInstanceOf", "hasInstance"]
 TYPES = ["Input", "Internal", "Output"]
 SIGN = ["positive", "negative", "dual", "unknown"]
 
 # Case-insensitive lookup maps for normalization
-_RELATIONS_LOWER = {rel.lower(): rel for rel in RELATIONS}
+_RELATIONS_BQBIOL_LOWER = {rel.lower(): rel for rel in RELATIONS_BQBIOL}
+_RELATIONS_BQMODEL_LOWER = {rel.lower(): rel for rel in RELATIONS_BQMODEL}
 _TYPES_LOWER = {typ.lower(): typ for typ in TYPES}
 _SIGN_LOWER = {sign.lower(): sign for sign in SIGN}
 
 
-def normalize_relation(input_rel: str) -> str | None:
+def normalize_relation_bqbiol(input_rel: str) -> str | None:
     if not input_rel:
         return None
-    return _RELATIONS_LOWER.get(input_rel.lower())
+    return _RELATIONS_BQBIOL_LOWER.get(input_rel.lower())
 
 
 def normalize_type(input_type: str) -> str | None:

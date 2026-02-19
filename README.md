@@ -83,11 +83,11 @@ to-table examples/ToyExample.sbml --csv
 
 ### Transition Rules Syntax
 
-The Transition-Rules column supports boolean and comparison expressions using the following operators and syntax (space will be ignored):
+The Rule column supports boolean and comparison expressions (spaces are ignored). See [doc/transition_rule_syntax.md](doc/transition_rule_syntax.md) for full details.
 
-* **Logical operators**: `&` (AND), `|` (OR), `!` (NOT)
+* **Logical operators**: `&` (AND), `|` (OR), `!` (NOT), `^` (XOR)
 * **Parentheses**: `(` and `)` for grouping expressions
-* **For multi-value model**: threshold-based activation
+* **For multi-valued models**: threshold-based activation
   * **Colon notation**: `A:2` means "A is at level 2 or higher" (`A >= 2`)
   * **Negated colon**: `!A:2` means "A is below level 2" (`A < 2`)
   * **Explicit comparisons**: `A >= 2`, `B <= 1`, `C != 0` for precise control
@@ -99,9 +99,12 @@ The Transition-Rules column supports boolean and comparison expressions using th
 **Examples**:
 
 - `A & B` - Both A and B are active (level ≥ 1 for multi-valued)
+- `A ^ B` - Exactly one of A or B is active (XOR)
 - `A:2 | B < 1` - A is at level 2+ OR B is inactive
 - `N & !CI:2 & !Cro:3` - N active AND CI below level 2 AND Cro below level 3
 - `(A & B) | (!C & D != 1)` - Complex grouped expression
+
+Note: When importing SBML-qual files, the tool follows the spec (section 5.1): symbolic threshold references in MathML (e.g., `<ci>theta_t9_ex</ci>`) are replaced with their numeric `thresholdLevel` values. For Boolean models (threshold 0 or 1), the result is simplified to pure Boolean form (e.g., `A >= 1` → `A`, `A < 1` → `!A`). 
 
 ### Validation
 
@@ -132,7 +135,6 @@ The converter validates controlled vocabulary fields:
 - **Species Type**: Must be one of `Input`, `Internal`, or `Output` (case-insensitive)
 - **Interaction Sign**: Must be one of `positive`, `negative`, `dual`, or `unknown` (case-insensitive)
 - **Relation Qualifiers**: Must be one of `is`, `hasVersion`, `isVersionOf`, `isDescribedBy`, `hasPart`, `isPartOf`, `hasProperty`, `isPropertyOf`, `encodes`, `isEncodedBy`, `isHomologTo`, `occursIn`, `hasTaxon` (case-insensitive)
-- TODO: validate Relation qualifiers in SBML.
 
 #### Annotation Validation
 

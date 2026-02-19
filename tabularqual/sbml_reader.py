@@ -190,7 +190,7 @@ def _read_species(qual_model) -> Dict[str, Species]:
             # Check for unknown qualifiers and warn
             from . import spec
             for qualifier, identifier in annotations:
-                if qualifier not in spec.RELATIONS:
+                if qualifier not in spec.RELATIONS_BQBIOL:
                     warnings.warn(f"Species '{species_id}': Found unknown/invalid qualifier '{qualifier}' in SBML file.")
         
         species_dict[species_id] = Species(
@@ -230,11 +230,15 @@ def _read_transitions(qual_model) -> Tuple[List[Transition], List[InteractionEvi
         
         # Get inputs and their signs
         inputs_with_signs = []
+        input_thresholds = {}
         for j in range(tr.getNumInputs()):
             inp = tr.getInput(j)
             source = inp.getQualitativeSpecies()
             sign = inp.getSign() if inp.isSetSign() else None
             threshold = inp.getThresholdLevel() if inp.isSetThresholdLevel() else 1
+            input_id = inp.getId() if inp.isSetId() else None
+            if input_id:
+                input_thresholds[input_id] = threshold
             
             # Convert libsbml sign enum to string
             sign_str = None
@@ -262,7 +266,7 @@ def _read_transitions(qual_model) -> Tuple[List[Transition], List[InteractionEvi
                 # Check for unknown qualifiers and warn
                 from . import spec
                 for qualifier, identifier in inter_annotations:
-                    if qualifier not in spec.RELATIONS:
+                    if qualifier not in spec.RELATIONS_BQBIOL:
                         warnings.warn(f"Interaction (target='{target}', source='{source}'): Found unknown/invalid qualifier '{qualifier}' in SBML file.")
             
             if sign_str or inter_annotations or inter_notes:
@@ -288,7 +292,7 @@ def _read_transitions(qual_model) -> Tuple[List[Transition], List[InteractionEvi
             # Check for unknown qualifiers and warn
             from . import spec
             for qualifier, identifier in annotations:
-                if qualifier not in spec.RELATIONS:
+                if qualifier not in spec.RELATIONS_BQBIOL:
                     transition_name = transition_id if transition_id else f"target={target}"
                     warnings.warn(f"Transition '{transition_name}': Found unknown/invalid qualifier '{qualifier}' in SBML file.")
         
@@ -316,7 +320,7 @@ def _read_transitions(qual_model) -> Tuple[List[Transition], List[InteractionEvi
                 rule = None
                 if ft.isSetMath():
                     math_ast = ft.getMath()
-                    rule = _mathml_to_rule(math_ast, inputs_with_signs)
+                    rule = _mathml_to_rule(math_ast, inputs_with_signs, input_thresholds)
                 
                 # If no rule found, create default
                 if rule is None and inputs_with_signs:
@@ -382,8 +386,15 @@ def _read_transitions(qual_model) -> Tuple[List[Transition], List[InteractionEvi
     return transitions, interactions
 
 
-def _mathml_to_rule(math_ast, inputs_with_signs) -> str:
-    """Convert MathML AST to rule string"""
+def _mathml_to_rule(math_ast, inputs_with_signs, input_thresholds=None) -> str:
+    """Convert MathML AST to rule string.
+    
+    Per SBML-qual spec (section 5.1), <ci> references to Input id attributes
+    are substituted with the corresponding thresholdLevel value. This enables
+    Boolean simplification (e.g., x >= 1 -> x, x < 1 -> !x).
+    """
+    if input_thresholds is None:
+        input_thresholds = {}
     
     def convert_ast_node(node) -> str:
         """Recursively convert AST node to expression string"""
@@ -401,6 +412,10 @@ def _mathml_to_rule(math_ast, inputs_with_signs) -> str:
             children = [convert_ast_node(node.getChild(i)) for i in range(node.getNumChildren())]
             return " | ".join(f"({c})" if " & " in c else c for c in children)
         
+        elif node_type == libsbml.AST_LOGICAL_XOR:
+            children = [convert_ast_node(node.getChild(i)) for i in range(node.getNumChildren())]
+            return " ^ ".join(f"({c})" if " | " in c else c for c in children)
+        
         elif node_type == libsbml.AST_LOGICAL_NOT:
             child = convert_ast_node(node.getChild(0))
             # Add parentheses if child is complex
@@ -412,32 +427,50 @@ def _mathml_to_rule(math_ast, inputs_with_signs) -> str:
         elif node_type == libsbml.AST_RELATIONAL_EQ:
             left = convert_ast_node(node.getChild(0))
             right = convert_ast_node(node.getChild(1))
-            # Handle special case: "species == 1" -> just "species"
             if right == "1" or right == "1.0":
                 return left
-            # Handle "species == 0" -> "!species"
             elif right == "0" or right == "0.0":
+                if " " in left:
+                    return f"!({left})"
                 return f"!{left}"
             return f"{left} == {right}"
         
         elif node_type == libsbml.AST_RELATIONAL_NEQ:
             left = convert_ast_node(node.getChild(0))
             right = convert_ast_node(node.getChild(1))
+            if right == "0" or right == "0.0":
+                return left
+            if right == "1" or right == "1.0":
+                if " " in left:
+                    return f"!({left})"
+                return f"!{left}"
             return f"{left} != {right}"
         
         elif node_type == libsbml.AST_RELATIONAL_LT:
             left = convert_ast_node(node.getChild(0))
             right = convert_ast_node(node.getChild(1))
+            if right == "1" or right == "1.0":
+                if " " in left:
+                    return f"!({left})"
+                return f"!{left}"
+            if right == "0" or right == "0.0":
+                return "FALSE"
             return f"{left} < {right}"
         
         elif node_type == libsbml.AST_RELATIONAL_LEQ:
             left = convert_ast_node(node.getChild(0))
             right = convert_ast_node(node.getChild(1))
+            if right == "0" or right == "0.0":
+                if " " in left:
+                    return f"!({left})"
+                return f"!{left}"
             return f"{left} <= {right}"
         
         elif node_type == libsbml.AST_RELATIONAL_GT:
             left = convert_ast_node(node.getChild(0))
             right = convert_ast_node(node.getChild(1))
+            if right == "0" or right == "0.0":
+                return left
             return f"{left} > {right}"
         
         elif node_type == libsbml.AST_RELATIONAL_GEQ:
@@ -457,7 +490,10 @@ def _mathml_to_rule(math_ast, inputs_with_signs) -> str:
         
         # Variables and constants
         elif node_type == libsbml.AST_NAME:
-            return node.getName()
+            name = node.getName()
+            if name and name.strip() in input_thresholds:
+                return str(input_thresholds[name.strip()])
+            return name
         
         elif node_type == libsbml.AST_INTEGER:
             return str(node.getInteger())
@@ -490,6 +526,7 @@ def _parse_rdf_annotation(anno_str: str) -> Dict[str, List]:
         # Define namespaces
         ns = {
             'rdf': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+            'dc': 'http://purl.org/dc/elements/1.1/',
             'dcterms': 'http://purl.org/dc/terms/',
             'vCard': 'http://www.w3.org/2001/vcard-rdf/3.0#',
             'bqbiol': 'http://biomodels.net/biology-qualifiers/',
@@ -506,8 +543,8 @@ def _parse_rdf_annotation(anno_str: str) -> Dict[str, List]:
                     if dtf is not None and dtf.text:
                         result[elem_name] = [dtf.text]
             
-            # Parse creator/contributor
-            for elem_name in ['dcterms:creator', 'dcterms:contributor']:
+            # Parse creator/contributor (support both dc: and dcterms: namespaces)
+            for elem_name in ['dcterms:creator', 'dcterms:contributor', 'dc:creator', 'dc:contributor']:
                 creators_elem = desc.find(f'.//{elem_name}', ns)
                 if creators_elem is not None:
                     persons = []
@@ -533,7 +570,12 @@ def _parse_rdf_annotation(anno_str: str) -> Dict[str, List]:
                             person.email = email_elem.text
                         
                         persons.append(person)
-                    result[elem_name] = persons
+                    # Normalize dc: to dcterms: for consistent downstream access
+                    normalized_key = elem_name.replace('dc:', 'dcterms:')
+                    if normalized_key in result:
+                        result[normalized_key].extend(persons)
+                    else:
+                        result[normalized_key] = persons
             
             # Parse resource references (URLs)
             for prefix in ['bqmodel', 'bqbiol']:
@@ -546,7 +588,10 @@ def _parse_rdf_annotation(anno_str: str) -> Dict[str, List]:
                         if resource:
                             urls.append(resource)
                     if urls:
-                        result[key] = urls
+                        if key in result:
+                            result[key].extend(urls)
+                        else:
+                            result[key] = urls
     
     except Exception:
         pass
@@ -611,29 +656,44 @@ def _extract_text_from_notes(notes_str: str, filter_level_prefix: bool = False) 
         notes_str = notes_str.replace(' xmlns="http://www.w3.org/1999/xhtml"', '')
         root = ET.fromstring(notes_str)
         
-        # Each <p> element becomes a separate note
-        for p_elem in root.findall('.//p'):
-            text = ''.join(p_elem.itertext()).strip()
-            if text:
-                # Check for note separator tags <notes1>...</notes1>
-                import re
-                pattern = r'<notes(\d+)>\s*(.*?)\s*</notes\1>'
-                matches = re.findall(pattern, text, re.DOTALL)
-                if matches:
-                    # Extract content from each match
-                    for _, content in matches:
-                        content = content.strip()
-                        if content:
-                            # Filter out "Level X:" prefix if requested
-                            if filter_level_prefix and content.startswith('Level ') and ':' in content:
-                                continue
-                            notes.append(content)
-                else:
-                    # No separators found, treat as single note
-                    # Filter out "Level X:" prefix if requested
-                    if filter_level_prefix and text.startswith('Level ') and ':' in text:
-                        continue
-                    notes.append(text)
+        def _add_text(text):
+            """Add extracted text to notes, handling separator tags and level filtering."""
+            if not text:
+                return
+            import re
+            pattern = r'<notes(\d+)>\s*(.*?)\s*</notes\1>'
+            matches = re.findall(pattern, text, re.DOTALL)
+            if matches:
+                for _, content in matches:
+                    content = content.strip()
+                    if content:
+                        if filter_level_prefix and content.startswith('Level ') and ':' in content:
+                            continue
+                        notes.append(content)
+            else:
+                if filter_level_prefix and text.startswith('Level ') and ':' in text:
+                    return
+                notes.append(text)
+        
+        # Collect text from <p> and leaf <div> elements (divs with no child <p>/<div>)
+        seen_texts = set()
+        for elem in root.iter():
+            tag = elem.tag.split('}')[-1] if '}' in elem.tag else elem.tag
+            if tag == 'p':
+                text = ''.join(elem.itertext()).strip()
+                if text and text not in seen_texts:
+                    seen_texts.add(text)
+                    _add_text(text)
+            elif tag == 'div':
+                has_block_children = any(
+                    (child.tag.split('}')[-1] if '}' in child.tag else child.tag) in ('p', 'div')
+                    for child in elem
+                )
+                if not has_block_children:
+                    text = ''.join(elem.itertext()).strip()
+                    if text and text not in seen_texts:
+                        seen_texts.add(text)
+                        _add_text(text)
     
     except Exception:
         # Fallback: just extract text between tags

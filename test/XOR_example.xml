@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" qual:required="true" version="1" xmlns:qual="http://www.sbml.org/sbml/level3/version1/qual/version1">
+  <model id="TEST" name="BoolDog test model">
+    <listOfCompartments>
+      <compartment constant="true" id="main" />
+    </listOfCompartments>
+    <qual:listOfQualitativeSpecies xmlns:qual="http://www.sbml.org/sbml/level3/version1/qual/version1">
+      <qual:qualitativeSpecies qual:compartment="main" qual:constant="false" qual:maxLevel="1" qual:id="node_A"/>
+      <qual:qualitativeSpecies qual:compartment="main" qual:constant="false" qual:maxLevel="1" qual:id="node_B"/>
+      <qual:qualitativeSpecies qual:compartment="main" qual:constant="false" qual:maxLevel="1" qual:id="node_C"/>
+      <qual:qualitativeSpecies qual:compartment="main" qual:constant="false" qual:maxLevel="1" qual:id="node_D"/>
+      <qual:qualitativeSpecies qual:compartment="main" qual:constant="false" qual:maxLevel="1" qual:id="node_E"/>
+    </qual:listOfQualitativeSpecies>
+    <qual:listOfTransitions xmlns:qual="http://www.sbml.org/sbml/level3/version1/qual/version1">
+      <qual:transition qual:id="t1">
+        <qual:listOfInputs>
+          <qual:input qual:id="t1_B" qual:qualitativeSpecies="node_B" qual:sign="positive" qual:thresholdLevel="1" qual:transitionEffect="none"/>
+          <qual:input qual:id="t1_E" qual:qualitativeSpecies="node_E" qual:sign="positive" qual:thresholdLevel="1" qual:transitionEffect="none"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output qual:qualitativeSpecies="node_A" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"></qual:defaultTerm>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <xor/>
+                <apply>
+                <geq/>
+                <ci>
+                  node_B
+                </ci>
+                <ci>
+                  t1_B
+                </ci>
+              </apply>
+                <apply>
+                <geq/>
+                <ci>
+                  node_E
+                </ci>
+                <ci>
+                  t1_E
+                </ci>
+              </apply>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition qual:id="t2">
+        <qual:listOfInputs>
+          <qual:input qual:id="t2_A" qual:qualitativeSpecies="node_A" qual:sign="positive" qual:thresholdLevel="1" qual:transitionEffect="none"/>
+          <qual:input qual:id="t2_B" qual:qualitativeSpecies="node_B" qual:sign="positive" qual:thresholdLevel="1" qual:transitionEffect="none"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output qual:qualitativeSpecies="node_C" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"></qual:defaultTerm>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <and/>
+                <apply>
+                <geq/>
+                <ci>
+                  node_A
+                </ci>
+                <ci>
+                  t2_A
+                </ci>
+              </apply>
+                <apply>
+                <geq/>
+                <ci>
+                  node_B
+                </ci>
+                <ci>
+                  t2_B
+                </ci>
+              </apply>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+      <qual:transition qual:id="t3">
+        <qual:listOfInputs>
+          <qual:input qual:id="t3_C" qual:qualitativeSpecies="node_C" qual:sign="positive" qual:thresholdLevel="1" qual:transitionEffect="none"/>
+          <qual:input qual:id="t3_D" qual:qualitativeSpecies="node_D" qual:sign="positive" qual:thresholdLevel="1" qual:transitionEffect="none"/>
+        </qual:listOfInputs>
+        <qual:listOfOutputs>
+          <qual:output qual:qualitativeSpecies="node_E" qual:transitionEffect="assignmentLevel"/>
+        </qual:listOfOutputs>
+        <qual:listOfFunctionTerms>
+          <qual:defaultTerm qual:resultLevel="0"></qual:defaultTerm>
+          <qual:functionTerm qual:resultLevel="1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <or/>
+                <apply>
+                <lt/>
+                <ci>
+                  node_C
+                </ci>
+                <ci>
+                  t3_C
+                </ci>
+              </apply>
+                <apply>
+                <geq/>
+                <ci>
+                  node_D
+                </ci>
+                <ci>
+                  t3_D
+                </ci>
+              </apply>
+              </apply>
+            </math>
+          </qual:functionTerm>
+        </qual:listOfFunctionTerms>
+      </qual:transition>
+    </qual:listOfTransitions>
+  </model>
+</sbml>
