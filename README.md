@@ -6,38 +6,70 @@ Convert between spreadsheets (XLSX, CSV) and SBML-qual for logical models (Boole
 
 Note: the format is specified [here](doc/TabularQual_specification_v0.1.3.docx).
 
-### Web App
-
-Use directly in your browser - no installation required!
-
-🔗 **[Launch Web App](https://tabularqual.streamlit.app/)**
-
-Note: there are currently resource limits on Streamlit cloud, please run it locally for large networks.
-
----
-
 ### Install
 
-TabularQual can be installed directly from PyPI:
+Install directly from PyPI:
 
 ```bash
 pip install tabularqual
 ```
 
-Then use the command line tool.
+Or install from source (developmental):
 
-...or, if you prefer an interface:
-
+```bash
+git clone https://github.com/sys-bio/TabularQual.git
+cd TabularQual
+pip install -e .
 ```
-# Launch web app
-streamlit run app.py
-```
-
-The app will open in your browser at `http://localhost:8501`
 
 ### Usage
 
-#### Spreadsheet ➜ SBML
+TabularQual can be used directly in **web app**, as a **Python package**, or via the **command line (CLI)**.
+
+#### Web App
+
+Use directly in your browser -- no installation required!
+
+**[Launch Web App](https://tabularqual.streamlit.app/)**
+
+Note: there are currently resource limits on Streamlit cloud, please switch to a local version for large networks by running:
+
+```bash
+streamlit run app.py
+```
+
+#### Python API
+
+```python
+from tabularqual import convert_spreadsheet_to_sbml, convert_sbml_to_spreadsheet
+
+# Spreadsheet to SBML (accepts XLSX file, CSV folder, or CSV prefix)
+stats = convert_spreadsheet_to_sbml("Model.xlsx", "Model.sbml")
+
+# SBML to Spreadsheet
+stats = convert_sbml_to_spreadsheet("Model.sbml", "Model.xlsx")
+
+# SBML to CSV files
+stats = convert_sbml_to_spreadsheet("Model.sbml", "Model", output_csv=True)
+```
+
+Both functions return a `dict` with conversion statistics:
+
+```python
+{
+    'species': 10,           # number of species
+    'transitions': 10,       # number of transitions
+    'interactions': 25,      # number of interactions
+    'warnings': [...],       # list of warning/info messages
+    'created_files': [...],  # output files created (to-table only)
+}
+```
+
+See [`examples/python_api_example.py`](examples/python_api_example.py) for a complete working example.
+
+#### CLI
+
+##### Spreadsheet to SBML
 
 ```bash
 # Simple usage (output defaults to input name with .sbml extension)
@@ -50,7 +82,7 @@ to-sbml examples/ToyExample_csv/
 to-sbml Model
 ```
 
-#### SBML ➜ Spreadsheet
+##### SBML to Spreadsheet
 
 ```bash
 # Simple usage (output defaults to input name with .xlsx extension)
@@ -60,7 +92,7 @@ to-table examples/ToyExample.sbml
 to-table examples/ToyExample.sbml --csv
 ```
 
-### Options
+#### Options
 
 `to-sbml INPUT [OUTPUT]`:
 
@@ -104,7 +136,7 @@ The Rule column supports boolean and comparison expressions (spaces are ignored)
 - `N & !CI:2 & !Cro:3` - N active AND CI below level 2 AND Cro below level 3
 - `(A & B) | (!C & D != 1)` - Complex grouped expression
 
-Note: When importing SBML-qual files, the tool follows the spec (section 5.1): symbolic threshold references in MathML (e.g., `<ci>theta_t9_ex</ci>`) are replaced with their numeric `thresholdLevel` values. For Boolean models (threshold 0 or 1), the result is simplified to pure Boolean form (e.g., `A >= 1` → `A`, `A < 1` → `!A`). 
+Note: When importing SBML-qual files, the tool follows the spec (section 5.1): symbolic threshold references in MathML (e.g., `<ci>theta_t9_ex</ci>`) are replaced with their numeric `thresholdLevel` values. For Boolean models (threshold 0 or 1), the result is simplified to pure Boolean form (e.g., `A >= 1` → `A`, `A < 1` → `!A`).
 
 ### Validation
 
