@@ -781,12 +781,12 @@ def write_csv(model: QualModel, output_prefix: str, rule_format: str = "operator
     
     # Write Transitions CSV
     transitions_file = output_dir / f"{prefix}_Transitions.csv"
-    _write_transitions_csv(model, str(transitions_file), rule_format, use_name=use_name)
+    _write_transitions_csv(model, str(transitions_file), rule_format, use_name=use_name, name_dedup_map=name_dedup_map)
     created_files.append(str(transitions_file))
     
     # Write Interactions CSV
     interactions_file = output_dir / f"{prefix}_Interactions.csv"
-    _write_interactions_csv(model, str(interactions_file), use_name=use_name)
+    _write_interactions_csv(model, str(interactions_file), use_name=use_name, name_dedup_map=name_dedup_map)
     created_files.append(str(interactions_file))
     
     return created_files
