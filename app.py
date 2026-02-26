@@ -92,7 +92,7 @@ with st.sidebar:
     st.header("📖 Documentation")
     st.markdown("""
     **Transition Rules Syntax:**
-    - Logical: `&` (AND), `|` (OR), `!` (NOT)
+    - Logical: `&` (AND), `|` (OR), `!` (NOT), `^` (XOR)
     - Comparisons: `>=`, `<=`, `<`, `>`, `!=`
     - Colon symbol: `A:2` means `A >= 2`
     - Negated: `!A:2` means `A < 2`
