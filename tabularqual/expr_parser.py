@@ -367,12 +367,22 @@ def ast_to_mathml(ast) -> str:
         return f"<apply><eq/><ci>{name}</ci><cn type=\"integer\">0</cn></apply>"
     if ast[0] == 'not':
         return f"<apply><not/>{ast_to_mathml(ast[1])}</apply>"
-    if ast[0] == 'and':
-        return f"<apply><and/>{ast_to_mathml(ast[1])}{ast_to_mathml(ast[2])}</apply>"
-    if ast[0] == 'xor':
-        return f"<apply><xor/>{ast_to_mathml(ast[1])}{ast_to_mathml(ast[2])}</apply>"
-    if ast[0] == 'or':
-        return f"<apply><or/>{ast_to_mathml(ast[1])}{ast_to_mathml(ast[2])}</apply>"
+    if ast[0] in ('and', 'or', 'xor'):
+        # Flatten left-folded binary chains into a single n-ary apply so that
+        # round-tripping via SBML does not accumulate extra parentheses.
+        # e.g. parse("A | B | C") builds OR(OR(A,B),C); we emit
+        # <apply><or/>{A}{B}{C}</apply> instead of nested binary elements.
+        op = ast[0]
+        tag = {'and': 'and', 'or': 'or', 'xor': 'xor'}[op]
+
+        def _collect(node):
+            if node[0] == op:
+                return _collect(node[1]) + _collect(node[2])
+            return [node]
+
+        operands = _collect(ast)
+        inner = ''.join(ast_to_mathml(operand) for operand in operands)
+        return f"<apply><{tag}/>{inner}</apply>"
     raise ValueError(f"Unknown AST node {ast[0]}")
 
 

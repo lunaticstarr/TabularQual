@@ -7,7 +7,7 @@ name = "tabularqual"
 dynamic = ["version"]
 description = "Converter for logical models: spreadsheets (XLSX, CSV) <--> SBML-qual."
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 license = {text = "MIT"}
 dependencies = [
     "python-libsbml>=5.21.0",

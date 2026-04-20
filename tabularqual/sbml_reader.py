@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import List, Tuple, Dict, Optional
+import html
 import libsbml
 from xml.etree import ElementTree as ET
 import os
@@ -404,17 +405,52 @@ def _mathml_to_rule(math_ast, inputs_with_signs, input_thresholds=None) -> str:
         node_type = node.getType()
         
         # Logical operators
+        # Parenthesisation is decided by child node TYPE, not by string inspection.
+        # String-based checks like '" & " in c' are unreliable: a child that is
+        # itself an OR expression may transitively contain '&' inside its already-
+        # parenthesised AND sub-terms, causing spurious extra wrapping each round-trip.
+        #
+        # Helper functions are intentionally avoided here; nested closures add one
+        # extra frame per level of recursion and can cause RecursionError on models
+        # with many binary-nested OR terms.
         if node_type == libsbml.AST_LOGICAL_AND:
-            children = [convert_ast_node(node.getChild(i)) for i in range(node.getNumChildren())]
-            return " & ".join(f"({c})" if " | " in c else c for c in children)
-        
+            # Wrap OR/XOR children (lower precedence than AND).
+            parts = []
+            for i in range(node.getNumChildren()):
+                ch = node.getChild(i)
+                s = convert_ast_node(ch)
+                ct = ch.getType()
+                parts.append(
+                    f"({s})" if ct in (libsbml.AST_LOGICAL_OR, libsbml.AST_LOGICAL_XOR)
+                    else s
+                )
+            return " & ".join(parts)
+
         elif node_type == libsbml.AST_LOGICAL_OR:
-            children = [convert_ast_node(node.getChild(i)) for i in range(node.getNumChildren())]
-            return " | ".join(f"({c})" if " & " in c else c for c in children)
-        
+            # Wrap AND/XOR children for readability; never wrap OR children.
+            parts = []
+            for i in range(node.getNumChildren()):
+                ch = node.getChild(i)
+                s = convert_ast_node(ch)
+                ct = ch.getType()
+                parts.append(
+                    f"({s})" if ct in (libsbml.AST_LOGICAL_AND, libsbml.AST_LOGICAL_XOR)
+                    else s
+                )
+            return " | ".join(parts)
+
         elif node_type == libsbml.AST_LOGICAL_XOR:
-            children = [convert_ast_node(node.getChild(i)) for i in range(node.getNumChildren())]
-            return " ^ ".join(f"({c})" if " | " in c else c for c in children)
+            # Wrap OR and AND children for clarity.
+            parts = []
+            for i in range(node.getNumChildren()):
+                ch = node.getChild(i)
+                s = convert_ast_node(ch)
+                ct = ch.getType()
+                parts.append(
+                    f"({s})" if ct in (libsbml.AST_LOGICAL_OR, libsbml.AST_LOGICAL_AND)
+                    else s
+                )
+            return " ^ ".join(parts)
         
         elif node_type == libsbml.AST_LOGICAL_NOT:
             child = convert_ast_node(node.getChild(0))
@@ -706,5 +742,5 @@ def _extract_text_from_notes(notes_str: str, filter_level_prefix: bool = False) 
             if line:
                 notes.append(line)
     
-    return notes
+    return [html.unescape(note) for note in notes]
 
