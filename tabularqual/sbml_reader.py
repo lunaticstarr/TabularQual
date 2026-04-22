@@ -17,22 +17,34 @@ def read_sbml(sbml_path: str) -> QualModel:
     doc = libsbml.readSBMLFromFile(sbml_path)
     
     try:
-        if doc.getNumErrors() > 0:
-            errors = []
-            for i in range(doc.getNumErrors()):
-                err = doc.getError(i)
-                if err.getSeverity() >= libsbml.LIBSBML_SEV_ERROR:
+        errors = []
+        has_layout_errors = False
+        for i in range(doc.getNumErrors()):
+            err = doc.getError(i)
+            if err.getSeverity() >= libsbml.LIBSBML_SEV_ERROR:
+                if err.getPackage() == 'layout':
+                    has_layout_errors = True
+                else:
                     errors.append(str(err.getMessage()))
-            if errors:
-                raise ValueError(f"SBML parsing errors: {'; '.join(errors)}")
-        
+        if has_layout_errors:
+            warnings.warn(
+                "Layout information found in SBML file is not supported and will be ignored. "
+                "Layout will not be preserved in the output."
+            )
+
         model = doc.getModel()
         if model is None:
-            raise ValueError("No model found in SBML file")
-        
+            raise ValueError(f"SBML parsing errors: {'; '.join(errors)}" if errors else "No model found in SBML file")
+
         qual_model = model.getPlugin("qual")
         if qual_model is None:
-            raise ValueError("No qual plugin found in model")
+            raise ValueError(f"SBML parsing errors: {'; '.join(errors)}" if errors else "No qual plugin found in model")
+
+        if errors:
+            warnings.warn(
+                f"SBML file has {len(errors)} structural error(s) but model content was read. "
+                f"Some information may be incomplete. First error: {errors[0]}"
+            )
         
         # Read model info
         model_info = _read_model_info(model, sbml_path)
@@ -41,7 +53,7 @@ def read_sbml(sbml_path: str) -> QualModel:
         species_dict = _read_species(qual_model)
         
         # Read transitions
-        transitions, interactions = _read_transitions(qual_model)
+        transitions, interactions = _read_transitions(qual_model, species_dict)
         
         result = QualModel(
             model=model_info,
@@ -209,7 +221,7 @@ def _read_species(qual_model) -> Dict[str, Species]:
     return species_dict
 
 
-def _read_transitions(qual_model) -> Tuple[List[Transition], List[InteractionEvidence]]:
+def _read_transitions(qual_model, species_dict=None) -> Tuple[List[Transition], List[InteractionEvidence]]:
     """Read all transitions and extract interaction information"""
     transitions = []
     interactions = []
@@ -321,7 +333,7 @@ def _read_transitions(qual_model) -> Tuple[List[Transition], List[InteractionEvi
                 rule = None
                 if ft.isSetMath():
                     math_ast = ft.getMath()
-                    rule = _mathml_to_rule(math_ast, inputs_with_signs, input_thresholds)
+                    rule = _mathml_to_rule(math_ast, inputs_with_signs, input_thresholds, species_dict)
                 
                 # If no rule found, create default
                 if rule is None and inputs_with_signs:
@@ -387,15 +399,22 @@ def _read_transitions(qual_model) -> Tuple[List[Transition], List[InteractionEvi
     return transitions, interactions
 
 
-def _mathml_to_rule(math_ast, inputs_with_signs, input_thresholds=None) -> str:
+def _mathml_to_rule(math_ast, inputs_with_signs, input_thresholds=None, species_dict=None) -> str:
     """Convert MathML AST to rule string.
-    
+
     Per SBML-qual spec (section 5.1), <ci> references to Input id attributes
     are substituted with the corresponding thresholdLevel value. This enables
     Boolean simplification (e.g., x >= 1 -> x, x < 1 -> !x).
+    Boolean simplifications for == 1 / != 1 are skipped for multi-valued species.
     """
     if input_thresholds is None:
         input_thresholds = {}
+
+    def _is_multivalued(name: str) -> bool:
+        if species_dict is None:
+            return False
+        sp = species_dict.get(name)
+        return sp is not None and sp.max_level is not None and sp.max_level > 1
     
     def convert_ast_node(node) -> str:
         """Recursively convert AST node to expression string"""
@@ -464,19 +483,25 @@ def _mathml_to_rule(math_ast, inputs_with_signs, input_thresholds=None) -> str:
             left = convert_ast_node(node.getChild(0))
             right = convert_ast_node(node.getChild(1))
             if right == "1" or right == "1.0":
+                # For multi-valued species, eq(X, 1) != geq(X, 1); keep explicit
+                if _is_multivalued(left):
+                    return f"{left} == 1"
                 return left
             elif right == "0" or right == "0.0":
                 if " " in left:
                     return f"!({left})"
                 return f"!{left}"
             return f"{left} == {right}"
-        
+
         elif node_type == libsbml.AST_RELATIONAL_NEQ:
             left = convert_ast_node(node.getChild(0))
             right = convert_ast_node(node.getChild(1))
             if right == "0" or right == "0.0":
                 return left
             if right == "1" or right == "1.0":
+                # For multi-valued species, neq(X, 1) != lt(X, 1); keep explicit
+                if _is_multivalued(left):
+                    return f"{left} != 1"
                 if " " in left:
                     return f"!({left})"
                 return f"!{left}"
