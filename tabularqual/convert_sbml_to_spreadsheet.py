@@ -4,7 +4,7 @@ import warnings
 from pathlib import Path
 
 from .sbml_reader import read_sbml
-from .spreadsheet_writer import write_spreadsheet, write_csv
+from .spreadsheet_writer import write_spreadsheet, write_csv, check_xlsx_rule_overflow, _EXCEL_MAX_CELL_LEN
 from .tools import validate_sbml_file
 
 
@@ -77,10 +77,27 @@ def convert_sbml_to_spreadsheet(sbml_path: str, output_path: str, template_path:
     all_warnings.append(interactions_msg)
     
     # Write output
+    if not output_csv:
+        overflows = check_xlsx_rule_overflow(model)
+        if overflows:
+            # Fall back to CSV: rules too long for Excel cells
+            output_csv = True
+            names = ", ".join(f"'{tid}'" for tid, _, _ in overflows)
+            msg = (
+                f"Transition rule(s) {names} exceed Excel's cell limit "
+                f"({_EXCEL_MAX_CELL_LEN} chars). Saving as CSV files instead to preserve full rules."
+            )
+            all_warnings.append(msg)
+            if print_messages:
+                print(f"Warning: {msg}")
+
     if output_csv:
-        created_files = write_csv(model, output_path, rule_format, use_name=use_name)
+        # Derive CSV prefix from output_path (strip .xlsx/.xls extension if present)
+        from pathlib import Path as _Path
+        csv_prefix = str(_Path(output_path).with_suffix('')) if _Path(output_path).suffix.lower() in ('.xlsx', '.xls', '.xlsm') else output_path
+        created_files = write_csv(model, csv_prefix, rule_format, use_name=use_name)
     else:
-        actual_path = write_spreadsheet(model, output_path, template_path, rule_format, use_name=use_name)
+        actual_path, _ = write_spreadsheet(model, output_path, template_path, rule_format, use_name=use_name)
         created_files = [actual_path]
     
     return {

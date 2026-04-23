@@ -125,17 +125,23 @@ def _resolve_rule_ids_to_names(rule: str, species: Dict[str, Any], use_name: boo
     
     return result
 
-def write_spreadsheet(model: QualModel, output_path: str, template_path: str = None, rule_format: str = "operators", use_name: bool = False) -> str:
-    """Write QualModel to spreadsheet format
-    
-    Args:
-        model: The in-memory model to write
-        output_path: Path to output spreadsheet file
-        template_path: Optional path to template.xlsx for README and Appendix sheets
-        rule_format: Format for transition rules - "operators" (default, uses >=, <=, etc.) or "colon" (uses : notation)
-    
+_EXCEL_MAX_CELL_LEN = 32767
+
+
+def check_xlsx_rule_overflow(model: QualModel) -> list[tuple[str, str, int]]:
+    """Return (transition_id, target, rule_len) for any rules that exceed Excel's cell limit."""
+    overflows = []
+    for t in model.transitions:
+        if len(t.rule) > _EXCEL_MAX_CELL_LEN:
+            overflows.append((t.transition_id or f"target={t.target}", t.target, len(t.rule)))
+    return overflows
+
+
+def write_spreadsheet(model: QualModel, output_path: str, template_path: str = None, rule_format: str = "operators", use_name: bool = False) -> tuple[str, list[str]]:
+    """Write QualModel to spreadsheet format.
+
     Returns:
-        str: The actual output path used (may have .xlsx added)
+        Tuple of (actual_output_path, warnings) where warnings is a list of warning messages.
     """
     # Ensure output path has .xlsx extension
     output_p = Path(output_path)
@@ -171,12 +177,12 @@ def write_spreadsheet(model: QualModel, output_path: str, template_path: str = N
     _write_species_sheet(wb, model, insert_pos + 1, use_name=use_name, name_dedup_map=name_dedup_map)
     _write_interactions_sheet(wb, model, insert_pos + 2, use_name=use_name, name_dedup_map=name_dedup_map)
     _write_transitions_sheet(wb, model, insert_pos + 3, rule_format, use_name=use_name, name_dedup_map=name_dedup_map)
-    
+
     # Save
     wb.save(output_path)
     wb.close()
-    
-    return output_path
+
+    return output_path, []
 
 
 def _write_model_sheet(wb: openpyxl.Workbook, model: QualModel, position: int = 0):
@@ -439,9 +445,9 @@ def _write_species_sheet(wb: openpyxl.Workbook, model: QualModel, position: int 
     ws.column_dimensions['B'].width = 30
 
 
-def _write_transitions_sheet(wb: openpyxl.Workbook, model: QualModel, position: int = 0, 
-                            rule_format: str = "operators", use_name: bool = False, 
-                            name_dedup_map: Dict[str, str] = None):
+def _write_transitions_sheet(wb: openpyxl.Workbook, model: QualModel, position: int = 0,
+                             rule_format: str = "operators", use_name: bool = False,
+                             name_dedup_map: Dict[str, str] = None):
     """Write Transitions sheet"""
     ws = wb.create_sheet("Transitions", position)
     
