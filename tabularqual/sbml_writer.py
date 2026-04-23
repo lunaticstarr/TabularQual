@@ -123,7 +123,7 @@ def _resolve_rule_names_to_ids(rule: str, species: Dict[str, SpeciesT]) -> str:
     return result
 
 
-def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_anno: bool = True, use_name: bool = False) -> Tuple[str, List[str]]:
+def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_anno: bool = True, use_name: bool = False, print_messages: bool = True) -> Tuple[str, List[str]]:
     """
     Write a QualModel to SBML-qual format.
     
@@ -171,7 +171,7 @@ def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_
     # Annotations for model
     if not m.isSetMetaId():
         m.setMetaId(next_metaid())
-    _add_model_annotations(m, model)
+    _add_model_annotations(m, model, print_messages=print_messages)
 
     # Compartment(s)
     comp_names = set()
@@ -216,7 +216,7 @@ def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_
         if notes_to_add:
             _append_notes(qs, notes_to_add)
         if s.annotations:
-            _add_annotations(qs, s.annotations, use_model=False)
+            _add_annotations(qs, s.annotations, use_model=False, print_messages=print_messages)
 
     # Group transitions by target to handle multiple levels
     transitions_by_target: Dict[str, List[TransitionT]] = {}
@@ -369,7 +369,7 @@ def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_
         if first_transition.notes:
             _append_notes_concat(qt, first_transition.notes)
         if transitions_anno and first_transition.annotations:
-            _add_annotations(qt, first_transition.annotations, use_model=False)
+            _add_annotations(qt, first_transition.annotations, use_model=False, print_messages=print_messages)
 
     # Interactions (optional): add to corresponding transition inputs
     # Always set signs from Interactions sheet, but only add annotations/notes if interactions_anno=True
@@ -397,7 +397,8 @@ def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_
                     except Exception:
                         found_input = None
                     if found_input is None:
-                        print(f"No input found for {source_id} in {tr.getId()}, creating one.")
+                        if print_messages:
+                            print(f"No input found for {source_id} in {tr.getId()}, creating one.")
                         found_input = tr.createInput()
                         found_input.setQualitativeSpecies(source_id)
                         if not found_input.isSetMetaId():
@@ -418,12 +419,13 @@ def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_
                             else:
                                 _append_notes(found_input, [f"Sign: {inter.sign}"])
                         except Exception:
-                            print(f"Invalid sign: {inter.sign} for {inter.source} in {tr.getId()}, adding to notes.")
+                            if print_messages:
+                                print(f"Invalid sign: {inter.sign} for {inter.source} in {tr.getId()}, adding to notes.")
                             _append_notes(found_input, [f"Sign: {inter.sign}"])
                     # Only add annotations and notes if interactions_anno=True
                     if interactions_anno:
                         if inter.annotations:
-                            _add_annotations(found_input, inter.annotations, use_model=False)
+                            _add_annotations(found_input, inter.annotations, use_model=False, print_messages=print_messages)
                         if inter.notes:
                             _append_notes(found_input, inter.notes)
                     break
@@ -514,7 +516,7 @@ def _xml_escape(s: str) -> str:
     return s
 
 
-def _add_model_annotations(m: libsbml.Model, im: QualModel) -> None:
+def _add_model_annotations(m: libsbml.Model, im: QualModel, print_messages: bool = True) -> None:
     # Publications / sources / derivedFrom etc. as CVTerms on model
     for url in im.model.source_urls:
         uri = _to_identifiers_url(url)
@@ -537,7 +539,7 @@ def _add_model_annotations(m: libsbml.Model, im: QualModel) -> None:
         model_qualifiers = set(spec.RELATIONS_BQMODEL)
         for qualifier, identifier in im.model.other_annotations:
             use_model = qualifier in model_qualifiers
-            _add_annotations(m, [(qualifier, identifier)], use_model)
+            _add_annotations(m, [(qualifier, identifier)], use_model, print_messages=print_messages)
     
     # TODO: hasProperty for MAMO terms based on species max_level
     # Model history: creators, contributors, created/modified using dc terms
@@ -633,7 +635,7 @@ def _add_model_history(m: libsbml.Model, im: QualModel) -> None:
     m.setModelHistory(history)
 
 
-def _add_annotations(node: libsbml.SBase, pairs: List[Tuple[str, str]], use_model: bool) -> None:
+def _add_annotations(node: libsbml.SBase, pairs: List[Tuple[str, str]], use_model: bool, print_messages: bool = True) -> None:
     """Add annotations to a node.
     
     Args:
@@ -657,8 +659,7 @@ def _add_annotations(node: libsbml.SBase, pairs: List[Tuple[str, str]], use_mode
         
         predicate = _relation_to_predicate(rel, use_model)
         
-        if not is_valid:
-            # Determine what the qualifier will be converted to
+        if not is_valid and print_messages:
             converted_to = "bqmodel:is" if use_model else "bqbiol:is"
             print(f"Warning: Qualifier '{rel}' is not a valid {'model' if use_model else 'biological'} qualifier. Converting '{rel}' -> '{converted_to}'.")
         cv = libsbml.CVTerm(libsbml.MODEL_QUALIFIER if use_model else libsbml.BIOLOGICAL_QUALIFIER)
