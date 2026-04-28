@@ -4,8 +4,8 @@ __pycache__/
 .DS_Store
 tabularqual.egg-info/
 ~*
+test/*/
 PLAN.md
 Notes/
 dist/
-test/maboss/
 ref/
