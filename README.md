@@ -6,15 +6,15 @@ Convert between spreadsheets (XLSX, CSV) and SBML-qual for logical models (Boole
 
 Note: the format is specified [here](https://docs.google.com/document/d/1RCIN4bOsw4Uq9X2I-gdfBXDydyViYzaVhQK8cpdEWhA/edit?usp=sharing).
 
-### Install
+---
 
-Install directly from PyPI:
+### Install
 
 ```bash
 pip install tabularqual
 ```
 
-Or install from source (developmental):
+Or install from source:
 
 ```bash
 git clone https://github.com/sys-bio/TabularQual.git
@@ -22,168 +22,225 @@ cd TabularQual
 pip install -e .
 ```
 
+---
+
 ### Usage
 
-TabularQual can be used directly in **web app**, as a **Python package**, or via the **command line (CLI)**.
+TabularQual can be used as a **web app**, a **Python package**, or via the **command line (CLI)**.
 
 #### Web App
 
-Use directly in your browser -- no installation required!
+No installation required — open in your browser:
 
 **[Launch Web App](https://tabularqual.streamlit.app/)**
 
-Note: there are currently resource limits on Streamlit cloud, please switch to a local version for large networks by running:
-
-```bash
-streamlit run app.py
-```
+> For large networks the Streamlit cloud may hit resource limits. Run locally instead:
+> ```bash
+> streamlit run app.py
+> ```
 
 #### Python API
 
 ```python
 from tabularqual import convert_spreadsheet_to_sbml, convert_sbml_to_spreadsheet
 
-# Spreadsheet to SBML (accepts XLSX file, CSV folder, or CSV prefix)
+# Spreadsheet to SBML  (accepts XLSX file, CSV folder, or CSV prefix)
 stats = convert_spreadsheet_to_sbml("Model.xlsx", "Model.sbml")
 
-# SBML to Spreadsheet
+# SBML to Spreadsheet (XLSX)
 stats = convert_sbml_to_spreadsheet("Model.sbml", "Model.xlsx")
 
 # SBML to CSV files
 stats = convert_sbml_to_spreadsheet("Model.sbml", "Model", output_csv=True)
 ```
 
-Both functions return a `dict` with conversion statistics:
+Both functions return a stats dict:
 
 ```python
 {
-    'species': 10,           # number of species
-    'transitions': 10,       # number of transitions
-    'interactions': 25,      # number of interactions
-    'warnings': [...],       # list of warning/info messages
-    'created_files': [...],  # output files created (to-table only)
+    "species":                 int,
+    "transitions":             int,
+    "interactions":            int,
+    "warnings":                list[str],   # all messages produced
+    "validation_errors":       list[str],   # annotation identifier issues
+    "total_validation_errors": int,
+    "created_files":           list[str],   # output file paths
 }
 ```
 
-See [`python_api_example.py`](python_api_example.py) for a complete working example.
+See [`python_api_example.py`](python_api_example.py) for a working example covering multi-valued models and other options.
 
 #### CLI
 
-##### Spreadsheet to SBML
+**Spreadsheet → SBML**
 
 ```bash
-# Simple usage (output defaults to input name with .sbml extension)
+# XLSX input (output defaults to same name with .sbml extension)
 to-sbml examples/ToyExample.xlsx
 
-# From CSV directory
+# CSV directory
 to-sbml examples/ToyExample_csv/
 
-# From CSV files (using prefix - looks for Model_Species.csv, Model_Transitions.csv, etc.)
+# CSV prefix (looks for Model_Species.csv, Model_Transitions.csv, etc.)
 to-sbml Model
 ```
 
-##### SBML to Spreadsheet
+**SBML → Spreadsheet**
 
 ```bash
-# Simple usage (output defaults to input name with .xlsx extension)
+# XLSX output (default)
 to-table examples/ToyExample.sbml
 
-# To CSV files (creates Model_Model.csv, Model_Species.csv, etc.)
+# CSV output (creates ToyExample_Species.csv, ToyExample_Transitions.csv, etc.)
 to-table examples/ToyExample.sbml --csv
 ```
 
 #### Options
 
-`to-sbml INPUT [OUTPUT]`:
+`to-sbml INPUT [OUTPUT]`
 
-- **INPUT**: input file/path. Supports XLSX, CSV file, directory with CSVs, or CSV prefix (e.g., `Model` for `Model_Species.csv`, `Model_Transitions.csv`, etc.)
-- **OUTPUT**: output SBML file (optional, defaults to input name with `.sbml` extension)
-- **--inter-anno**: use interaction annotations only (unless `--trans-anno` is also set)
-- **--trans-anno**: use transition annotations only (unless `--inter-anno` is also set)
-- **--use-name**: when referring to species, names have been used in the spreadsheet (default: use ID)
-- **--no-validate**: skip annotation validation
+| Option | Description |
+|--------|-------------|
+| `--inter-anno` | Include annotations from the Interactions sheet in SBML |
+| `--trans-anno` | Include annotations from the Transitions sheet in SBML |
+| `--use-name` | Rules/targets use species Names instead of IDs (see below) |
+| `--no-validate` | Skip annotation identifier validation |
 
-`to-table INPUT [OUTPUT]`:
+`to-table INPUT [OUTPUT]`
 
-- **INPUT**: input SBML file
-- **OUTPUT**: output file/prefix (optional, defaults to input name)
-- **--csv**: output as CSV files (`{prefix}_Model.csv`, `{prefix}_Species.csv`, `{prefix}_Transitions.csv`, `{prefix}_Interactions.csv`)
-- **--template**: specify a template file for README and Appendix sheets (XLSX only)
-- **--colon-format**: use colon notation for transition rules (`:` means `>=`)
-- **--use-name**: use Species Name instead of ID in rules and interactions for better readability (default: use ID)
-- **--no-validate**: skip annotation validation
+| Option | Description |
+|--------|-------------|
+| `--csv` | Write CSV files instead of a single XLSX workbook |
+| `--colon-format` | Use colon notation in rules (`A:2` instead of `A >= 2`) |
+| `--use-name` | Write species Names in rules/targets instead of IDs |
+| `--template PATH` | Custom template file for README/Appendix sheets (XLSX only) |
+| `--no-validate` | Skip annotation identifier validation |
+
+---
+
+### Spreadsheet Format
+
+The spreadsheet consists of up to four sheets. Sheet names and column headers must match exactly (case-sensitive).
+
+| Sheet | Required | Required columns |
+|-------|----------|-----------------|
+| **Model** | No | — |
+| **Species** | Yes | `Species_ID` *or* `Name` |
+| **Transitions** | Yes | `Target`, `Rule` |
+| **Interactions** | No | `Target`, `Source` |
+
+Additional sheets (e.g. README, Appendix) and columns are silently ignored.
+
+**Model_ID fallback**: if the Model sheet is absent or its `Model_ID` cell is empty, the converter uses the input filename stem (e.g. `MyModel.xlsx` → `MyModel`).
+
+See the [template spreadsheet](doc/template.xlsx) and [examples/](examples/) for concrete file layouts.
+
+---
 
 ### Transition Rules Syntax
 
-The Rule column supports boolean and comparison expressions (spaces are ignored). See [doc/transition_rule_syntax.md](doc/transition_rule_syntax.md) for full details.
+The `Rule` column accepts Boolean and comparison expressions; spaces are ignored during parsing.
 
-* **Logical operators**: `&` (AND), `|` (OR), `!` (NOT), `^` (XOR)
-* **Parentheses**: `(` and `)` for grouping expressions
-* **For multi-valued models**: threshold-based activation
-  * **Colon notation**: `A:2` means "A is at level 2 or higher" (`A >= 2`)
-  * **Negated colon**: `!A:2` means "A is below level 2" (`A < 2`)
-  * **Explicit comparisons**: `A >= 2`, `B <= 1`, `C != 0` for precise control
-  * **Equivalent expressions**: `!CI:2 & !Cro:3` is the same as `CI < 2 & Cro < 3` or `CI <= 1 & Cro <= 2`
-* **Constant rules**:
-  * **Boolean values**: `TRUE` / `FALSE` means the target will be fixed at level 1 / 0
-  * **Integers**: target will be fixed at the level (for multi-valued models, this can be `2`, `3`, ...)
+| Symbol | Meaning | Example |
+|--------|---------|---------|
+| `&` | AND | `A & B` |
+| `\|` | OR | `A \| B` |
+| `!` | NOT | `!A` |
+| `^` | XOR | `A ^ B` |
+| `()` | Grouping | `(A & B) \| C` |
+| `A:2` | A ≥ 2 (threshold) | multi-valued only |
+| `!A:2` | A < 2 | multi-valued only |
+| `>=` `<=` `>` `<` `=` `==` `!=` | Comparison operators | `A >= 2` |
+| `TRUE` / `FALSE` | Fixed active / inactive | constant rule |
+| `2` | Fixed at level 2 | constant rule (multi-valued) |
+| `"name"` | Name with spaces or special characters | `"p53 protein" & B` |
 
-**Examples**:
+**Examples**
 
-- `A & B` - Both A and B are active (level ≥ 1 for multi-valued)
-- `A ^ B` - Exactly one of A or B is active (XOR)
-- `A:2 | B < 1` - A is at level 2+ OR B is inactive
-- `N & !CI:2 & !Cro:3` - N active AND CI below level 2 AND Cro below level 3
-- `(A & B) | (!C & D != 1)` - Complex grouped expression
+```
+A & B                      # Both A and B active (level ≥ 1)
+A | (D & !C)               # A active, or D active and C inactive
+A ^ B                      # Exactly one of A or B active (XOR)
+A:2 | B < 1                # A at level 2+, or B inactive
+!CI:2 & !Cro:3             # CI below level 2 AND Cro below level 3
+(A & B) | (!C & D != 1)    # Complex grouped expression
+FALSE                      # Target always inactive
+```
 
-Note: When importing SBML-qual files, the tool follows the spec (section 5.1): symbolic threshold references in MathML (e.g., `<ci>theta_t9_ex</ci>`) are replaced with their numeric `thresholdLevel` values. For Boolean models (threshold 0 or 1), the result is simplified to pure Boolean form (e.g., `A >= 1` → `A`, `A < 1` → `!A`).
+**Multi-valued models**: each result level gets its own row in the Transitions sheet with a different `Level` value. Rows with the same `Target` are merged into one SBML Transition with multiple function terms.
+
+> When importing SBML-qual, the tool follows spec §5.1: symbolic threshold `<ci>` references in MathML are replaced with their `thresholdLevel` values, and Boolean simplification is applied (e.g. `A >= 1` → `A`, `A < 1` → `!A`).
+
+---
+
+### Species Names in Rules
+
+By default, `Target` and `Rule` columns reference species by **ID** (`Species_ID`). Passing `--use-name` (CLI) or checking "Rules use species Names" (web app / `use_name=True` in Python) switches to **Name**-based references.
+
+**Names with spaces or special characters** must be enclosed in double quotes in rules:
+
+```
+"p53 protein" & MDM2
+"NF-κB complex" | IKK
+```
+
+**Duplicate names** are automatically disambiguated with numeric suffixes. Given:
+
+| Species_ID | Name   |
+|------------|--------|
+| GeneA      | Kinase |
+| GeneB      | Kinase |
+
+The first occurrence keeps the original name; subsequent ones get `_1`, `_2`, ...:
+
+```
+Kinase & Kinase_1    # refers to GeneA and GeneB respectively
+```
+
+**Fallback**: if any species lack a Name when `--use-name` is active, a warning is issued and IDs are used instead.
+
+---
 
 ### Validation
 
-TabularQual performs several validations during conversion to ensure data quality and SBML compliance.
+#### SId Format
 
-#### SId Format Validation
+`Model_ID`, `Species_ID`, `Transitions_ID`, and `Compartment` must conform to SBML SId rules:
+- Start with a letter or underscore
+- Contain only letters, digits, and underscores
+- No spaces, slashes, or other special characters
 
-Model_ID, Species_ID, Transitions_ID, and Compartment fields must conform to the SBML SId specification (SBML Level 3 Version 2):
+Invalid IDs are cleaned automatically: special characters → `_`, leading digit → prepend `_`, duplicates → append `_1`, `_2`, ... A warning is shown for each correction.
 
-- Must start with a letter (A–Z, a–z) or underscore (`_`)
-- May contain only letters, digits (0–9), and underscores
-- Case-sensitive (equality determined by exact string matching)
-- No spaces, slashes, or other special characters allowed
-- Unique across their sheets
+Example: `PI3K/AKT-pathway` → `PI3K_AKT_pathway`
 
-**Automatic Cleanup**: If an ID doesn't conform, it is automatically cleaned:
+#### Controlled vocabulary
 
-- Special characters (spaces, slashes, dashes, etc.) are replaced with underscores
-- IDs starting with a digit get a leading underscore prepended
-- Duplicate IDs are automatically renamed with suffixes (`_1`, `_2`, etc.)
+| Field | Valid values |
+|-------|-------------|
+| Species `Type` | `Input`, `Internal`, `Output` |
+| Interaction `Sign` | `positive`, `negative`, `dual`, `unknown` |
+| `Relation` (Species) | `is`, `hasVersion`, `isVersionOf`, `isDescribedBy`, `hasPart`, `isPartOf`, `hasProperty`, `isPropertyOf`, `encodes`, `isEncodedBy`, `isHomologTo`, `occursIn`, `hasTaxon` |
+| `Relation` (Transitions / Interactions) | same list as above; defaults to `isDescribedBy` |
 
-**Example**: `PI3K/AKT-pathway` → `PI3K_AKT_pathway`
+All values are accepted case-insensitively and normalised to their canonical form.
 
-#### Field Value Validation
+#### Annotation identifiers
 
-The converter validates controlled vocabulary fields:
+Compact identifiers (`prefix:accession`, e.g. `uniprot:P19838`) are resolved to `https://identifiers.org/` URLs in SBML. Optionally validate that identifiers actually exist:
 
-- **Species Type**: Must be one of `Input`, `Internal`, or `Output` (case-insensitive)
-- **Interaction Sign**: Must be one of `positive`, `negative`, `dual`, or `unknown` (case-insensitive)
-- **Relation Qualifiers**: Must be one of `is`, `hasVersion`, `isVersionOf`, `isDescribedBy`, `hasPart`, `isPartOf`, `hasProperty`, `isPropertyOf`, `encodes`, `isEncodedBy`, `isHomologTo`, `occursIn`, `hasTaxon` (case-insensitive)
+```bash
+pip install sbmlutils>=0.9.6
+# then run without --no-validate (the default)
+```
 
-#### Annotation Validation
+---
 
-Annotations in the SBML output can be validated using `sbmlutils`:
+### Examples
 
-- Validates that annotation URIs are correctly formed
-- Checks that identifiers.org resources are valid
-- Enable/disable with `--no-validate` flag or checkbox in web app
-
-To use annotation validation: `pip install sbmlutils>=0.9.6`
-
-### Notes
-
-- The reader ignores a first README sheet if present, and reads `Model`, `Species`, `Transitions`, and `Interactions`.
-- The SBML to Spreadsheet converter automatically uses `doc/template.xlsx` if available for README and Appendix sheets (XLSX output only).
-- When `--use-name` is enabled, the converter uses **Species Name** in transition rules and interactions instead of Species_ID.
-  - If a name conforms to SId format and is unique, it's used directly. Otherwise, it's quoted: `"Name"` or gets suffixes for duplicates: `"Name_1"`, `"Name_2"`, etc.
-  - If any species are missing Names when `--use-name` is enabled, a warning is issued and IDs are used instead.
-  - When `--use-name` is enabled, Species_ID becomes optional and is automatically generated from Names if missing.
-- TODO: automatically detect Species:Type
+| File | Description |
+|------|-------------|
+| [`examples/ToyExample.xlsx`](examples/ToyExample.xlsx) | Small Boolean model |
+| [`examples/ToyExample_multivalue.xlsx`](examples/ToyExample_multivalue.xlsx) | Multi-valued variant of the toy model |
+| [`examples/Faure2006/Faure2006.xlsx`](examples/Faure2006/Faure2006.xlsx) | Fauré 2006 mammalian cell-cycle (Boolean) |
+| [`examples/ThieffryThomas1995/ThieffryThomas1995_multivalue.xlsx`](examples/ThieffryThomas1995/ThieffryThomas1995_multivalue.xlsx) | Thieffry & Thomas 1995 λ phage (multi-valued) |

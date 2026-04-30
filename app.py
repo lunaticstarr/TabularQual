@@ -157,7 +157,7 @@ with tab1:
     
     with col1:
         uploaded_files = st.file_uploader(
-            "Upload a spreadsheet (.xlsx) or CSV files",
+            "Upload a spreadsheet (.xlsx) or CSV files.\nYou may use this [template spreadsheet](https://docs.google.com/spreadsheets/d/1_welMPd8-Wdbu3fTrCjUZz159yT5kxNO/edit?usp=sharing&ouid=105819375684543832411&rtpof=true&sd=true).",
             type=["xlsx", "csv"],
             key="spreadsheet_upload",
             accept_multiple_files=True,
