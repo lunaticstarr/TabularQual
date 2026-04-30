@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created by TabularQual version 0.1.0 with libSBML version 5.20.4 -->
+<!-- Created by TabularQual version 0.1.5 with libSBML version 5.21.0 -->
 
 <sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" xmlns:qual="http://www.sbml.org/sbml/level3/version1/qual/version1" level="3" version="1" qual:required="true">
   <model metaid="metaid_0000001" id="ThieffryThomas1995_multivalue" name="A multi-valued model on lysis vs lysogeny decision in the phage lambda">
@@ -68,7 +68,7 @@ Note that in 3, we considered a modified version of the four component model: ph
           </bqmodel:is>
           <bqmodel:isDescribedBy>
             <rdf:Bag>
-              <rdf:li rdf:resource="https://identifiers.org/PMID:7703921"/>
+              <rdf:li rdf:resource="https://identifiers.org/pubmed:7703921"/>
               <rdf:li rdf:resource="https://identifiers.org/DOI:10.1007/BF02460619"/>
             </rdf:Bag>
           </bqmodel:isDescribedBy>
@@ -93,7 +93,12 @@ Note that in 3, we considered a modified version of the four component model: ph
       <qual:qualitativeSpecies metaid="metaid_0000002" qual:id="CI" qual:compartment="default" qual:constant="false" qual:name="lambdap50" qual:initialLevel="0" qual:maxLevel="2">
         <notes>
           <body xmlns="http://www.w3.org/1999/xhtml">
-            <p>LexA family transcriptional regulator</p>
+            <p>&lt;notes1&gt;
+Type: Internal
+&lt;/notes1&gt;</p>
+            <p>&lt;notes2&gt;
+LexA family transcriptional regulator
+&lt;/notes2&gt;</p>
           </body>
         </notes>
         <annotation>
@@ -116,7 +121,12 @@ Note that in 3, we considered a modified version of the four component model: ph
       <qual:qualitativeSpecies metaid="metaid_0000003" qual:id="Cro" qual:compartment="default" qual:constant="false" qual:name="lambdap55" qual:initialLevel="0" qual:maxLevel="3">
         <notes>
           <body xmlns="http://www.w3.org/1999/xhtml">
-            <p>Cro/CI family transcriptional regulator</p>
+            <p>&lt;notes1&gt;
+Type: Internal
+&lt;/notes1&gt;</p>
+            <p>&lt;notes2&gt;
+Cro/CI family transcriptional regulator
+&lt;/notes2&gt;</p>
           </body>
         </notes>
         <annotation>
@@ -139,7 +149,12 @@ Note that in 3, we considered a modified version of the four component model: ph
       <qual:qualitativeSpecies metaid="metaid_0000004" qual:id="CII" qual:compartment="default" qual:constant="false" qual:name="cII" qual:initialLevel="0" qual:maxLevel="1">
         <notes>
           <body xmlns="http://www.w3.org/1999/xhtml">
-            <p>CII-like transcriptional activator</p>
+            <p>&lt;notes1&gt;
+Type: Internal
+&lt;/notes1&gt;</p>
+            <p>&lt;notes2&gt;
+CII-like transcriptional activator
+&lt;/notes2&gt;</p>
           </body>
         </notes>
         <annotation>
@@ -162,7 +177,12 @@ Note that in 3, we considered a modified version of the four component model: ph
       <qual:qualitativeSpecies metaid="metaid_0000005" qual:id="N" qual:compartment="default" qual:constant="false" qual:name="N" qual:initialLevel="0" qual:maxLevel="1">
         <notes>
           <body xmlns="http://www.w3.org/1999/xhtml">
-            <p>anti-termination protein N-like</p>
+            <p>&lt;notes1&gt;
+Type: Internal
+&lt;/notes1&gt;</p>
+            <p>&lt;notes2&gt;
+anti-termination protein N-like
+&lt;/notes2&gt;</p>
           </body>
         </notes>
         <annotation>
@@ -216,7 +236,7 @@ Note that in 3, we considered a modified version of the four component model: ph
                     <cn type="integer"> 1 </cn>
                   </apply>
                   <apply>
-                    <eq/>
+                    <geq/>
                     <ci> CII </ci>
                     <cn type="integer"> 1 </cn>
                   </apply>
@@ -303,17 +323,14 @@ Level 3: !Cro:3 &amp; !CI:2
               <apply>
                 <and/>
                 <apply>
-                  <and/>
-                  <apply>
-                    <eq/>
-                    <ci> N </ci>
-                    <cn type="integer"> 1 </cn>
-                  </apply>
-                  <apply>
-                    <lt/>
-                    <ci> CI </ci>
-                    <cn type="integer"> 2 </cn>
-                  </apply>
+                  <geq/>
+                  <ci> N </ci>
+                  <cn type="integer"> 1 </cn>
+                </apply>
+                <apply>
+                  <lt/>
+                  <ci> CI </ci>
+                  <cn type="integer"> 2 </cn>
                 </apply>
                 <apply>
                   <lt/>

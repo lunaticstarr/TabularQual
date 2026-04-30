@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created by TabularQual version 0.1.0 with libSBML version 5.20.4 -->
+<!-- Created by TabularQual version 0.1.5 with libSBML version 5.21.0 -->
 
 <sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" xmlns:qual="http://www.sbml.org/sbml/level3/version1/qual/version1" level="3" version="1" qual:required="true">
   <model metaid="metaid_0000001" id="Faure2006" name="Mammalian Cell Cycle 2006">
@@ -105,6 +105,11 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
     </listOfCompartments>
     <qual:listOfQualitativeSpecies>
       <qual:qualitativeSpecies metaid="metaid_0000002" qual:id="Cdc20" qual:compartment="cytosol" qual:constant="false" qual:name="APC/C activator protein CDC20">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Type: Internal</p>
+          </body>
+        </notes>
         <annotation>
           <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
             <rdf:Description rdf:about="#metaid_0000002">
@@ -123,6 +128,11 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
         </annotation>
       </qual:qualitativeSpecies>
       <qual:qualitativeSpecies metaid="metaid_0000003" qual:id="Cdh1" qual:compartment="cytosol" qual:constant="false" qual:name="PC/C activator protein CDH1">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Type: Internal</p>
+          </body>
+        </notes>
         <annotation>
           <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
             <rdf:Description rdf:about="#metaid_0000003">
@@ -140,12 +150,47 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
           </rdf:RDF>
         </annotation>
       </qual:qualitativeSpecies>
-      <qual:qualitativeSpecies metaid="metaid_0000004" qual:id="CycA" qual:compartment="cytosol" qual:constant="false" qual:name="cdk2/Cyclin A"/>
-      <qual:qualitativeSpecies metaid="metaid_0000005" qual:id="CycB" qual:compartment="cytosol" qual:constant="false"/>
-      <qual:qualitativeSpecies metaid="metaid_0000006" qual:id="CycD" qual:compartment="cytosol" qual:constant="false" qual:name="cdk4/6-Cyclin D"/>
-      <qual:qualitativeSpecies metaid="metaid_0000007" qual:id="CycE" qual:compartment="cytosol" qual:constant="false" qual:name="cdk2/Cyclin E"/>
-      <qual:qualitativeSpecies metaid="metaid_0000008" qual:id="E2F" qual:compartment="cytosol" qual:constant="false"/>
+      <qual:qualitativeSpecies metaid="metaid_0000004" qual:id="CycA" qual:compartment="cytosol" qual:constant="false" qual:name="cdk2/Cyclin A">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Type: Internal</p>
+          </body>
+        </notes>
+      </qual:qualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000005" qual:id="CycB" qual:compartment="cytosol" qual:constant="false">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Type: Internal</p>
+          </body>
+        </notes>
+      </qual:qualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000006" qual:id="CycD" qual:compartment="cytosol" qual:constant="false" qual:name="cdk4/6-Cyclin D">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Type: Input</p>
+          </body>
+        </notes>
+      </qual:qualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000007" qual:id="CycE" qual:compartment="cytosol" qual:constant="false" qual:name="cdk2/Cyclin E">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Type: Internal</p>
+          </body>
+        </notes>
+      </qual:qualitativeSpecies>
+      <qual:qualitativeSpecies metaid="metaid_0000008" qual:id="E2F" qual:compartment="cytosol" qual:constant="false">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Type: Internal</p>
+          </body>
+        </notes>
+      </qual:qualitativeSpecies>
       <qual:qualitativeSpecies metaid="metaid_0000009" qual:id="p27" qual:compartment="cytosol" qual:constant="false" qual:name="CDKN1B">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Type: Internal</p>
+          </body>
+        </notes>
         <annotation>
           <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
             <rdf:Description rdf:about="#metaid_0000009">
@@ -159,6 +204,11 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
         </annotation>
       </qual:qualitativeSpecies>
       <qual:qualitativeSpecies metaid="metaid_0000010" qual:id="Rb" qual:compartment="cytosol" qual:constant="false" qual:name="Retinoblastoma 1">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Type: Internal</p>
+          </body>
+        </notes>
         <annotation>
           <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
             <rdf:Description rdf:about="#metaid_0000010">
@@ -177,6 +227,11 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
         </annotation>
       </qual:qualitativeSpecies>
       <qual:qualitativeSpecies metaid="metaid_0000011" qual:id="UbcH10" qual:compartment="cytosol" qual:constant="false" qual:name="E2 ubiquitin conjugating enzyme UbcH10">
+        <notes>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <p>Type: Internal</p>
+          </body>
+        </notes>
         <annotation>
           <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
             <rdf:Description rdf:about="#metaid_0000011">
@@ -238,7 +293,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
           <qual:functionTerm qual:resultLevel="1">
             <math xmlns="http://www.w3.org/1998/Math/MathML">
               <apply>
-                <eq/>
+                <geq/>
                 <ci> CycB </ci>
                 <cn type="integer"> 1 </cn>
               </apply>
@@ -338,30 +393,27 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
               <apply>
                 <or/>
                 <apply>
-                  <or/>
+                  <and/>
                   <apply>
-                    <and/>
-                    <apply>
-                      <eq/>
-                      <ci> CycA </ci>
-                      <cn type="integer"> 0 </cn>
-                    </apply>
-                    <apply>
-                      <eq/>
-                      <ci> CycB </ci>
-                      <cn type="integer"> 0 </cn>
-                    </apply>
+                    <eq/>
+                    <ci> CycA </ci>
+                    <cn type="integer"> 0 </cn>
                   </apply>
                   <apply>
                     <eq/>
-                    <ci> Cdc20 </ci>
-                    <cn type="integer"> 1 </cn>
+                    <ci> CycB </ci>
+                    <cn type="integer"> 0 </cn>
                   </apply>
+                </apply>
+                <apply>
+                  <geq/>
+                  <ci> Cdc20 </ci>
+                  <cn type="integer"> 1 </cn>
                 </apply>
                 <apply>
                   <and/>
                   <apply>
-                    <eq/>
+                    <geq/>
                     <ci> p27 </ci>
                     <cn type="integer"> 1 </cn>
                   </apply>
@@ -510,37 +562,31 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
                 <apply>
                   <and/>
                   <apply>
-                    <and/>
-                    <apply>
-                      <and/>
-                      <apply>
-                        <eq/>
-                        <ci> E2F </ci>
-                        <cn type="integer"> 1 </cn>
-                      </apply>
-                      <apply>
-                        <eq/>
-                        <ci> Rb </ci>
-                        <cn type="integer"> 0 </cn>
-                      </apply>
-                    </apply>
-                    <apply>
-                      <eq/>
-                      <ci> Cdc20 </ci>
-                      <cn type="integer"> 0 </cn>
-                    </apply>
+                    <geq/>
+                    <ci> E2F </ci>
+                    <cn type="integer"> 1 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> Rb </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> Cdc20 </ci>
+                    <cn type="integer"> 0 </cn>
                   </apply>
                   <apply>
                     <not/>
                     <apply>
                       <and/>
                       <apply>
-                        <eq/>
+                        <geq/>
                         <ci> Cdh1 </ci>
                         <cn type="integer"> 1 </cn>
                       </apply>
                       <apply>
-                        <eq/>
+                        <geq/>
                         <ci> UbcH10 </ci>
                         <cn type="integer"> 1 </cn>
                       </apply>
@@ -550,37 +596,31 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
                 <apply>
                   <and/>
                   <apply>
-                    <and/>
-                    <apply>
-                      <and/>
-                      <apply>
-                        <eq/>
-                        <ci> CycA </ci>
-                        <cn type="integer"> 1 </cn>
-                      </apply>
-                      <apply>
-                        <eq/>
-                        <ci> Rb </ci>
-                        <cn type="integer"> 0 </cn>
-                      </apply>
-                    </apply>
-                    <apply>
-                      <eq/>
-                      <ci> Cdc20 </ci>
-                      <cn type="integer"> 0 </cn>
-                    </apply>
+                    <geq/>
+                    <ci> CycA </ci>
+                    <cn type="integer"> 1 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> Rb </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> Cdc20 </ci>
+                    <cn type="integer"> 0 </cn>
                   </apply>
                   <apply>
                     <not/>
                     <apply>
                       <and/>
                       <apply>
-                        <eq/>
+                        <geq/>
                         <ci> Cdh1 </ci>
                         <cn type="integer"> 1 </cn>
                       </apply>
                       <apply>
-                        <eq/>
+                        <geq/>
                         <ci> UbcH10 </ci>
                         <cn type="integer"> 1 </cn>
                       </apply>
@@ -696,7 +736,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
           <qual:functionTerm qual:resultLevel="1">
             <math xmlns="http://www.w3.org/1998/Math/MathML">
               <apply>
-                <eq/>
+                <geq/>
                 <ci> CycD </ci>
                 <cn type="integer"> 1 </cn>
               </apply>
@@ -770,7 +810,7 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
               <apply>
                 <and/>
                 <apply>
-                  <eq/>
+                  <geq/>
                   <ci> E2F </ci>
                   <cn type="integer"> 1 </cn>
                 </apply>
@@ -891,17 +931,14 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
                 <apply>
                   <and/>
                   <apply>
-                    <and/>
-                    <apply>
-                      <eq/>
-                      <ci> Rb </ci>
-                      <cn type="integer"> 0 </cn>
-                    </apply>
-                    <apply>
-                      <eq/>
-                      <ci> CycA </ci>
-                      <cn type="integer"> 0 </cn>
-                    </apply>
+                    <eq/>
+                    <ci> Rb </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> CycA </ci>
+                    <cn type="integer"> 0 </cn>
                   </apply>
                   <apply>
                     <eq/>
@@ -912,17 +949,14 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
                 <apply>
                   <and/>
                   <apply>
-                    <and/>
-                    <apply>
-                      <eq/>
-                      <ci> p27 </ci>
-                      <cn type="integer"> 1 </cn>
-                    </apply>
-                    <apply>
-                      <eq/>
-                      <ci> Rb </ci>
-                      <cn type="integer"> 0 </cn>
-                    </apply>
+                    <geq/>
+                    <ci> p27 </ci>
+                    <cn type="integer"> 1 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> Rb </ci>
+                    <cn type="integer"> 0 </cn>
                   </apply>
                   <apply>
                     <eq/>
@@ -1013,25 +1047,19 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
                 <apply>
                   <and/>
                   <apply>
-                    <and/>
-                    <apply>
-                      <and/>
-                      <apply>
-                        <eq/>
-                        <ci> CycD </ci>
-                        <cn type="integer"> 0 </cn>
-                      </apply>
-                      <apply>
-                        <eq/>
-                        <ci> CycE </ci>
-                        <cn type="integer"> 0 </cn>
-                      </apply>
-                    </apply>
-                    <apply>
-                      <eq/>
-                      <ci> CycA </ci>
-                      <cn type="integer"> 0 </cn>
-                    </apply>
+                    <eq/>
+                    <ci> CycD </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> CycE </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> CycA </ci>
+                    <cn type="integer"> 0 </cn>
                   </apply>
                   <apply>
                     <eq/>
@@ -1042,36 +1070,30 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
                 <apply>
                   <and/>
                   <apply>
-                    <and/>
+                    <geq/>
+                    <ci> p27 </ci>
+                    <cn type="integer"> 1 </cn>
+                  </apply>
+                  <apply>
+                    <not/>
                     <apply>
                       <and/>
                       <apply>
-                        <eq/>
-                        <ci> p27 </ci>
+                        <geq/>
+                        <ci> CycE </ci>
                         <cn type="integer"> 1 </cn>
                       </apply>
                       <apply>
-                        <not/>
-                        <apply>
-                          <and/>
-                          <apply>
-                            <eq/>
-                            <ci> CycE </ci>
-                            <cn type="integer"> 1 </cn>
-                          </apply>
-                          <apply>
-                            <eq/>
-                            <ci> CycA </ci>
-                            <cn type="integer"> 1 </cn>
-                          </apply>
-                        </apply>
+                        <geq/>
+                        <ci> CycA </ci>
+                        <cn type="integer"> 1 </cn>
                       </apply>
                     </apply>
-                    <apply>
-                      <eq/>
-                      <ci> CycB </ci>
-                      <cn type="integer"> 0 </cn>
-                    </apply>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> CycB </ci>
+                    <cn type="integer"> 0 </cn>
                   </apply>
                   <apply>
                     <eq/>
@@ -1211,25 +1233,19 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
                 <apply>
                   <and/>
                   <apply>
-                    <and/>
-                    <apply>
-                      <and/>
-                      <apply>
-                        <eq/>
-                        <ci> CycA </ci>
-                        <cn type="integer"> 0 </cn>
-                      </apply>
-                      <apply>
-                        <eq/>
-                        <ci> CycB </ci>
-                        <cn type="integer"> 0 </cn>
-                      </apply>
-                    </apply>
-                    <apply>
-                      <eq/>
-                      <ci> CycD </ci>
-                      <cn type="integer"> 0 </cn>
-                    </apply>
+                    <eq/>
+                    <ci> CycA </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> CycB </ci>
+                    <cn type="integer"> 0 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> CycD </ci>
+                    <cn type="integer"> 0 </cn>
                   </apply>
                   <apply>
                     <eq/>
@@ -1240,17 +1256,14 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
                 <apply>
                   <and/>
                   <apply>
-                    <and/>
-                    <apply>
-                      <eq/>
-                      <ci> p27 </ci>
-                      <cn type="integer"> 1 </cn>
-                    </apply>
-                    <apply>
-                      <eq/>
-                      <ci> CycB </ci>
-                      <cn type="integer"> 0 </cn>
-                    </apply>
+                    <geq/>
+                    <ci> p27 </ci>
+                    <cn type="integer"> 1 </cn>
+                  </apply>
+                  <apply>
+                    <eq/>
+                    <ci> CycB </ci>
+                    <cn type="integer"> 0 </cn>
                   </apply>
                   <apply>
                     <eq/>
@@ -1390,35 +1403,29 @@ This model is a Boolean model of the G1/S restriction point control of mammalian
                 <apply>
                   <and/>
                   <apply>
-                    <and/>
-                    <apply>
-                      <eq/>
-                      <ci> Cdh1 </ci>
-                      <cn type="integer"> 1 </cn>
-                    </apply>
-                    <apply>
-                      <eq/>
-                      <ci> UbcH10 </ci>
-                      <cn type="integer"> 1 </cn>
-                    </apply>
+                    <geq/>
+                    <ci> Cdh1 </ci>
+                    <cn type="integer"> 1 </cn>
+                  </apply>
+                  <apply>
+                    <geq/>
+                    <ci> UbcH10 </ci>
+                    <cn type="integer"> 1 </cn>
                   </apply>
                   <apply>
                     <or/>
                     <apply>
-                      <or/>
-                      <apply>
-                        <eq/>
-                        <ci> Cdc20 </ci>
-                        <cn type="integer"> 1 </cn>
-                      </apply>
-                      <apply>
-                        <eq/>
-                        <ci> CycA </ci>
-                        <cn type="integer"> 1 </cn>
-                      </apply>
+                      <geq/>
+                      <ci> Cdc20 </ci>
+                      <cn type="integer"> 1 </cn>
                     </apply>
                     <apply>
-                      <eq/>
+                      <geq/>
+                      <ci> CycA </ci>
+                      <cn type="integer"> 1 </cn>
+                    </apply>
+                    <apply>
+                      <geq/>
                       <ci> CycB </ci>
                       <cn type="integer"> 1 </cn>
                     </apply>

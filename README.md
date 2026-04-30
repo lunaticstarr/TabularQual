@@ -4,7 +4,7 @@ Convert between spreadsheets (XLSX, CSV) and SBML-qual for logical models (Boole
 
 ![TabularQual](doc/tabularqual.png "Example TabularQual spreadsheet representation of a Boolean model")
 
-Note: the format is specified [here](doc/TabularQual_specification_v0.1.3.docx).
+Note: the format is specified [here](https://docs.google.com/document/d/1RCIN4bOsw4Uq9X2I-gdfBXDydyViYzaVhQK8cpdEWhA/edit?usp=sharing).
 
 ### Install
 
@@ -65,7 +65,7 @@ Both functions return a `dict` with conversion statistics:
 }
 ```
 
-See [`examples/python_api_example.py`](examples/python_api_example.py) for a complete working example.
+See [`python_api_example.py`](python_api_example.py) for a complete working example.
 
 #### CLI
 

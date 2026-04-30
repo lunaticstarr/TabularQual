@@ -5,7 +5,6 @@ __pycache__/
 tabularqual.egg-info/
 ~*
 test/*/
-PLAN.md
-Notes/
 dist/
 ref/
+notes.txt

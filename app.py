@@ -47,11 +47,11 @@ st.markdown("""
     h2 {
         font-size: 1rem;
     }
-    .stDownloadButton button {
-        background-color: #28a745;
-        color: white;
-        font-weight: bold;
-    }
+    # .stDownloadButton button {
+    #     background-color: #d1ecf1;
+    #     color: white;
+    #     font-weight: bold;
+    # }
     .success-box {
         padding: 1rem;
         border-radius: 0.5rem;
@@ -77,34 +77,72 @@ st.markdown('<p class="sub-header">Convert between spreadsheets and SBML-qual fi
 
 # Sidebar with information
 with st.sidebar:
-    st.header("ℹ️ About")
-    st.markdown("""
-    This tool converts between:
-    - **Spreadsheets** (.xlsx or .csv)
-    - **SBML-qual** files (.sbml/.xml)
-    """)
-    st.header("🔍 Examples")
-    st.markdown("""
-    - [Faure2006 (Boolean)](https://docs.google.com/spreadsheets/d/1B9SUcuY_ioQVlY9y351yIHnW45oZ8J1t/edit?usp=drive_link&ouid=105819375684543832411&rtpof=true&sd=true)
-    - [ThieffryThomas1995 (Multi-valued)](https://docs.google.com/spreadsheets/d/1Auepvb1Z0Q4lIjMqaesjWdh3oHWTwjA8/edit?usp=drive_link&ouid=105819375684543832411&rtpof=true&sd=true)
-    """)
-    
-    st.header("📖 Documentation")
-    st.markdown("""
-    **Transition Rules Syntax:**
-    - Logical: `&` (AND), `|` (OR), `!` (NOT), `^` (XOR)
-    - Comparisons: `>=`, `<=`, `<`, `>`, `!=`
-    - Colon symbol: `A:2` means `A >= 2`
-    - Negated: `!A:2` means `A < 2`
-    - Constant rules: `FALSE` / `TRUE`/ `N` (integer) means the target will be fixed at level 0 / 1 / N
+    # ── Format quick-reference ───────────────────────────────────────────────
+    st.header("📖 Format Guide")
 
-    """)
-    
+    with st.expander("Required sheets & fields"):
+        st.markdown("""
+| Sheet | Required fields |
+|---|---|
+| **Model** *(optional)* | — |
+| **Species** | `Species_ID` *or* `Name` |
+| **Transitions** | `Target`, `Rule` |
+| **Interactions** *(optional)* | `Target`, `Source` |
+        """)
+
+    with st.expander("Rule syntax"):
+        st.markdown("""
+| Symbol | Meaning | Example |
+|---|---|---|
+| `&` | AND | `A & B` |
+| `\\|` | OR | `A \\| B` |
+| `!` | NOT | `!A` |
+| `^` | XOR | `A ^ B` |
+| `A:2` | A ≥ 2 | multi-valued threshold |
+| `!A:2` | A < 2 | negated threshold |
+| `>=` `<=` `>` `<` `=` `!=` | comparisons | `A >= 2` |
+| `TRUE` / `FALSE` | fixed on / off | constant rule |
+| `2` | fixed at level 2 | constant rule |
+| `"name"` | name with spaces | `"p53 protein"` |
+        """)
+
+    with st.expander("Annotation identifiers"):
+        st.markdown("""
+Use **compact identifiers** (`prefix:accession`) from [identifiers.org](https://identifiers.org):
+
+`uniprot:P19838` · `pubmed:38272919` · `doi:10.1093/bib/bbac212`
+`taxonomy:9606` · `GO:0007249` · `biomodels.db:MODEL123`
+
+Full URLs are also accepted.
+        """)
+
+    # ── Download examples ────────────────────────────────────────────────────
+    st.header("📥 Download Examples")
+    _ex_root = Path(__file__).parent / "examples"
+    _examples = [
+        ("Boolean Model", _ex_root / "ToyExample.xlsx"),
+        ("Multi-valued Model", _ex_root / "ToyExample_multivalue.xlsx"),
+        # ("Faure2006 (Boolean)", _ex_root / "Faure2006" / "Faure2006.xlsx"),
+        # ("ThieffryThomas1995 (multi-valued)", _ex_root / "ThieffryThomas1995" / "ThieffryThomas1995_multivalue.xlsx"),
+    ]
+    for label, path in _examples:
+        if path.exists():
+            st.download_button(
+                label=label,
+                data=path.read_bytes(),
+                file_name=path.name,
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                width="content",
+                icon=":material/download:",
+                type="secondary"
+            )
+
+    # ── Links ────────────────────────────────────────────────────────────────
     st.header("🔗 Links")
     st.markdown("""
-    - [GitHub Repository](https://github.com/sys-bio/TabularQual)
-    - [The Spreadsheet Specification](https://docs.google.com/document/d/1RCIN4bOsw4Uq9X2I-gdfBXDydyViYzaVhQK8cpdEWhA/edit?usp=sharing)
-    - [Relevant files](https://drive.google.com/drive/folders/14lE0jmL4wPnwbfdwgPTs22URD32sovjw?usp=drive_link)
+- [GitHub Repository](https://github.com/sys-bio/TabularQual)
+- [Spreadsheet Specification](https://docs.google.com/document/d/1RCIN4bOsw4Uq9X2I-gdfBXDydyViYzaVhQK8cpdEWhA/edit?usp=sharing)
+- [Template spreadsheet](https://docs.google.com/spreadsheets/d/1_welMPd8-Wdbu3fTrCjUZz159yT5kxNO/edit?usp=sharing&ouid=105819375684543832411&rtpof=true&sd=true)
     """)
 
 # Main content
@@ -119,11 +157,15 @@ with tab1:
     
     with col1:
         uploaded_files = st.file_uploader(
-            "Upload Excel (.xlsx) or CSV files. For CSV, upload Species.csv and Transitions.csv (required), plus Model.csv and Interactions.csv (optional). You may use this [Template](https://docs.google.com/spreadsheets/d/1_welMPd8-Wdbu3fTrCjUZz159yT5kxNO/edit?usp=sharing&ouid=105819375684543832411&rtpof=true&sd=true).",
+            "Upload a spreadsheet (.xlsx) or CSV files",
             type=["xlsx", "csv"],
             key="spreadsheet_upload",
             accept_multiple_files=True,
-            help="Upload a single XLSX file or multiple CSV files"
+            help=(
+                "Single XLSX: upload one file containing Model, Species, Transitions, and (optional) Interactions sheets. "
+                "CSV: upload Species.csv and Transitions.csv (required) plus Model.csv and Interactions.csv (optional). "
+                "Download example files or the template from the sidebar."
+            )
         )
         
         # Auto-detect format and separate files
@@ -149,25 +191,25 @@ with tab1:
             "Include Interaction Annotations",
             value=True,
             key="inter_anno",
-            help="Include annotations from the Interaction tab in the SBML output"
+            help="Include literature references and notes from the Interactions sheet in the SBML output. Uncheck to keep the SBML leaner."
         )
         trans_anno = st.checkbox(
             "Include Transition Annotations",
             value=True,
             key="trans_anno",
-            help="Include annotations from the Transitions tab in the SBML output"
+            help="Include literature references and notes from the Transitions sheet in the SBML output."
         )
         validate_annotations = st.checkbox(
             "Validate Annotations",
             value=True,
             key="validate_anno_tab1",
-            help="Validate SBML annotations using sbmlutils (requires sbmlutils with metadata.validator)"
+            help="Check that annotation identifiers (e.g. uniprot:P19838) resolve to real database entries. Requires sbmlutils. Adds a few seconds."
         )
         use_name = st.checkbox(
-            "Use Species Name",
+            "Rules use species Names",
             value=False,
             key="use_name_tab1",
-            help="Species Name has been used in rules and interactions. If unchecked (default), Species_ID."
+            help="Check this if your Rule and Target columns use species Names (e.g. 'TP53') rather than IDs (e.g. 's1'). Default (unchecked): columns use species IDs."
         )
     
     # Determine if we have valid input (prefer XLSX if both provided)
@@ -409,27 +451,27 @@ with tab2:
             "Output as CSV Files",
             value=False,
             key="output_csv",
-            help="Output as separate CSV files instead of a single XLSX file"
+            help="Export as four separate CSV files (Model, Species, Transitions, Interactions) packed into a ZIP, instead of a single XLSX workbook."
         )
-        
+
         colon_format = st.checkbox(
             "Use Colon Notation",
             value=False,
             key="colon_format",
-            help="Use colon notation (A:2) instead of operators (A >= 2)"
+            help="Write multi-valued thresholds as colon notation (A:2) instead of comparison operators (A >= 2). Both are equivalent; choose the style your tools prefer."
         )
-        
+
         validate_annotations_tab2 = st.checkbox(
             "Validate Annotations",
             value=True,
             key="validate_anno_tab2",
-            help="Validate SBML annotations using sbmlutils (requires sbmlutils with metadata.validator)"
+            help="Check that annotation identifiers resolve to real database entries. Requires sbmlutils. Adds a few seconds."
         )
         use_name_tab2 = st.checkbox(
-            "Use Species Name",
+            "Write species Names in rules",
             value=False,
             key="use_name_tab2",
-            help="Use Species Name in rules and interactions. If unchecked (default), uses Species_ID."
+            help="Output species Names (e.g. 'TP53') instead of IDs (e.g. 's1') in the Rule and Target columns. Names containing spaces or special characters are enclosed in double quotes."
         )
         
         # # Template options (only for XLSX output)
