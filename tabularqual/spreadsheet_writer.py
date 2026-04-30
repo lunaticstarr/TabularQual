@@ -225,11 +225,12 @@ def _write_model_sheet(wb: openpyxl.Workbook, model: QualModel, position: int = 
     if model.model.derived_from:
         for url in model.model.derived_from:
             compact_id = _url_to_compact_id(url)
-            if 'biomodels' in compact_id.lower():
-                origin_models.append(compact_id)
-            else:
+            cid_lower = compact_id.lower()
+            if any(cid_lower.startswith(kw) for kw in ('doi:', 'pubmed:', 'pmid:', 'arxiv:', 'pmc:')):
                 origin_pubs.append(compact_id)
-    
+            else:
+                origin_models.append(compact_id)
+
     ws.cell(row=row, column=1, value="Origin_publication")
     if origin_pubs:
         ws.cell(row=row, column=2, value=", ".join(origin_pubs))
@@ -287,11 +288,7 @@ def _write_model_sheet(wb: openpyxl.Workbook, model: QualModel, position: int = 
     # Version
     ws.cell(row=row, column=1, value="Version")
     if model.model.versions:
-        # Format as "Version: version1, version2, ..." if multiple versions
-        version_str = ", ".join(model.model.versions)
-        if len(model.model.versions) > 1 or not version_str.startswith("Version:"):
-            version_str = f"Version: {version_str}"
-        ws.cell(row=row, column=2, value=version_str)
+        ws.cell(row=row, column=2, value=", ".join(model.model.versions))
     row += 1
     
     # Notes
@@ -824,11 +821,12 @@ def _write_model_csv(model: QualModel, output_path: str):
     if model.model.derived_from:
         for url in model.model.derived_from:
             compact_id = _url_to_compact_id(url)
-            if 'biomodels' in compact_id.lower():
-                origin_models.append(compact_id)
-            else:
+            cid_lower = compact_id.lower()
+            if any(cid_lower.startswith(kw) for kw in ('doi:', 'pubmed:', 'pmid:', 'arxiv:', 'pmc:')):
                 origin_pubs.append(compact_id)
-    
+            else:
+                origin_models.append(compact_id)
+
     rows.append(["Origin_publication", ", ".join(origin_pubs)])
     rows.append(["Origin_model", ", ".join(origin_models)])
     
@@ -860,12 +858,7 @@ def _write_model_csv(model: QualModel, output_path: str):
         rows.append([f"Contributor{idx}", value])
     
     # Version
-    version_str = ""
-    if model.model.versions:
-        version_str = ", ".join(model.model.versions)
-        if len(model.model.versions) > 1 or not version_str.startswith("Version:"):
-            version_str = f"Version: {version_str}"
-    rows.append(["Version", version_str])
+    rows.append(["Version", ", ".join(model.model.versions) if model.model.versions else ""])
     
     # Notes
     max_notes = max(3, len(model.model.notes))

@@ -332,6 +332,15 @@ def _resolve_rule_with_fallback(rule: str, species: Dict[str, Species], name_to_
     # Add invalid matches
     matches.extend(invalid_matches)
     
+    def _strip_threshold(ref: str) -> tuple[str, str]:
+        """Split 'Species:N' into ('Species', ':N'). Returns (ref, '') if no threshold."""
+        if ':' in ref:
+            colon_idx = ref.rfind(':')
+            suffix = ref[colon_idx + 1:]
+            if suffix.isdigit():
+                return ref[:colon_idx], ref[colon_idx:]
+        return ref, ''
+
     # First pass: determine the mode needed
     mode_switched = False
     for start, end, ref, is_quoted in matches:
@@ -341,23 +350,26 @@ def _resolve_rule_with_fallback(rule: str, species: Dict[str, Species], name_to_
         # Skip constant values (TRUE/FALSE as keywords)
         if ref.upper() in ['TRUE', 'FALSE']:
             continue
-        
+
+        # Threshold notation: 'Cro:2' → look up 'Cro', keep ':2' decoration
+        lookup_ref = _strip_threshold(ref)[0] if not is_quoted else ref
+
         # Try to resolve the reference (including cleaning if needed)
         ref_resolved = False
         ref_is_id = False
         ref_is_name = False
-        
+
         # Try direct resolution first
-        if _try_resolve_by_id(ref, species):
+        if _try_resolve_by_id(lookup_ref, species):
             ref_resolved = True
             ref_is_id = True
-        elif _try_resolve_by_name(ref, name_to_id):
+        elif _try_resolve_by_name(lookup_ref, name_to_id):
             ref_resolved = True
             ref_is_name = True
         else:
             # Try cleaning the reference
             cleaned_ref, found_as_id, found_as_name = _clean_and_try_resolve(
-                ref, species, name_to_id, [], f"{context} (rule reference '{ref}')"
+                lookup_ref, species, name_to_id, [], f"{context} (rule reference '{ref}')"
             )
             if found_as_id:
                 ref_resolved = True
@@ -365,7 +377,7 @@ def _resolve_rule_with_fallback(rule: str, species: Dict[str, Species], name_to_
             elif found_as_name:
                 ref_resolved = True
                 ref_is_name = True
-        
+
         # Check if this reference needs a different mode
         if ref_resolved:
             if actual_use_name:
@@ -384,7 +396,7 @@ def _resolve_rule_with_fallback(rule: str, species: Dict[str, Species], name_to_
                         warned_once = True
                     mode_switched = True
                     actual_use_name = True
-    
+
     # Second pass: resolve all references using the determined mode
     # Process in reverse order to preserve positions
     replacements = []  # Store (start, end, replacement) tuples
@@ -395,28 +407,30 @@ def _resolve_rule_with_fallback(rule: str, species: Dict[str, Species], name_to_
         # Skip constant values (TRUE/FALSE as keywords)
         if ref.upper() in ['TRUE', 'FALSE']:
             continue
-        
+
+        # Threshold notation: resolve species part only, reattach ':N'
+        lookup_ref, threshold_suffix = _strip_threshold(ref) if not is_quoted else (ref, '')
+
         # Resolve this reference
         try:
-            # If it was quoted, pass the quoted version to preserve context
-            ref_to_resolve = f'"{ref}"' if is_quoted else ref
+            ref_to_resolve = f'"{lookup_ref}"' if is_quoted else lookup_ref
             resolved, _ = _resolve_with_fallback(
                 ref_to_resolve, species, name_to_id, name_counts, name_occurrence_map,
                 actual_use_name, [], f"{context} (rule reference '{ref}')", warn_on_switch=False
             )
-            
+
             # Store replacement (we'll apply them in reverse order)
-            replacements.append((start, end, resolved))
+            replacements.append((start, end, resolved + threshold_suffix))
         except ValueError as e:
             # Cannot resolve - re-raise as error
             raise ValueError(str(e))
-    
+
     # Apply replacements in reverse order to preserve positions
     for start, end, resolved in reversed(replacements):
         original_text = result[start:end]
         if resolved != original_text:
             result = result[:start] + resolved + result[end:]
-    
+
     return result, actual_use_name
 
 
@@ -819,6 +833,11 @@ def read_spreadsheet_to_model(xlsx_path: str, use_name: bool = False) -> tuple[Q
         _extend_csv("taxons", spec.MODEL_TAXON)
         _extend_csv("biological_processes", spec.MODEL_BIOLOGICAL_PROCESS)
         _extend_csv("versions", spec.MODEL_VERSION)
+        # Strip "Version:" label prefix if present (written by older tool versions)
+        model_info.versions = [
+            v[len("Version:"):].strip() if v.lower().startswith("version:") else v
+            for v in model_info.versions
+        ]
 
         model_info.created_iso = (model_kv.get(spec.MODEL_CREATED) or "").strip() or None
         model_info.modified_iso = (model_kv.get(spec.MODEL_MODIFIED) or "").strip() or None
@@ -1182,7 +1201,12 @@ def read_csv_to_model(csv_files: dict[str, str], use_name: bool = False) -> tupl
         _extend_csv_field("taxons", spec.MODEL_TAXON)
         _extend_csv_field("biological_processes", spec.MODEL_BIOLOGICAL_PROCESS)
         _extend_csv_field("versions", spec.MODEL_VERSION)
-        
+        # Strip "Version:" label prefix if present (written by older tool versions)
+        model_info.versions = [
+            v[len("Version:"):].strip() if v.lower().startswith("version:") else v
+            for v in model_info.versions
+        ]
+
         model_info.created_iso = (model_kv.get(spec.MODEL_CREATED) or "").strip() or None
         model_info.modified_iso = (model_kv.get(spec.MODEL_MODIFIED) or "").strip() or None
         

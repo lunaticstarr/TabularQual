@@ -166,7 +166,10 @@ def write_sbml(model: QualModel, *, interactions_anno: bool = True, transitions_
     if model.model.notes:
         _append_notes(m, model.model.notes)
     if model.model.versions:
-        _append_notes_concat(m, [f"Version: {v}" for v in model.model.versions])
+        _append_notes_concat(m, [
+            v if v.startswith("Version:") else f"Version: {v}"
+            for v in model.model.versions
+        ])
 
     # Annotations for model
     if not m.isSetMetaId():
@@ -589,6 +592,11 @@ def _add_model_history(m: libsbml.Model, im: QualModel) -> None:
         if hasattr(history, "addContributor"):
             history.addContributor(c)
         else:
+            import warnings as _w
+            _w.warn(
+                "This libsbml version does not support addContributor; "
+                "contributor will be written as creator and read back as creator on round-trip."
+            )
             history.addCreator(c)
     # Dates
     # Use current time if created_iso is None
@@ -770,7 +778,7 @@ def _collect_ids_from_ast(ast) -> List[str]:
         return [ast[1]]  # Return the species name from negated species nodes
     if kind == 'not':
         return _collect_ids_from_ast(ast[1])
-    if kind in ('and', 'or'):
+    if kind in ('and', 'or', 'xor'):
         return list(dict.fromkeys(_collect_ids_from_ast(ast[1]) + _collect_ids_from_ast(ast[2])))
     return []
 
